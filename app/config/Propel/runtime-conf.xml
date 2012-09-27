@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <propel>
+        <datasources default="Octoprogress">
+            <datasource id="Octoprogress">
+                <adapter>mysql</adapter>
+                <connection>
+                    <dsn>mysql:host=127.0.0.1;dbname=octoprogress</dsn>
+                    <user>octoprogress</user>
+                    <password>octoprogress++</password>
+                </connection>
+            </datasource>
+        </datasources>
+    </propel>
+</config>

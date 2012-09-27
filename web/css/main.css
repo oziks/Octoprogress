@@ -1,0 +1,76 @@
+/* ====================================
+   HTML5 Boilerplate styles - h5bp.com 
+   ==================================== */
+
+html,
+button,
+input,
+select,
+textarea {
+    color: #222;
+}
+
+body {
+    font-size: 1em;
+    line-height: 1.4;
+    color: #555;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0 2em;
+    padding: 0;
+}
+
+img {
+    vertical-align: middle;
+}
+
+img.bordered {
+    border: 1px solid #dedede;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* ==============
+    Google Fonts
+   ============== */
+
+@font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v4/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local('PT Sans Bold'), local('PTSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v4/0XxGQsSc1g4rdRdjJKZrNBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
+}
+
+/* ==================
+   Octoprogress Styles
+   ================== */
+
+body {
+	background-color: #E8E7DC;
+	color: #555;
+	display: block;
+	font-family: 'PT Sans', Verdana, Geneva, sans-serif;
+	font-size: 14px;
+	line-height: 23px;
+	margin: 0px;
+}

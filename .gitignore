@@ -1,0 +1,6 @@
+/composer.phar
+/app/cache/*
+/app/logs/*
+/app/config/Propel/conf/
+/app/config/Propel/sql/
+/vendor/
