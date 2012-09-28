@@ -1,5 +1,5 @@
-body {
-    padding-top: 60px;
+.navbar .container {
+    width: 1170px;
 }
 
 .navbar img.avatar {
@@ -35,4 +35,21 @@ body {
 .vcard .details i {
     color: #DDD;
     margin: 0 5px 0 0;
+}
+
+.repositories .list {
+    list-style: none;
+    margin: 0;
+    padding: 0 5px;
+    border: 1px solid #EEE;
+    border-width: 0 0 1px;
+}
+
+.repositories .list li {
+    border: 1px solid #EEE;
+    border-width: 1px 0 0;
+}
+
+.repositories .list li blockquote {
+    color: #777;
 }

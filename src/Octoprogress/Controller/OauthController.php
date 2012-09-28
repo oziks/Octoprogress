@@ -56,20 +56,20 @@ class OauthController implements ControllerProviderInterface
             if (!$user) {
                 $user = new User();
                 $user->setAccesToken($info['access_token']);
-            }
 
-            $response = $client->fetch('https://api.github.com/user');
-            $user
-                ->setGithubId($response['result']['id'])
-                ->setGithubProfile($response['result']['html_url'])
-                ->setLogin($response['result']['login'])
-                ->setCompany($response['result']['company'])
-                ->setEmail($response['result']['email'])
-                ->setAvatarUrl($response['result']['avatar_url'])
-                ->setName($response['result']['name'])
-                ->setLocation($response['result']['location'])
-                ->save()
-            ;
+                $response = $client->fetch('https://api.github.com/user');
+                $user
+                    ->setGithubId($response['result']['id'])
+                    ->setGithubProfile($response['result']['html_url'])
+                    ->setLogin($response['result']['login'])
+                    ->setCompany($response['result']['company'])
+                    ->setEmail($response['result']['email'])
+                    ->setAvatarUrl($response['result']['avatar_url'])
+                    ->setName($response['result']['name'])
+                    ->setLocation($response['result']['location'])
+                    ->save()
+                ;
+            }
 
             $app['session']->set('isAuthenticated', true);
             $app['session']->set('user', $user);
