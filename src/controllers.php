@@ -19,3 +19,4 @@ $app->get('/', function () use ($app) {
 ;
 
 $app->mount('/oauth', new \Octoprogress\Controller\OauthController());
+$app->mount('/account', new \Octoprogress\Controller\AccountController());

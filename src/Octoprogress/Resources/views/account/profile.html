@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Welcome
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span3 vcard">
+        <img src="{{ user.avatarUrl }}"></a></span>
+        <ul class="details">
+            <li><i class="icon-user"></i>{{ user.name }} a.k,a {{ user.login }}</li>
+            <li><i class="icon-group"></i> {{ user.company }}</li>
+            <li><i class="icon-globe"></i>{{ user.location }}</li>
+            <li><i class="icon-link"></i><a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+        </ul>
+    </div>
+    <div class="span9">
+        ...
+    </div>
+</div>
+{% endblock %}

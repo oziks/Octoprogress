@@ -23,6 +23,8 @@ $app->register(new PropelServiceProvider(), array(
     'propel.model_path'  => $app['config']->get('root_dir').'/src',
 ));
 
+$app->register(new Silex\Provider\SessionServiceProvider());
+
 $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new TwigServiceProvider(), array(

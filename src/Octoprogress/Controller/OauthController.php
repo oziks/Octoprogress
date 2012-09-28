@@ -71,9 +71,21 @@ class OauthController implements ControllerProviderInterface
                 ->save()
             ;
 
-            // TODO redirect to octoprogress account
-            echo "<pre>"; var_dump($user->toArray()); die(1);
+            $app['session']->set('isAuthenticated', true);
+            $app['session']->set('user', $user);
+
+            return $app->redirect($app['url_generator']->generate('account'));
         });
+
+        $controllers->get('/logout', function () use ($app) {
+            $app['session']->set('isAuthenticated', false);
+            $app['session']->set('user', null);
+
+            // redirect homepage
+            return $app->redirect($app['url_generator']->generate('homepage'));
+        })
+        ->bind('logout')
+        ;
 
         return $controllers;
     }

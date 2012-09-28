@@ -1,3 +1,38 @@
 body {
     padding-top: 60px;
 }
+
+.navbar img.avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    border: 1px solid #DDD;
+    margin-right: 6px;
+}
+
+.vcard img {
+    padding: 5px;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    width: 210px;
+    height: 210px;
+    border: 1px solid #DDD;
+}
+
+.vcard .details {
+    width: 210px;
+    list-style: none;
+    margin: 1em 0 0;
+    padding: 1em 5px;
+    border: 1px solid #DDD;
+    border-width: 1px 0;
+}
+
+.vcard .details li {
+    margin: .3em 0 0;
+}
+
+.vcard .details i {
+    color: #DDD;
+    margin: 0 5px 0 0;
+}
