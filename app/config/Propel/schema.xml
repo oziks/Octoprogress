@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="Octoprogress" namespace="Octoprogress\Model" defaultIdMethod="native">
+<database name="octoprogress" namespace="Octoprogress\Model" defaultIdMethod="native">
+    <table name="user">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="github_id" type="varchar" />
+        <column name="github_profile" type="varchar" />
+        <column name="login" type="varchar" />
+        <column name="company" type="varchar" />
+        <column name="email" type="varchar" />
+        <column name="avatar_url" type="varchar" />
+        <column name="name" type="varchar" />
+        <column name="location" type="varchar" />
+        <column name="acces_token" type="varchar" />
+
+        <behavior name="timestampable" />
+    </table>
 </database>

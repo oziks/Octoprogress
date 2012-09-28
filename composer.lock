@@ -1,6 +1,100 @@
 {
-    "hash": "8c1c1ae571cce93d188549fa75fcaa38",
+    "hash": "0b51b87ffc03a23eb22703b7ce321b7d",
     "packages": [
+        {
+            "name": "knplabs/github-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/php-github-api.git",
+                "reference": "1.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/KnpLabs/php-github-api/zipball/1.0.2",
+                "reference": "1.0.2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "ext-curl": "*",
+                "kriswallsmith/buzz": "0.7"
+            },
+            "time": "1347027659",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Github": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com",
+                    "homepage": "http://ornicar.github.com"
+                },
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                }
+            ],
+            "description": "GitHub API v3 client",
+            "homepage": "https://github.com/KnpLabs/php-github-api",
+            "keywords": [
+                "api",
+                "github",
+                "gist"
+            ]
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.7",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/kriswallsmith/Buzz.git",
+                "reference": "v0.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/kriswallsmith/Buzz/zipball/v0.7",
+                "reference": "v0.7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "time": "2012-06-25 19:01:38",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ]
+        },
         {
             "name": "monolog/monolog",
             "version": "1.1.0",
@@ -113,7 +207,6 @@
             "require": {
                 "php": ">=5.3.0"
             },
-            "time": "1347278988",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -140,7 +233,8 @@
             "keywords": [
                 "dependency injection",
                 "container"
-            ]
+            ],
+            "time": "1347278988"
         },
         {
             "name": "propel/propel-service-provider",
@@ -160,7 +254,6 @@
                 "silex/silex": "1.0.*",
                 "propel/propel1": "1.6.*"
             },
-            "time": "1339953161",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -186,7 +279,8 @@
             "keywords": [
                 "silex",
                 "propel"
-            ]
+            ],
+            "time": "1339953161"
         },
         {
             "name": "propel/propel1",
@@ -206,7 +300,6 @@
                 "php": ">=5.2.4",
                 "phing/phing": ">=2.4.12,2.4.*"
             },
-            "time": "1348068014",
             "bin": [
                 "generator/bin/propel-gen",
                 "generator/bin/propel-gen.bat"
@@ -246,7 +339,8 @@
                 "persistence",
                 "Active Record",
                 "mapping"
-            ]
+            ],
+            "time": "1348068014"
         },
         {
             "name": "silex/silex",
@@ -293,7 +387,6 @@
                 "symfony/css-selector": "2.1.*",
                 "symfony/dom-crawler": "2.1.*"
             },
-            "time": "1348229548",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -324,7 +417,8 @@
             "homepage": "http://silex.sensiolabs.org",
             "keywords": [
                 "microframework"
-            ]
+            ],
+            "time": "1348229548"
         },
         {
             "name": "symfony/browser-kit",
@@ -352,7 +446,6 @@
             "suggest": {
                 "symfony/process": "2.1.*"
             },
-            "time": "1347274422",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -379,7 +472,8 @@
                 }
             ],
             "description": "Symfony BrowserKit Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/class-loader",
@@ -449,7 +543,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1348209286",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -476,7 +569,8 @@
                 }
             ],
             "description": "Symfony Config Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1348209286"
         },
         {
             "name": "symfony/console",
@@ -543,7 +637,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1345643321",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -570,7 +663,8 @@
                 }
             ],
             "description": "Symfony CssSelector Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1345643321"
         },
         {
             "name": "symfony/dom-crawler",
@@ -596,7 +690,6 @@
             "suggest": {
                 "symfony/css-selector": "2.1.*"
             },
-            "time": "1347274422",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -623,7 +716,8 @@
                 }
             ],
             "description": "Symfony DomCrawler Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -650,7 +744,6 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/http-kernel": "2.1.*"
             },
-            "time": "1347274422",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -677,7 +770,8 @@
                 }
             ],
             "description": "Symfony EventDispatcher Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/finder",
@@ -697,7 +791,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1345643321",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -724,7 +817,8 @@
                 }
             ],
             "description": "Symfony Finder Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1345643321"
         },
         {
             "name": "symfony/form",
@@ -755,7 +849,6 @@
                 "symfony/validator": "2.1.*",
                 "symfony/http-foundation": "2.1.*"
             },
-            "time": "1348035223",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -782,7 +875,8 @@
                 }
             ],
             "description": "Symfony Form Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1348035223"
         },
         {
             "name": "symfony/http-foundation",
@@ -802,7 +896,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1348208027",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -830,7 +923,8 @@
                 }
             ],
             "description": "Symfony HttpFoundation Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1348208027"
         },
         {
             "name": "symfony/http-kernel",
@@ -870,7 +964,6 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/finder": "2.1.*"
             },
-            "time": "1348209286",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -897,7 +990,8 @@
                 }
             ],
             "description": "Symfony HttpKernel Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1348209286"
         },
         {
             "name": "symfony/locale",
@@ -920,7 +1014,6 @@
             "suggest": {
                 "ext-intl": ">=5.3.3"
             },
-            "time": "1345643321",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -947,7 +1040,8 @@
                 }
             ],
             "description": "Symfony Locale Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1345643321"
         },
         {
             "name": "symfony/monolog-bridge",
@@ -969,7 +1063,6 @@
                 "monolog/monolog": "1.*",
                 "symfony/http-kernel": "2.1.*"
             },
-            "time": "1347274422",
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
@@ -996,7 +1089,8 @@
                 }
             ],
             "description": "Symfony Monolog Bridge",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/options-resolver",
@@ -1016,7 +1110,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1345643321",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1048,7 +1141,8 @@
                 "configuration",
                 "config",
                 "options"
-            ]
+            ],
+            "time": "1345643321"
         },
         {
             "name": "symfony/process",
@@ -1068,7 +1162,6 @@
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1348007849",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1095,7 +1188,8 @@
                 }
             ],
             "description": "Symfony Process Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1348007849"
         },
         {
             "name": "symfony/routing",
@@ -1126,7 +1220,6 @@
                 "symfony/config": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
-            "time": "1347274422",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1153,7 +1246,8 @@
                 }
             ],
             "description": "Symfony Routing Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/security",
@@ -1191,7 +1285,6 @@
                 "symfony/validator": "2.1.*",
                 "symfony/routing": "2.1.*"
             },
-            "time": "1347274422",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1218,7 +1311,8 @@
                 }
             ],
             "description": "Symfony Security Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/translation",
@@ -1246,7 +1340,6 @@
                 "symfony/config": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
-            "time": "1347274422",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1273,7 +1366,8 @@
                 }
             ],
             "description": "Symfony Translation Component",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/twig-bridge",
@@ -1310,7 +1404,6 @@
                 "symfony/yaml": "2.1.*",
                 "symfony/security": "2.1.*"
             },
-            "time": "1347274422",
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
@@ -1337,7 +1430,8 @@
                 }
             ],
             "description": "Symfony Twig Bridge",
-            "homepage": "http://symfony.com"
+            "homepage": "http://symfony.com",
+            "time": "1347274422"
         },
         {
             "name": "symfony/validator",
@@ -1367,7 +1461,6 @@
                 "symfony/http-foundation": "2.1.*",
                 "symfony/yaml": "2.1.*"
             },
-            "time": "1347903959",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1394,6 +1487,54 @@
                 }
             ],
             "description": "Symfony Validator Component",
+            "homepage": "http://symfony.com",
+            "time": "1347903959"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "2.1.x-dev",
+            "target-dir": "Symfony/Component/Yaml",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Yaml",
+                "reference": "v2.1.0-RC2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/symfony/Yaml/zipball/v2.1.0-RC2",
+                "reference": "v2.1.0-RC2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "1345643321",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Yaml": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com"
         },
         {
@@ -1413,7 +1554,6 @@
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1348667791",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1443,7 +1583,8 @@
             "homepage": "http://twig.sensiolabs.org",
             "keywords": [
                 "templating"
-            ]
+            ],
+            "time": "1348667791"
         }
     ],
     "packages-dev": null,
@@ -1452,6 +1593,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "propel/propel-service-provider": 20
+        "propel/propel-service-provider": 20,
+        "knplabs/github-api": 20
     }
 }

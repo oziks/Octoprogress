@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <propel>
-        <datasources default="Octoprogress">
-            <datasource id="Octoprogress">
+        <datasources default="octoprogress">
+            <datasource id="octoprogress">
                 <adapter>mysql</adapter>
                 <connection>
                     <dsn>mysql:host=127.0.0.1;dbname=octoprogress</dsn>
