@@ -31,7 +31,7 @@ use Octoprogress\Model\UserQuery;
  * @method UserQuery orderByAvatarUrl($order = Criteria::ASC) Order by the avatar_url column
  * @method UserQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method UserQuery orderByLocation($order = Criteria::ASC) Order by the location column
- * @method UserQuery orderByAccesToken($order = Criteria::ASC) Order by the acces_token column
+ * @method UserQuery orderByAccessToken($order = Criteria::ASC) Order by the access_token column
  * @method UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method UserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -44,7 +44,7 @@ use Octoprogress\Model\UserQuery;
  * @method UserQuery groupByAvatarUrl() Group by the avatar_url column
  * @method UserQuery groupByName() Group by the name column
  * @method UserQuery groupByLocation() Group by the location column
- * @method UserQuery groupByAccesToken() Group by the acces_token column
+ * @method UserQuery groupByAccessToken() Group by the access_token column
  * @method UserQuery groupByCreatedAt() Group by the created_at column
  * @method UserQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -67,7 +67,7 @@ use Octoprogress\Model\UserQuery;
  * @method User findOneByAvatarUrl(string $avatar_url) Return the first User filtered by the avatar_url column
  * @method User findOneByName(string $name) Return the first User filtered by the name column
  * @method User findOneByLocation(string $location) Return the first User filtered by the location column
- * @method User findOneByAccesToken(string $acces_token) Return the first User filtered by the acces_token column
+ * @method User findOneByAccessToken(string $access_token) Return the first User filtered by the access_token column
  * @method User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
  * @method User findOneByUpdatedAt(string $updated_at) Return the first User filtered by the updated_at column
  *
@@ -80,7 +80,7 @@ use Octoprogress\Model\UserQuery;
  * @method array findByAvatarUrl(string $avatar_url) Return User objects filtered by the avatar_url column
  * @method array findByName(string $name) Return User objects filtered by the name column
  * @method array findByLocation(string $location) Return User objects filtered by the location column
- * @method array findByAccesToken(string $acces_token) Return User objects filtered by the acces_token column
+ * @method array findByAccessToken(string $access_token) Return User objects filtered by the access_token column
  * @method array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return User objects filtered by the updated_at column
  *
@@ -186,7 +186,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `GITHUB_ID`, `GITHUB_PROFILE`, `LOGIN`, `COMPANY`, `EMAIL`, `AVATAR_URL`, `NAME`, `LOCATION`, `ACCES_TOKEN`, `CREATED_AT`, `UPDATED_AT` FROM `user` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `GITHUB_ID`, `GITHUB_PROFILE`, `LOGIN`, `COMPANY`, `EMAIL`, `AVATAR_URL`, `NAME`, `LOCATION`, `ACCESS_TOKEN`, `CREATED_AT`, `UPDATED_AT` FROM `user` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -535,32 +535,32 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the acces_token column
+     * Filter the query on the access_token column
      *
      * Example usage:
      * <code>
-     * $query->filterByAccesToken('fooValue');   // WHERE acces_token = 'fooValue'
-     * $query->filterByAccesToken('%fooValue%'); // WHERE acces_token LIKE '%fooValue%'
+     * $query->filterByAccessToken('fooValue');   // WHERE access_token = 'fooValue'
+     * $query->filterByAccessToken('%fooValue%'); // WHERE access_token LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $accesToken The value to use as filter.
+     * @param     string $accessToken The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByAccesToken($accesToken = null, $comparison = null)
+    public function filterByAccessToken($accessToken = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($accesToken)) {
+            if (is_array($accessToken)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $accesToken)) {
-                $accesToken = str_replace('*', '%', $accesToken);
+            } elseif (preg_match('/[\%\*]/', $accessToken)) {
+                $accessToken = str_replace('*', '%', $accessToken);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(UserPeer::ACCES_TOKEN, $accesToken, $comparison);
+        return $this->addUsingAlias(UserPeer::ACCESS_TOKEN, $accessToken, $comparison);
     }
 
     /**

@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="octoprogress" namespace="Octoprogress\Model" defaultIdMethod="native">
+    <table name="job">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" type="varchar" required="false"/>
+        <column name="type" type="varchar" size="50" required="true"/>
+        <column name="params" type="clob"/>
+        <column name="message" type="longvarchar"/>
+        <column name="status" type="integer" defaultValue="2"/>
+        <column name="completed_at" type="timestamp"/>
+
+        <behavior name="timestampable" />
+    </table>
+
+    <table name="job_log">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="job_id" type="integer" required="true"/>
+        <column name="level" type="enum" valueSet="error, info" required="true"/>
+        <column name="message" type="clob"/>
+        <behavior name="timestampable" />
+
+        <foreign-key foreignTable="job" onDelete="cascade">
+            <reference local="job_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
     <table name="user">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="github_id" type="varchar" />
@@ -10,15 +34,17 @@
         <column name="avatar_url" type="varchar" />
         <column name="name" type="varchar" />
         <column name="location" type="varchar" />
-        <column name="acces_token" type="varchar" />
+        <column name="access_token" type="varchar" />
 
         <behavior name="timestampable" />
     </table>
 
     <table name="project">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="name" type="varchar" />
         <column name="user_id" type="integer" />
+        <column name="github_id" type="integer" />
+        <column name="name" type="varchar" />
+        <column name="description" type="varchar" />
 
         <foreign-key foreignTable="user">
             <reference local="user_id" foreign="id"/>

@@ -13,6 +13,7 @@
             <li><i class="icon-group"></i> {{ user.company }}</li>
             <li><i class="icon-globe"></i>{{ user.location }}</li>
             <li><i class="icon-link"></i><a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+            <li><i class="icon-refresh"></i><a href="{{ path('job_project_update') }}">refresh project</a></li>
         </ul>
     </div>
     <div class="span9 repositories">

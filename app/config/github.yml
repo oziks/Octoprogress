@@ -1,5 +1,6 @@
-client_id:              52d3b427551c8fde2e5b
-client_secret:          e82614ab3d48ac1f7ab816a5d0e7d3ea7c7e74a4
-redirect_uri:           http://localhost:8000/oauth/callback
-authorization_endpoint: https://github.com/login/oauth/authorize
-token_endpoint:         https://github.com/login/oauth/access_token
+client_id:              "52d3b427551c8fde2e5b"
+client_secret:          "e82614ab3d48ac1f7ab816a5d0e7d3ea7c7e74a4"
+redirect_uri:           "http://localhost:8000/oauth/callback"
+authorization_endpoint: "https://github.com/login/oauth/authorize"
+token_endpoint:         "https://github.com/login/oauth/access_token"
+scope:                  "user,repo"

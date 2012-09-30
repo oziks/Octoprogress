@@ -1,8 +1,18 @@
 #!/usr/bin/env php
 <?php
 
+set_time_limit(0);
 require_once __DIR__.'/vendor/autoload.php';
 
-$app = require __DIR__.'/app/bootstrap.php';
+// run app to boot registered services.
+$app = require __DIR__ . '/app/bootstrap.php';
 require __DIR__.'/app/dev.php';
+$app->get('/', function () {});
+$app->run();
+
+$console  = new \Octoprogress\Console($app, 'Octoprogress', '0.1');
+
+// some command
+$console->add(new \Octoprogress\Command\Job\DaemonCommand());
+
 $console->run();

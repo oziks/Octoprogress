@@ -12,88 +12,84 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Octoprogress\Model\Project;
-use Octoprogress\Model\ProjectPeer;
-use Octoprogress\Model\ProjectQuery;
-use Octoprogress\Model\User;
+use Octoprogress\Model\Job;
+use Octoprogress\Model\JobLog;
+use Octoprogress\Model\JobLogPeer;
+use Octoprogress\Model\JobLogQuery;
 
 /**
- * Base class that represents a query for the 'project' table.
+ * Base class that represents a query for the 'job_log' table.
  *
  *
  *
- * @method ProjectQuery orderById($order = Criteria::ASC) Order by the id column
- * @method ProjectQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
- * @method ProjectQuery orderByGithubId($order = Criteria::ASC) Order by the github_id column
- * @method ProjectQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method ProjectQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method ProjectQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method ProjectQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method JobLogQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method JobLogQuery orderByJobId($order = Criteria::ASC) Order by the job_id column
+ * @method JobLogQuery orderByLevel($order = Criteria::ASC) Order by the level column
+ * @method JobLogQuery orderByMessage($order = Criteria::ASC) Order by the message column
+ * @method JobLogQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method JobLogQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method ProjectQuery groupById() Group by the id column
- * @method ProjectQuery groupByUserId() Group by the user_id column
- * @method ProjectQuery groupByGithubId() Group by the github_id column
- * @method ProjectQuery groupByName() Group by the name column
- * @method ProjectQuery groupByDescription() Group by the description column
- * @method ProjectQuery groupByCreatedAt() Group by the created_at column
- * @method ProjectQuery groupByUpdatedAt() Group by the updated_at column
+ * @method JobLogQuery groupById() Group by the id column
+ * @method JobLogQuery groupByJobId() Group by the job_id column
+ * @method JobLogQuery groupByLevel() Group by the level column
+ * @method JobLogQuery groupByMessage() Group by the message column
+ * @method JobLogQuery groupByCreatedAt() Group by the created_at column
+ * @method JobLogQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method ProjectQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method ProjectQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method ProjectQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method JobLogQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method JobLogQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method JobLogQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ProjectQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method ProjectQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method ProjectQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method JobLogQuery leftJoinJob($relationAlias = null) Adds a LEFT JOIN clause to the query using the Job relation
+ * @method JobLogQuery rightJoinJob($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Job relation
+ * @method JobLogQuery innerJoinJob($relationAlias = null) Adds a INNER JOIN clause to the query using the Job relation
  *
- * @method Project findOne(PropelPDO $con = null) Return the first Project matching the query
- * @method Project findOneOrCreate(PropelPDO $con = null) Return the first Project matching the query, or a new Project object populated from the query conditions when no match is found
+ * @method JobLog findOne(PropelPDO $con = null) Return the first JobLog matching the query
+ * @method JobLog findOneOrCreate(PropelPDO $con = null) Return the first JobLog matching the query, or a new JobLog object populated from the query conditions when no match is found
  *
- * @method Project findOneByUserId(int $user_id) Return the first Project filtered by the user_id column
- * @method Project findOneByGithubId(int $github_id) Return the first Project filtered by the github_id column
- * @method Project findOneByName(string $name) Return the first Project filtered by the name column
- * @method Project findOneByDescription(string $description) Return the first Project filtered by the description column
- * @method Project findOneByCreatedAt(string $created_at) Return the first Project filtered by the created_at column
- * @method Project findOneByUpdatedAt(string $updated_at) Return the first Project filtered by the updated_at column
+ * @method JobLog findOneByJobId(int $job_id) Return the first JobLog filtered by the job_id column
+ * @method JobLog findOneByLevel(int $level) Return the first JobLog filtered by the level column
+ * @method JobLog findOneByMessage(string $message) Return the first JobLog filtered by the message column
+ * @method JobLog findOneByCreatedAt(string $created_at) Return the first JobLog filtered by the created_at column
+ * @method JobLog findOneByUpdatedAt(string $updated_at) Return the first JobLog filtered by the updated_at column
  *
- * @method array findById(int $id) Return Project objects filtered by the id column
- * @method array findByUserId(int $user_id) Return Project objects filtered by the user_id column
- * @method array findByGithubId(int $github_id) Return Project objects filtered by the github_id column
- * @method array findByName(string $name) Return Project objects filtered by the name column
- * @method array findByDescription(string $description) Return Project objects filtered by the description column
- * @method array findByCreatedAt(string $created_at) Return Project objects filtered by the created_at column
- * @method array findByUpdatedAt(string $updated_at) Return Project objects filtered by the updated_at column
+ * @method array findById(int $id) Return JobLog objects filtered by the id column
+ * @method array findByJobId(int $job_id) Return JobLog objects filtered by the job_id column
+ * @method array findByLevel(int $level) Return JobLog objects filtered by the level column
+ * @method array findByMessage(string $message) Return JobLog objects filtered by the message column
+ * @method array findByCreatedAt(string $created_at) Return JobLog objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return JobLog objects filtered by the updated_at column
  *
  * @package    propel.generator.Octoprogress.Model.om
  */
-abstract class BaseProjectQuery extends ModelCriteria
+abstract class BaseJobLogQuery extends ModelCriteria
 {
     /**
-     * Initializes internal state of BaseProjectQuery object.
+     * Initializes internal state of BaseJobLogQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'octoprogress', $modelName = 'Octoprogress\\Model\\Project', $modelAlias = null)
+    public function __construct($dbName = 'octoprogress', $modelName = 'Octoprogress\\Model\\JobLog', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ProjectQuery object.
+     * Returns a new JobLogQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     ProjectQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param     JobLogQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ProjectQuery
+     * @return JobLogQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof ProjectQuery) {
+        if ($criteria instanceof JobLogQuery) {
             return $criteria;
         }
-        $query = new ProjectQuery();
+        $query = new JobLogQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -116,19 +112,19 @@ abstract class BaseProjectQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   Project|Project[]|mixed the result, formatted by the current formatter
+     * @return   JobLog|JobLog[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = ProjectPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = JobLogPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is alredy in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(ProjectPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(JobLogPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -146,7 +142,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   Project A model object, or null if the key is not found
+     * @return   JobLog A model object, or null if the key is not found
      * @throws   PropelException
      */
      public function findOneById($key, $con = null)
@@ -161,12 +157,12 @@ abstract class BaseProjectQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   Project A model object, or null if the key is not found
+     * @return   JobLog A model object, or null if the key is not found
      * @throws   PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `JOB_ID`, `LEVEL`, `MESSAGE`, `CREATED_AT`, `UPDATED_AT` FROM `job_log` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -177,9 +173,9 @@ abstract class BaseProjectQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new Project();
+            $obj = new JobLog();
             $obj->hydrate($row);
-            ProjectPeer::addInstanceToPool($obj, (string) $key);
+            JobLogPeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -192,7 +188,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return Project|Project[]|mixed the result, formatted by the current formatter
+     * @return JobLog|JobLog[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -213,7 +209,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|Project[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|JobLog[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -234,12 +230,12 @@ abstract class BaseProjectQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(ProjectPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(JobLogPeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -247,12 +243,12 @@ abstract class BaseProjectQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(ProjectPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(JobLogPeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -271,7 +267,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
@@ -279,39 +275,39 @@ abstract class BaseProjectQuery extends ModelCriteria
             $comparison = Criteria::IN;
         }
 
-        return $this->addUsingAlias(ProjectPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(JobLogPeer::ID, $id, $comparison);
     }
 
     /**
-     * Filter the query on the user_id column
+     * Filter the query on the job_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByUserId(1234); // WHERE user_id = 1234
-     * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
-     * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
+     * $query->filterByJobId(1234); // WHERE job_id = 1234
+     * $query->filterByJobId(array(12, 34)); // WHERE job_id IN (12, 34)
+     * $query->filterByJobId(array('min' => 12)); // WHERE job_id > 12
      * </code>
      *
-     * @see       filterByUser()
+     * @see       filterByJob()
      *
-     * @param     mixed $userId The value to use as filter.
+     * @param     mixed $jobId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
-    public function filterByUserId($userId = null, $comparison = null)
+    public function filterByJobId($jobId = null, $comparison = null)
     {
-        if (is_array($userId)) {
+        if (is_array($jobId)) {
             $useMinMax = false;
-            if (isset($userId['min'])) {
-                $this->addUsingAlias(ProjectPeer::USER_ID, $userId['min'], Criteria::GREATER_EQUAL);
+            if (isset($jobId['min'])) {
+                $this->addUsingAlias(JobLogPeer::JOB_ID, $jobId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($userId['max'])) {
-                $this->addUsingAlias(ProjectPeer::USER_ID, $userId['max'], Criteria::LESS_EQUAL);
+            if (isset($jobId['max'])) {
+                $this->addUsingAlias(JobLogPeer::JOB_ID, $jobId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -322,106 +318,70 @@ abstract class BaseProjectQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ProjectPeer::USER_ID, $userId, $comparison);
+        return $this->addUsingAlias(JobLogPeer::JOB_ID, $jobId, $comparison);
     }
 
     /**
-     * Filter the query on the github_id column
+     * Filter the query on the level column
      *
-     * Example usage:
-     * <code>
-     * $query->filterByGithubId(1234); // WHERE github_id = 1234
-     * $query->filterByGithubId(array(12, 34)); // WHERE github_id IN (12, 34)
-     * $query->filterByGithubId(array('min' => 12)); // WHERE github_id > 12
-     * </code>
-     *
-     * @param     mixed $githubId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     mixed $level The value to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
+     * @throws PropelException - if the value is not accepted by the enum.
      */
-    public function filterByGithubId($githubId = null, $comparison = null)
+    public function filterByLevel($level = null, $comparison = null)
     {
-        if (is_array($githubId)) {
-            $useMinMax = false;
-            if (isset($githubId['min'])) {
-                $this->addUsingAlias(ProjectPeer::GITHUB_ID, $githubId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
+        $valueSet = JobLogPeer::getValueSet(JobLogPeer::LEVEL);
+        if (is_scalar($level)) {
+            if (!in_array($level, $valueSet)) {
+                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $level));
             }
-            if (isset($githubId['max'])) {
-                $this->addUsingAlias(ProjectPeer::GITHUB_ID, $githubId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
+            $level = array_search($level, $valueSet);
+        } elseif (is_array($level)) {
+            $convertedValues = array();
+            foreach ($level as $value) {
+                if (!in_array($value, $valueSet)) {
+                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
+                }
+                $convertedValues []= array_search($value, $valueSet);
             }
-            if ($useMinMax) {
-                return $this;
-            }
+            $level = $convertedValues;
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(ProjectPeer::GITHUB_ID, $githubId, $comparison);
+        return $this->addUsingAlias(JobLogPeer::LEVEL, $level, $comparison);
     }
 
     /**
-     * Filter the query on the name column
+     * Filter the query on the message column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
-     * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+     * $query->filterByMessage('fooValue');   // WHERE message = 'fooValue'
+     * $query->filterByMessage('%fooValue%'); // WHERE message LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     string $message The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByMessage($message = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($name)) {
+            if (is_array($message)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $name)) {
-                $name = str_replace('*', '%', $name);
+            } elseif (preg_match('/[\%\*]/', $message)) {
+                $message = str_replace('*', '%', $message);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ProjectPeer::NAME, $name, $comparison);
-    }
-
-    /**
-     * Filter the query on the description column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
-     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $description The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProjectQuery The current query, for fluid interface
-     */
-    public function filterByDescription($description = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($description)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $description)) {
-                $description = str_replace('*', '%', $description);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(ProjectPeer::DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(JobLogPeer::MESSAGE, $message, $comparison);
     }
 
     /**
@@ -442,18 +402,18 @@ abstract class BaseProjectQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(ProjectPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(JobLogPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(ProjectPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(JobLogPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -464,7 +424,7 @@ abstract class BaseProjectQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ProjectPeer::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(JobLogPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -485,18 +445,18 @@ abstract class BaseProjectQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(ProjectPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(JobLogPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(ProjectPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(JobLogPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -507,47 +467,47 @@ abstract class BaseProjectQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ProjectPeer::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(JobLogPeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
-     * Filter the query by a related User object
+     * Filter the query by a related Job object
      *
-     * @param   User|PropelObjectCollection $user The related object(s) to use as filter
+     * @param   Job|PropelObjectCollection $job The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ProjectQuery The current query, for fluid interface
+     * @return   JobLogQuery The current query, for fluid interface
      * @throws   PropelException - if the provided filter is invalid.
      */
-    public function filterByUser($user, $comparison = null)
+    public function filterByJob($job, $comparison = null)
     {
-        if ($user instanceof User) {
+        if ($job instanceof Job) {
             return $this
-                ->addUsingAlias(ProjectPeer::USER_ID, $user->getId(), $comparison);
-        } elseif ($user instanceof PropelObjectCollection) {
+                ->addUsingAlias(JobLogPeer::JOB_ID, $job->getId(), $comparison);
+        } elseif ($job instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(ProjectPeer::USER_ID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(JobLogPeer::JOB_ID, $job->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByUser() only accepts arguments of type User or PropelCollection');
+            throw new PropelException('filterByJob() only accepts arguments of type Job or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the User relation
+     * Adds a JOIN clause to the query using the Job relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
-    public function joinUser($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinJob($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('User');
+        $relationMap = $tableMap->getRelation('Job');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -562,14 +522,14 @@ abstract class BaseProjectQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'User');
+            $this->addJoinObject($join, 'Job');
         }
 
         return $this;
     }
 
     /**
-     * Use the User relation User object
+     * Use the Job relation Job object
      *
      * @see       useQuery()
      *
@@ -577,26 +537,26 @@ abstract class BaseProjectQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \Octoprogress\Model\UserQuery A secondary query class using the current class as primary query
+     * @return   \Octoprogress\Model\JobQuery A secondary query class using the current class as primary query
      */
-    public function useUserQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useJobQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'User', '\Octoprogress\Model\UserQuery');
+            ->joinJob($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Job', '\Octoprogress\Model\JobQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   Project $project Object to remove from the list of results
+     * @param   JobLog $jobLog Object to remove from the list of results
      *
-     * @return ProjectQuery The current query, for fluid interface
+     * @return JobLogQuery The current query, for fluid interface
      */
-    public function prune($project = null)
+    public function prune($jobLog = null)
     {
-        if ($project) {
-            $this->addUsingAlias(ProjectPeer::ID, $project->getId(), Criteria::NOT_EQUAL);
+        if ($jobLog) {
+            $this->addUsingAlias(JobLogPeer::ID, $jobLog->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -609,31 +569,31 @@ abstract class BaseProjectQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     ProjectQuery The current query, for fluid interface
+     * @return     JobLogQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(ProjectPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(JobLogPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by update date desc
      *
-     * @return     ProjectQuery The current query, for fluid interface
+     * @return     JobLogQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(ProjectPeer::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(JobLogPeer::UPDATED_AT);
     }
 
     /**
      * Order by update date asc
      *
-     * @return     ProjectQuery The current query, for fluid interface
+     * @return     JobLogQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(ProjectPeer::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(JobLogPeer::UPDATED_AT);
     }
 
     /**
@@ -641,30 +601,30 @@ abstract class BaseProjectQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     ProjectQuery The current query, for fluid interface
+     * @return     JobLogQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(ProjectPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(JobLogPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
 
     /**
      * Order by create date desc
      *
-     * @return     ProjectQuery The current query, for fluid interface
+     * @return     JobLogQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(ProjectPeer::CREATED_AT);
+        return $this->addDescendingOrderByColumn(JobLogPeer::CREATED_AT);
     }
 
     /**
      * Order by create date asc
      *
-     * @return     ProjectQuery The current query, for fluid interface
+     * @return     JobLogQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(ProjectPeer::CREATED_AT);
+        return $this->addAscendingOrderByColumn(JobLogPeer::CREATED_AT);
     }
 }

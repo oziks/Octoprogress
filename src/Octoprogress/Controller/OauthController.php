@@ -27,7 +27,7 @@ class OauthController implements ControllerProviderInterface
             $authUrl   = $client->getAuthenticationUrl($github['authorization_endpoint'], $github['redirect_uri']);
 
             // redirect github sign-in
-            return $app->redirect($authUrl);
+            return $app->redirect($authUrl . '&' . http_build_query(array('scope' => $github['scope'])));
         })
         ->bind('oauth')
         ;
@@ -38,7 +38,7 @@ class OauthController implements ControllerProviderInterface
             $client     = new OAuth2Client($github['client_id'], $github['client_secret']);
 
             $params   = array('code' => $_GET['code'], 'redirect_uri' =>  $github['redirect_uri']);
-            $response = $client->getAccessToken( $github['token_endpoint'], 'authorization_code', $params);
+            $response = $client->getAccessToken($github['token_endpoint'], 'authorization_code', $params);
 
             parse_str($response['result'], $info);
 
@@ -49,13 +49,13 @@ class OauthController implements ControllerProviderInterface
             $client->setAccessToken($info['access_token']);
 
             $user = UserQuery::create()
-                ->filterByAccesToken($info['access_token'])
+                ->filterByAccessToken($info['access_token'])
                 ->findOne()
             ;
 
             if (!$user) {
                 $user = new User();
-                $user->setAccesToken($info['access_token']);
+                $user->setAccessToken($info['access_token']);
 
                 $response = $client->fetch('https://api.github.com/user');
                 $user

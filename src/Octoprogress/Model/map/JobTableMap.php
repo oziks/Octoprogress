@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'user' table.
+ * This class defines the structure of the 'job' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.Octoprogress.Model.map
  */
-class UserTableMap extends TableMap
+class JobTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Octoprogress.Model.map.UserTableMap';
+    const CLASS_NAME = 'Octoprogress.Model.map.JobTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,22 +36,19 @@ class UserTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('user');
-        $this->setPhpName('User');
-        $this->setClassname('Octoprogress\\Model\\User');
+        $this->setName('job');
+        $this->setPhpName('Job');
+        $this->setClassname('Octoprogress\\Model\\Job');
         $this->setPackage('Octoprogress.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('GITHUB_ID', 'GithubId', 'VARCHAR', false, 255, null);
-        $this->addColumn('GITHUB_PROFILE', 'GithubProfile', 'VARCHAR', false, 255, null);
-        $this->addColumn('LOGIN', 'Login', 'VARCHAR', false, 255, null);
-        $this->addColumn('COMPANY', 'Company', 'VARCHAR', false, 255, null);
-        $this->addColumn('EMAIL', 'Email', 'VARCHAR', false, 255, null);
-        $this->addColumn('AVATAR_URL', 'AvatarUrl', 'VARCHAR', false, 255, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
-        $this->addColumn('LOCATION', 'Location', 'VARCHAR', false, 255, null);
-        $this->addColumn('ACCESS_TOKEN', 'AccessToken', 'VARCHAR', false, 255, null);
+        $this->addColumn('TYPE', 'Type', 'VARCHAR', true, 50, null);
+        $this->addColumn('PARAMS', 'Params', 'CLOB', false, null, null);
+        $this->addColumn('MESSAGE', 'Message', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('STATUS', 'Status', 'INTEGER', false, null, 2);
+        $this->addColumn('COMPLETED_AT', 'CompletedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -62,7 +59,7 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Project', 'Octoprogress\\Model\\Project', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null, 'Projects');
+        $this->addRelation('JobLog', 'Octoprogress\\Model\\JobLog', RelationMap::ONE_TO_MANY, array('id' => 'job_id', ), 'CASCADE', null, 'JobLogs');
     } // buildRelations()
 
     /**
@@ -78,4 +75,4 @@ class UserTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // UserTableMap
+} // JobTableMap

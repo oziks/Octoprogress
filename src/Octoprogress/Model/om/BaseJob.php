@@ -15,31 +15,31 @@ use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
-use Octoprogress\Model\Project;
-use Octoprogress\Model\ProjectQuery;
-use Octoprogress\Model\User;
-use Octoprogress\Model\UserPeer;
-use Octoprogress\Model\UserQuery;
+use Octoprogress\Model\Job;
+use Octoprogress\Model\JobLog;
+use Octoprogress\Model\JobLogQuery;
+use Octoprogress\Model\JobPeer;
+use Octoprogress\Model\JobQuery;
 
 /**
- * Base class that represents a row from the 'user' table.
+ * Base class that represents a row from the 'job' table.
  *
  *
  *
  * @package    propel.generator.Octoprogress.Model.om
  */
-abstract class BaseUser extends BaseObject implements Persistent
+abstract class BaseJob extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Octoprogress\\Model\\UserPeer';
+    const PEER = 'Octoprogress\\Model\\JobPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        UserPeer
+     * @var        JobPeer
      */
     protected static $peer;
 
@@ -56,58 +56,41 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the github_id field.
-     * @var        string
-     */
-    protected $github_id;
-
-    /**
-     * The value for the github_profile field.
-     * @var        string
-     */
-    protected $github_profile;
-
-    /**
-     * The value for the login field.
-     * @var        string
-     */
-    protected $login;
-
-    /**
-     * The value for the company field.
-     * @var        string
-     */
-    protected $company;
-
-    /**
-     * The value for the email field.
-     * @var        string
-     */
-    protected $email;
-
-    /**
-     * The value for the avatar_url field.
-     * @var        string
-     */
-    protected $avatar_url;
-
-    /**
      * The value for the name field.
      * @var        string
      */
     protected $name;
 
     /**
-     * The value for the location field.
+     * The value for the type field.
      * @var        string
      */
-    protected $location;
+    protected $type;
 
     /**
-     * The value for the access_token field.
+     * The value for the params field.
      * @var        string
      */
-    protected $access_token;
+    protected $params;
+
+    /**
+     * The value for the message field.
+     * @var        string
+     */
+    protected $message;
+
+    /**
+     * The value for the status field.
+     * Note: this column has a database default value of: 2
+     * @var        int
+     */
+    protected $status;
+
+    /**
+     * The value for the completed_at field.
+     * @var        string
+     */
+    protected $completed_at;
 
     /**
      * The value for the created_at field.
@@ -122,10 +105,10 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * @var        PropelObjectCollection|Project[] Collection to store aggregation of Project objects.
+     * @var        PropelObjectCollection|JobLog[] Collection to store aggregation of JobLog objects.
      */
-    protected $collProjects;
-    protected $collProjectsPartial;
+    protected $collJobLogs;
+    protected $collJobLogsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -145,7 +128,28 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $projectsScheduledForDeletion = null;
+    protected $jobLogsScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->status = 2;
+    }
+
+    /**
+     * Initializes internal state of BaseJob object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [id] column value.
@@ -155,66 +159,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get the [github_id] column value.
-     *
-     * @return string
-     */
-    public function getGithubId()
-    {
-        return $this->github_id;
-    }
-
-    /**
-     * Get the [github_profile] column value.
-     *
-     * @return string
-     */
-    public function getGithubProfile()
-    {
-        return $this->github_profile;
-    }
-
-    /**
-     * Get the [login] column value.
-     *
-     * @return string
-     */
-    public function getLogin()
-    {
-        return $this->login;
-    }
-
-    /**
-     * Get the [company] column value.
-     *
-     * @return string
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
-     * Get the [email] column value.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Get the [avatar_url] column value.
-     *
-     * @return string
-     */
-    public function getAvatarUrl()
-    {
-        return $this->avatar_url;
     }
 
     /**
@@ -228,23 +172,80 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [location] column value.
+     * Get the [type] column value.
      *
      * @return string
      */
-    public function getLocation()
+    public function getType()
     {
-        return $this->location;
+        return $this->type;
     }
 
     /**
-     * Get the [access_token] column value.
+     * Get the [params] column value.
      *
      * @return string
      */
-    public function getAccessToken()
+    public function getParams()
     {
-        return $this->access_token;
+        return $this->params;
+    }
+
+    /**
+     * Get the [message] column value.
+     *
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Get the [status] column value.
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [completed_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCompletedAt($format = 'Y-m-d H:i:s')
+    {
+        if ($this->completed_at === null) {
+            return null;
+        }
+
+        if ($this->completed_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->completed_at);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->completed_at, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
     }
 
     /**
@@ -325,7 +326,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return User The current object (for fluent API support)
+     * @return Job The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -335,7 +336,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = UserPeer::ID;
+            $this->modifiedColumns[] = JobPeer::ID;
         }
 
 
@@ -343,136 +344,10 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [github_id] column.
-     *
-     * @param string $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setGithubId($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->github_id !== $v) {
-            $this->github_id = $v;
-            $this->modifiedColumns[] = UserPeer::GITHUB_ID;
-        }
-
-
-        return $this;
-    } // setGithubId()
-
-    /**
-     * Set the value of [github_profile] column.
-     *
-     * @param string $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setGithubProfile($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->github_profile !== $v) {
-            $this->github_profile = $v;
-            $this->modifiedColumns[] = UserPeer::GITHUB_PROFILE;
-        }
-
-
-        return $this;
-    } // setGithubProfile()
-
-    /**
-     * Set the value of [login] column.
-     *
-     * @param string $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setLogin($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->login !== $v) {
-            $this->login = $v;
-            $this->modifiedColumns[] = UserPeer::LOGIN;
-        }
-
-
-        return $this;
-    } // setLogin()
-
-    /**
-     * Set the value of [company] column.
-     *
-     * @param string $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setCompany($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->company !== $v) {
-            $this->company = $v;
-            $this->modifiedColumns[] = UserPeer::COMPANY;
-        }
-
-
-        return $this;
-    } // setCompany()
-
-    /**
-     * Set the value of [email] column.
-     *
-     * @param string $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setEmail($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->email !== $v) {
-            $this->email = $v;
-            $this->modifiedColumns[] = UserPeer::EMAIL;
-        }
-
-
-        return $this;
-    } // setEmail()
-
-    /**
-     * Set the value of [avatar_url] column.
-     *
-     * @param string $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setAvatarUrl($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->avatar_url !== $v) {
-            $this->avatar_url = $v;
-            $this->modifiedColumns[] = UserPeer::AVATAR_URL;
-        }
-
-
-        return $this;
-    } // setAvatarUrl()
-
-    /**
      * Set the value of [name] column.
      *
      * @param string $v new value
-     * @return User The current object (for fluent API support)
+     * @return Job The current object (for fluent API support)
      */
     public function setName($v)
     {
@@ -482,7 +357,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         if ($this->name !== $v) {
             $this->name = $v;
-            $this->modifiedColumns[] = UserPeer::NAME;
+            $this->modifiedColumns[] = JobPeer::NAME;
         }
 
 
@@ -490,53 +365,118 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setName()
 
     /**
-     * Set the value of [location] column.
+     * Set the value of [type] column.
      *
      * @param string $v new value
-     * @return User The current object (for fluent API support)
+     * @return Job The current object (for fluent API support)
      */
-    public function setLocation($v)
+    public function setType($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->location !== $v) {
-            $this->location = $v;
-            $this->modifiedColumns[] = UserPeer::LOCATION;
+        if ($this->type !== $v) {
+            $this->type = $v;
+            $this->modifiedColumns[] = JobPeer::TYPE;
         }
 
 
         return $this;
-    } // setLocation()
+    } // setType()
 
     /**
-     * Set the value of [access_token] column.
+     * Set the value of [params] column.
      *
      * @param string $v new value
-     * @return User The current object (for fluent API support)
+     * @return Job The current object (for fluent API support)
      */
-    public function setAccessToken($v)
+    public function setParams($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->access_token !== $v) {
-            $this->access_token = $v;
-            $this->modifiedColumns[] = UserPeer::ACCESS_TOKEN;
+        if ($this->params !== $v) {
+            $this->params = $v;
+            $this->modifiedColumns[] = JobPeer::PARAMS;
         }
 
 
         return $this;
-    } // setAccessToken()
+    } // setParams()
+
+    /**
+     * Set the value of [message] column.
+     *
+     * @param string $v new value
+     * @return Job The current object (for fluent API support)
+     */
+    public function setMessage($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->message !== $v) {
+            $this->message = $v;
+            $this->modifiedColumns[] = JobPeer::MESSAGE;
+        }
+
+
+        return $this;
+    } // setMessage()
+
+    /**
+     * Set the value of [status] column.
+     *
+     * @param int $v new value
+     * @return Job The current object (for fluent API support)
+     */
+    public function setStatus($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->status !== $v) {
+            $this->status = $v;
+            $this->modifiedColumns[] = JobPeer::STATUS;
+        }
+
+
+        return $this;
+    } // setStatus()
+
+    /**
+     * Sets the value of [completed_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Job The current object (for fluent API support)
+     */
+    public function setCompletedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->completed_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->completed_at !== null && $tmpDt = new DateTime($this->completed_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->completed_at = $newDateAsString;
+                $this->modifiedColumns[] = JobPeer::COMPLETED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCompletedAt()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return User The current object (for fluent API support)
+     * @return Job The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -546,7 +486,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = UserPeer::CREATED_AT;
+                $this->modifiedColumns[] = JobPeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -559,7 +499,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return User The current object (for fluent API support)
+     * @return Job The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -569,7 +509,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = UserPeer::UPDATED_AT;
+                $this->modifiedColumns[] = JobPeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -587,6 +527,10 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->status !== 2) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -610,17 +554,14 @@ abstract class BaseUser extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->github_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->github_profile = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->login = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->company = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->email = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->avatar_url = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->location = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->access_token = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->type = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->params = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->message = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->status = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->completed_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -629,10 +570,10 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 12; // 12 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = JobPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating User object", $e);
+            throw new PropelException("Error populating Job object", $e);
         }
     }
 
@@ -675,13 +616,13 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = UserPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = JobPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -691,7 +632,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collProjects = null;
+            $this->collJobLogs = null;
 
         } // if (deep)
     }
@@ -713,12 +654,12 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = UserQuery::create()
+            $deleteQuery = JobQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -756,7 +697,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -766,16 +707,16 @@ abstract class BaseUser extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(UserPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(JobPeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(UserPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(JobPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(UserPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(JobPeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -787,7 +728,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                UserPeer::addInstanceToPool($this);
+                JobPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -828,18 +769,17 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->projectsScheduledForDeletion !== null) {
-                if (!$this->projectsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->projectsScheduledForDeletion as $project) {
-                        // need to save related object because we set the relation to null
-                        $project->save($con);
-                    }
-                    $this->projectsScheduledForDeletion = null;
+            if ($this->jobLogsScheduledForDeletion !== null) {
+                if (!$this->jobLogsScheduledForDeletion->isEmpty()) {
+                    JobLogQuery::create()
+                        ->filterByPrimaryKeys($this->jobLogsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->jobLogsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collProjects !== null) {
-                foreach ($this->collProjects as $referrerFK) {
+            if ($this->collJobLogs !== null) {
+                foreach ($this->collJobLogs as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -866,51 +806,42 @@ abstract class BaseUser extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = UserPeer::ID;
+        $this->modifiedColumns[] = JobPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UserPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . JobPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(UserPeer::ID)) {
+        if ($this->isColumnModified(JobPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(UserPeer::GITHUB_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`GITHUB_ID`';
-        }
-        if ($this->isColumnModified(UserPeer::GITHUB_PROFILE)) {
-            $modifiedColumns[':p' . $index++]  = '`GITHUB_PROFILE`';
-        }
-        if ($this->isColumnModified(UserPeer::LOGIN)) {
-            $modifiedColumns[':p' . $index++]  = '`LOGIN`';
-        }
-        if ($this->isColumnModified(UserPeer::COMPANY)) {
-            $modifiedColumns[':p' . $index++]  = '`COMPANY`';
-        }
-        if ($this->isColumnModified(UserPeer::EMAIL)) {
-            $modifiedColumns[':p' . $index++]  = '`EMAIL`';
-        }
-        if ($this->isColumnModified(UserPeer::AVATAR_URL)) {
-            $modifiedColumns[':p' . $index++]  = '`AVATAR_URL`';
-        }
-        if ($this->isColumnModified(UserPeer::NAME)) {
+        if ($this->isColumnModified(JobPeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
-        if ($this->isColumnModified(UserPeer::LOCATION)) {
-            $modifiedColumns[':p' . $index++]  = '`LOCATION`';
+        if ($this->isColumnModified(JobPeer::TYPE)) {
+            $modifiedColumns[':p' . $index++]  = '`TYPE`';
         }
-        if ($this->isColumnModified(UserPeer::ACCESS_TOKEN)) {
-            $modifiedColumns[':p' . $index++]  = '`ACCESS_TOKEN`';
+        if ($this->isColumnModified(JobPeer::PARAMS)) {
+            $modifiedColumns[':p' . $index++]  = '`PARAMS`';
         }
-        if ($this->isColumnModified(UserPeer::CREATED_AT)) {
+        if ($this->isColumnModified(JobPeer::MESSAGE)) {
+            $modifiedColumns[':p' . $index++]  = '`MESSAGE`';
+        }
+        if ($this->isColumnModified(JobPeer::STATUS)) {
+            $modifiedColumns[':p' . $index++]  = '`STATUS`';
+        }
+        if ($this->isColumnModified(JobPeer::COMPLETED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`COMPLETED_AT`';
+        }
+        if ($this->isColumnModified(JobPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
         }
-        if ($this->isColumnModified(UserPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(JobPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`UPDATED_AT`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `user` (%s) VALUES (%s)',
+            'INSERT INTO `job` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -922,32 +853,23 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`GITHUB_ID`':
-                        $stmt->bindValue($identifier, $this->github_id, PDO::PARAM_STR);
-                        break;
-                    case '`GITHUB_PROFILE`':
-                        $stmt->bindValue($identifier, $this->github_profile, PDO::PARAM_STR);
-                        break;
-                    case '`LOGIN`':
-                        $stmt->bindValue($identifier, $this->login, PDO::PARAM_STR);
-                        break;
-                    case '`COMPANY`':
-                        $stmt->bindValue($identifier, $this->company, PDO::PARAM_STR);
-                        break;
-                    case '`EMAIL`':
-                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
-                        break;
-                    case '`AVATAR_URL`':
-                        $stmt->bindValue($identifier, $this->avatar_url, PDO::PARAM_STR);
-                        break;
                     case '`NAME`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case '`LOCATION`':
-                        $stmt->bindValue($identifier, $this->location, PDO::PARAM_STR);
+                    case '`TYPE`':
+                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
                         break;
-                    case '`ACCESS_TOKEN`':
-                        $stmt->bindValue($identifier, $this->access_token, PDO::PARAM_STR);
+                    case '`PARAMS`':
+                        $stmt->bindValue($identifier, $this->params, PDO::PARAM_STR);
+                        break;
+                    case '`MESSAGE`':
+                        $stmt->bindValue($identifier, $this->message, PDO::PARAM_STR);
+                        break;
+                    case '`STATUS`':
+                        $stmt->bindValue($identifier, $this->status, PDO::PARAM_INT);
+                        break;
+                    case '`COMPLETED_AT`':
+                        $stmt->bindValue($identifier, $this->completed_at, PDO::PARAM_STR);
                         break;
                     case '`CREATED_AT`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1049,13 +971,13 @@ abstract class BaseUser extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = UserPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = JobPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
 
-                if ($this->collProjects !== null) {
-                    foreach ($this->collProjects as $referrerFK) {
+                if ($this->collJobLogs !== null) {
+                    foreach ($this->collJobLogs as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1081,7 +1003,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = UserPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = JobPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1101,36 +1023,27 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getGithubId();
-                break;
-            case 2:
-                return $this->getGithubProfile();
-                break;
-            case 3:
-                return $this->getLogin();
-                break;
-            case 4:
-                return $this->getCompany();
-                break;
-            case 5:
-                return $this->getEmail();
-                break;
-            case 6:
-                return $this->getAvatarUrl();
-                break;
-            case 7:
                 return $this->getName();
                 break;
-            case 8:
-                return $this->getLocation();
+            case 2:
+                return $this->getType();
                 break;
-            case 9:
-                return $this->getAccessToken();
+            case 3:
+                return $this->getParams();
                 break;
-            case 10:
+            case 4:
+                return $this->getMessage();
+                break;
+            case 5:
+                return $this->getStatus();
+                break;
+            case 6:
+                return $this->getCompletedAt();
+                break;
+            case 7:
                 return $this->getCreatedAt();
                 break;
-            case 11:
+            case 8:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1156,28 +1069,25 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['User'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Job'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['User'][$this->getPrimaryKey()] = true;
-        $keys = UserPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Job'][$this->getPrimaryKey()] = true;
+        $keys = JobPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getGithubId(),
-            $keys[2] => $this->getGithubProfile(),
-            $keys[3] => $this->getLogin(),
-            $keys[4] => $this->getCompany(),
-            $keys[5] => $this->getEmail(),
-            $keys[6] => $this->getAvatarUrl(),
-            $keys[7] => $this->getName(),
-            $keys[8] => $this->getLocation(),
-            $keys[9] => $this->getAccessToken(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
+            $keys[1] => $this->getName(),
+            $keys[2] => $this->getType(),
+            $keys[3] => $this->getParams(),
+            $keys[4] => $this->getMessage(),
+            $keys[5] => $this->getStatus(),
+            $keys[6] => $this->getCompletedAt(),
+            $keys[7] => $this->getCreatedAt(),
+            $keys[8] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->collProjects) {
-                $result['Projects'] = $this->collProjects->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collJobLogs) {
+                $result['JobLogs'] = $this->collJobLogs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1197,7 +1107,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = UserPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = JobPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -1217,36 +1127,27 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setGithubId($value);
-                break;
-            case 2:
-                $this->setGithubProfile($value);
-                break;
-            case 3:
-                $this->setLogin($value);
-                break;
-            case 4:
-                $this->setCompany($value);
-                break;
-            case 5:
-                $this->setEmail($value);
-                break;
-            case 6:
-                $this->setAvatarUrl($value);
-                break;
-            case 7:
                 $this->setName($value);
                 break;
-            case 8:
-                $this->setLocation($value);
+            case 2:
+                $this->setType($value);
                 break;
-            case 9:
-                $this->setAccessToken($value);
+            case 3:
+                $this->setParams($value);
                 break;
-            case 10:
+            case 4:
+                $this->setMessage($value);
+                break;
+            case 5:
+                $this->setStatus($value);
+                break;
+            case 6:
+                $this->setCompletedAt($value);
+                break;
+            case 7:
                 $this->setCreatedAt($value);
                 break;
-            case 11:
+            case 8:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1271,20 +1172,17 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = UserPeer::getFieldNames($keyType);
+        $keys = JobPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setGithubId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setGithubProfile($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setLogin($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCompany($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setEmail($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setAvatarUrl($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setName($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setLocation($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setAccessToken($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setType($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setParams($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setMessage($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setStatus($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCompletedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
     }
 
     /**
@@ -1294,20 +1192,17 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(UserPeer::DATABASE_NAME);
+        $criteria = new Criteria(JobPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
-        if ($this->isColumnModified(UserPeer::GITHUB_ID)) $criteria->add(UserPeer::GITHUB_ID, $this->github_id);
-        if ($this->isColumnModified(UserPeer::GITHUB_PROFILE)) $criteria->add(UserPeer::GITHUB_PROFILE, $this->github_profile);
-        if ($this->isColumnModified(UserPeer::LOGIN)) $criteria->add(UserPeer::LOGIN, $this->login);
-        if ($this->isColumnModified(UserPeer::COMPANY)) $criteria->add(UserPeer::COMPANY, $this->company);
-        if ($this->isColumnModified(UserPeer::EMAIL)) $criteria->add(UserPeer::EMAIL, $this->email);
-        if ($this->isColumnModified(UserPeer::AVATAR_URL)) $criteria->add(UserPeer::AVATAR_URL, $this->avatar_url);
-        if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
-        if ($this->isColumnModified(UserPeer::LOCATION)) $criteria->add(UserPeer::LOCATION, $this->location);
-        if ($this->isColumnModified(UserPeer::ACCESS_TOKEN)) $criteria->add(UserPeer::ACCESS_TOKEN, $this->access_token);
-        if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(UserPeer::UPDATED_AT)) $criteria->add(UserPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(JobPeer::ID)) $criteria->add(JobPeer::ID, $this->id);
+        if ($this->isColumnModified(JobPeer::NAME)) $criteria->add(JobPeer::NAME, $this->name);
+        if ($this->isColumnModified(JobPeer::TYPE)) $criteria->add(JobPeer::TYPE, $this->type);
+        if ($this->isColumnModified(JobPeer::PARAMS)) $criteria->add(JobPeer::PARAMS, $this->params);
+        if ($this->isColumnModified(JobPeer::MESSAGE)) $criteria->add(JobPeer::MESSAGE, $this->message);
+        if ($this->isColumnModified(JobPeer::STATUS)) $criteria->add(JobPeer::STATUS, $this->status);
+        if ($this->isColumnModified(JobPeer::COMPLETED_AT)) $criteria->add(JobPeer::COMPLETED_AT, $this->completed_at);
+        if ($this->isColumnModified(JobPeer::CREATED_AT)) $criteria->add(JobPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(JobPeer::UPDATED_AT)) $criteria->add(JobPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1322,8 +1217,8 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(UserPeer::DATABASE_NAME);
-        $criteria->add(UserPeer::ID, $this->id);
+        $criteria = new Criteria(JobPeer::DATABASE_NAME);
+        $criteria->add(JobPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1364,22 +1259,19 @@ abstract class BaseUser extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of User (or compatible) type.
+     * @param object $copyObj An object of Job (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setGithubId($this->getGithubId());
-        $copyObj->setGithubProfile($this->getGithubProfile());
-        $copyObj->setLogin($this->getLogin());
-        $copyObj->setCompany($this->getCompany());
-        $copyObj->setEmail($this->getEmail());
-        $copyObj->setAvatarUrl($this->getAvatarUrl());
         $copyObj->setName($this->getName());
-        $copyObj->setLocation($this->getLocation());
-        $copyObj->setAccessToken($this->getAccessToken());
+        $copyObj->setType($this->getType());
+        $copyObj->setParams($this->getParams());
+        $copyObj->setMessage($this->getMessage());
+        $copyObj->setStatus($this->getStatus());
+        $copyObj->setCompletedAt($this->getCompletedAt());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1390,9 +1282,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getProjects() as $relObj) {
+            foreach ($this->getJobLogs() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addProject($relObj->copy($deepCopy));
+                    $copyObj->addJobLog($relObj->copy($deepCopy));
                 }
             }
 
@@ -1415,7 +1307,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return User Clone of current object.
+     * @return Job Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1435,12 +1327,12 @@ abstract class BaseUser extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return UserPeer
+     * @return JobPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new UserPeer();
+            self::$peer = new JobPeer();
         }
 
         return self::$peer;
@@ -1457,40 +1349,40 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Project' == $relationName) {
-            $this->initProjects();
+        if ('JobLog' == $relationName) {
+            $this->initJobLogs();
         }
     }
 
     /**
-     * Clears out the collProjects collection
+     * Clears out the collJobLogs collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addProjects()
+     * @see        addJobLogs()
      */
-    public function clearProjects()
+    public function clearJobLogs()
     {
-        $this->collProjects = null; // important to set this to null since that means it is uninitialized
-        $this->collProjectsPartial = null;
+        $this->collJobLogs = null; // important to set this to null since that means it is uninitialized
+        $this->collJobLogsPartial = null;
     }
 
     /**
-     * reset is the collProjects collection loaded partially
+     * reset is the collJobLogs collection loaded partially
      *
      * @return void
      */
-    public function resetPartialProjects($v = true)
+    public function resetPartialJobLogs($v = true)
     {
-        $this->collProjectsPartial = $v;
+        $this->collJobLogsPartial = $v;
     }
 
     /**
-     * Initializes the collProjects collection.
+     * Initializes the collJobLogs collection.
      *
-     * By default this just sets the collProjects collection to an empty array (like clearcollProjects());
+     * By default this just sets the collJobLogs collection to an empty array (like clearcollJobLogs());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1499,173 +1391,173 @@ abstract class BaseUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initProjects($overrideExisting = true)
+    public function initJobLogs($overrideExisting = true)
     {
-        if (null !== $this->collProjects && !$overrideExisting) {
+        if (null !== $this->collJobLogs && !$overrideExisting) {
             return;
         }
-        $this->collProjects = new PropelObjectCollection();
-        $this->collProjects->setModel('Project');
+        $this->collJobLogs = new PropelObjectCollection();
+        $this->collJobLogs->setModel('JobLog');
     }
 
     /**
-     * Gets an array of Project objects which contain a foreign key that references this object.
+     * Gets an array of JobLog objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
+     * If this Job is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Project[] List of Project objects
+     * @return PropelObjectCollection|JobLog[] List of JobLog objects
      * @throws PropelException
      */
-    public function getProjects($criteria = null, PropelPDO $con = null)
+    public function getJobLogs($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collProjectsPartial && !$this->isNew();
-        if (null === $this->collProjects || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collProjects) {
+        $partial = $this->collJobLogsPartial && !$this->isNew();
+        if (null === $this->collJobLogs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collJobLogs) {
                 // return empty collection
-                $this->initProjects();
+                $this->initJobLogs();
             } else {
-                $collProjects = ProjectQuery::create(null, $criteria)
-                    ->filterByUser($this)
+                $collJobLogs = JobLogQuery::create(null, $criteria)
+                    ->filterByJob($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collProjectsPartial && count($collProjects)) {
-                      $this->initProjects(false);
+                    if (false !== $this->collJobLogsPartial && count($collJobLogs)) {
+                      $this->initJobLogs(false);
 
-                      foreach($collProjects as $obj) {
-                        if (false == $this->collProjects->contains($obj)) {
-                          $this->collProjects->append($obj);
+                      foreach($collJobLogs as $obj) {
+                        if (false == $this->collJobLogs->contains($obj)) {
+                          $this->collJobLogs->append($obj);
                         }
                       }
 
-                      $this->collProjectsPartial = true;
+                      $this->collJobLogsPartial = true;
                     }
 
-                    return $collProjects;
+                    return $collJobLogs;
                 }
 
-                if($partial && $this->collProjects) {
-                    foreach($this->collProjects as $obj) {
+                if($partial && $this->collJobLogs) {
+                    foreach($this->collJobLogs as $obj) {
                         if($obj->isNew()) {
-                            $collProjects[] = $obj;
+                            $collJobLogs[] = $obj;
                         }
                     }
                 }
 
-                $this->collProjects = $collProjects;
-                $this->collProjectsPartial = false;
+                $this->collJobLogs = $collJobLogs;
+                $this->collJobLogsPartial = false;
             }
         }
 
-        return $this->collProjects;
+        return $this->collJobLogs;
     }
 
     /**
-     * Sets a collection of Project objects related by a one-to-many relationship
+     * Sets a collection of JobLog objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $projects A Propel collection.
+     * @param PropelCollection $jobLogs A Propel collection.
      * @param PropelPDO $con Optional connection object
      */
-    public function setProjects(PropelCollection $projects, PropelPDO $con = null)
+    public function setJobLogs(PropelCollection $jobLogs, PropelPDO $con = null)
     {
-        $this->projectsScheduledForDeletion = $this->getProjects(new Criteria(), $con)->diff($projects);
+        $this->jobLogsScheduledForDeletion = $this->getJobLogs(new Criteria(), $con)->diff($jobLogs);
 
-        foreach ($this->projectsScheduledForDeletion as $projectRemoved) {
-            $projectRemoved->setUser(null);
+        foreach ($this->jobLogsScheduledForDeletion as $jobLogRemoved) {
+            $jobLogRemoved->setJob(null);
         }
 
-        $this->collProjects = null;
-        foreach ($projects as $project) {
-            $this->addProject($project);
+        $this->collJobLogs = null;
+        foreach ($jobLogs as $jobLog) {
+            $this->addJobLog($jobLog);
         }
 
-        $this->collProjects = $projects;
-        $this->collProjectsPartial = false;
+        $this->collJobLogs = $jobLogs;
+        $this->collJobLogsPartial = false;
     }
 
     /**
-     * Returns the number of related Project objects.
+     * Returns the number of related JobLog objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related Project objects.
+     * @return int             Count of related JobLog objects.
      * @throws PropelException
      */
-    public function countProjects(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countJobLogs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collProjectsPartial && !$this->isNew();
-        if (null === $this->collProjects || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collProjects) {
+        $partial = $this->collJobLogsPartial && !$this->isNew();
+        if (null === $this->collJobLogs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collJobLogs) {
                 return 0;
             } else {
                 if($partial && !$criteria) {
-                    return count($this->getProjects());
+                    return count($this->getJobLogs());
                 }
-                $query = ProjectQuery::create(null, $criteria);
+                $query = JobLogQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
                 }
 
                 return $query
-                    ->filterByUser($this)
+                    ->filterByJob($this)
                     ->count($con);
             }
         } else {
-            return count($this->collProjects);
+            return count($this->collJobLogs);
         }
     }
 
     /**
-     * Method called to associate a Project object to this object
-     * through the Project foreign key attribute.
+     * Method called to associate a JobLog object to this object
+     * through the JobLog foreign key attribute.
      *
-     * @param    Project $l Project
-     * @return User The current object (for fluent API support)
+     * @param    JobLog $l JobLog
+     * @return Job The current object (for fluent API support)
      */
-    public function addProject(Project $l)
+    public function addJobLog(JobLog $l)
     {
-        if ($this->collProjects === null) {
-            $this->initProjects();
-            $this->collProjectsPartial = true;
+        if ($this->collJobLogs === null) {
+            $this->initJobLogs();
+            $this->collJobLogsPartial = true;
         }
-        if (!in_array($l, $this->collProjects->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddProject($l);
+        if (!in_array($l, $this->collJobLogs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddJobLog($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	Project $project The project object to add.
+     * @param	JobLog $jobLog The jobLog object to add.
      */
-    protected function doAddProject($project)
+    protected function doAddJobLog($jobLog)
     {
-        $this->collProjects[]= $project;
-        $project->setUser($this);
+        $this->collJobLogs[]= $jobLog;
+        $jobLog->setJob($this);
     }
 
     /**
-     * @param	Project $project The project object to remove.
+     * @param	JobLog $jobLog The jobLog object to remove.
      */
-    public function removeProject($project)
+    public function removeJobLog($jobLog)
     {
-        if ($this->getProjects()->contains($project)) {
-            $this->collProjects->remove($this->collProjects->search($project));
-            if (null === $this->projectsScheduledForDeletion) {
-                $this->projectsScheduledForDeletion = clone $this->collProjects;
-                $this->projectsScheduledForDeletion->clear();
+        if ($this->getJobLogs()->contains($jobLog)) {
+            $this->collJobLogs->remove($this->collJobLogs->search($jobLog));
+            if (null === $this->jobLogsScheduledForDeletion) {
+                $this->jobLogsScheduledForDeletion = clone $this->collJobLogs;
+                $this->jobLogsScheduledForDeletion->clear();
             }
-            $this->projectsScheduledForDeletion[]= $project;
-            $project->setUser(null);
+            $this->jobLogsScheduledForDeletion[]= $jobLog;
+            $jobLog->setJob(null);
         }
     }
 
@@ -1675,20 +1567,18 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->github_id = null;
-        $this->github_profile = null;
-        $this->login = null;
-        $this->company = null;
-        $this->email = null;
-        $this->avatar_url = null;
         $this->name = null;
-        $this->location = null;
-        $this->access_token = null;
+        $this->type = null;
+        $this->params = null;
+        $this->message = null;
+        $this->status = null;
+        $this->completed_at = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1706,17 +1596,17 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collProjects) {
-                foreach ($this->collProjects as $o) {
+            if ($this->collJobLogs) {
+                foreach ($this->collJobLogs as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        if ($this->collProjects instanceof PropelCollection) {
-            $this->collProjects->clearIterator();
+        if ($this->collJobLogs instanceof PropelCollection) {
+            $this->collJobLogs->clearIterator();
         }
-        $this->collProjects = null;
+        $this->collJobLogs = null;
     }
 
     /**
@@ -1726,7 +1616,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(UserPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(JobPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1744,11 +1634,11 @@ abstract class BaseUser extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     User The current object (for fluent API support)
+     * @return     Job The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = UserPeer::UPDATED_AT;
+        $this->modifiedColumns[] = JobPeer::UPDATED_AT;
 
         return $this;
     }

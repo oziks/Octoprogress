@@ -7,12 +7,9 @@ use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
 use Octoprogress\Model\User,
-    Octoprogress\Model\ProjectQuery;
+    Octoprogress\Model\Job;
 
-use Github\Client as GithubClient,
-    Github\HttpClient\HttpClient as GithubHttpClient;
-
-class AccountController implements ControllerProviderInterface
+class JobController implements ControllerProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -21,24 +18,24 @@ class AccountController implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/profile', function () use ($app) {
+        $controllers->get('/project/update', function () use ($app) {
             /** @var User $user */
             $user = $app['session']->get('user');
             if (!$user) {
                 return $app->redirect($app['url_generator']->generate('homepage'));
             }
 
-            $repositories = ProjectQuery::create()
-                ->filterByUserId($user->getId())
-                ->find()
+            $job = new Job();
+            $job
+                ->setName('Project update')
+                ->setType('Project_Update')
+                ->setParams(serialize(array('user_id' => $user->getId())))
+                ->save()
             ;
 
-            return $app['twig']->render('account/profile.html', array(
-                'user'          => $user,
-                'repositories'  => $repositories,
-            ));
+            return $app->redirect($app['url_generator']->generate('account'));
         })
-        ->bind('account')
+        ->bind('job_project_update')
         ;
 
         return $controllers;

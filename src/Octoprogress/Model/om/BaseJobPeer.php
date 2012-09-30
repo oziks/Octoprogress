@@ -9,85 +9,77 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Octoprogress\Model\User;
-use Octoprogress\Model\UserPeer;
-use Octoprogress\Model\map\UserTableMap;
+use Octoprogress\Model\Job;
+use Octoprogress\Model\JobLogPeer;
+use Octoprogress\Model\JobPeer;
+use Octoprogress\Model\map\JobTableMap;
 
 /**
- * Base static class for performing query and update operations on the 'user' table.
+ * Base static class for performing query and update operations on the 'job' table.
  *
  *
  *
  * @package propel.generator.Octoprogress.Model.om
  */
-abstract class BaseUserPeer
+abstract class BaseJobPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'octoprogress';
 
     /** the table name for this class */
-    const TABLE_NAME = 'user';
+    const TABLE_NAME = 'job';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Octoprogress\\Model\\User';
+    const OM_CLASS = 'Octoprogress\\Model\\Job';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'UserTableMap';
+    const TM_CLASS = 'JobTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the ID field */
-    const ID = 'user.ID';
-
-    /** the column name for the GITHUB_ID field */
-    const GITHUB_ID = 'user.GITHUB_ID';
-
-    /** the column name for the GITHUB_PROFILE field */
-    const GITHUB_PROFILE = 'user.GITHUB_PROFILE';
-
-    /** the column name for the LOGIN field */
-    const LOGIN = 'user.LOGIN';
-
-    /** the column name for the COMPANY field */
-    const COMPANY = 'user.COMPANY';
-
-    /** the column name for the EMAIL field */
-    const EMAIL = 'user.EMAIL';
-
-    /** the column name for the AVATAR_URL field */
-    const AVATAR_URL = 'user.AVATAR_URL';
+    const ID = 'job.ID';
 
     /** the column name for the NAME field */
-    const NAME = 'user.NAME';
+    const NAME = 'job.NAME';
 
-    /** the column name for the LOCATION field */
-    const LOCATION = 'user.LOCATION';
+    /** the column name for the TYPE field */
+    const TYPE = 'job.TYPE';
 
-    /** the column name for the ACCESS_TOKEN field */
-    const ACCESS_TOKEN = 'user.ACCESS_TOKEN';
+    /** the column name for the PARAMS field */
+    const PARAMS = 'job.PARAMS';
+
+    /** the column name for the MESSAGE field */
+    const MESSAGE = 'job.MESSAGE';
+
+    /** the column name for the STATUS field */
+    const STATUS = 'job.STATUS';
+
+    /** the column name for the COMPLETED_AT field */
+    const COMPLETED_AT = 'job.COMPLETED_AT';
 
     /** the column name for the CREATED_AT field */
-    const CREATED_AT = 'user.CREATED_AT';
+    const CREATED_AT = 'job.CREATED_AT';
 
     /** the column name for the UPDATED_AT field */
-    const UPDATED_AT = 'user.UPDATED_AT';
+    const UPDATED_AT = 'job.UPDATED_AT';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of User objects.
+     * An identiy map to hold any loaded instances of Job objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array User[]
+     * @var        array Job[]
      */
     public static $instances = array();
 
@@ -96,30 +88,30 @@ abstract class BaseUserPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. JobPeer::$fieldNames[JobPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'GithubId', 'GithubProfile', 'Login', 'Company', 'Email', 'AvatarUrl', 'Name', 'Location', 'AccessToken', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'githubId', 'githubProfile', 'login', 'company', 'email', 'avatarUrl', 'name', 'location', 'accessToken', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::GITHUB_ID, UserPeer::GITHUB_PROFILE, UserPeer::LOGIN, UserPeer::COMPANY, UserPeer::EMAIL, UserPeer::AVATAR_URL, UserPeer::NAME, UserPeer::LOCATION, UserPeer::ACCESS_TOKEN, UserPeer::CREATED_AT, UserPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'GITHUB_ID', 'GITHUB_PROFILE', 'LOGIN', 'COMPANY', 'EMAIL', 'AVATAR_URL', 'NAME', 'LOCATION', 'ACCESS_TOKEN', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'github_id', 'github_profile', 'login', 'company', 'email', 'avatar_url', 'name', 'location', 'access_token', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Type', 'Params', 'Message', 'Status', 'CompletedAt', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'type', 'params', 'message', 'status', 'completedAt', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (JobPeer::ID, JobPeer::NAME, JobPeer::TYPE, JobPeer::PARAMS, JobPeer::MESSAGE, JobPeer::STATUS, JobPeer::COMPLETED_AT, JobPeer::CREATED_AT, JobPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'TYPE', 'PARAMS', 'MESSAGE', 'STATUS', 'COMPLETED_AT', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'type', 'params', 'message', 'status', 'completed_at', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. JobPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'GithubId' => 1, 'GithubProfile' => 2, 'Login' => 3, 'Company' => 4, 'Email' => 5, 'AvatarUrl' => 6, 'Name' => 7, 'Location' => 8, 'AccessToken' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'githubId' => 1, 'githubProfile' => 2, 'login' => 3, 'company' => 4, 'email' => 5, 'avatarUrl' => 6, 'name' => 7, 'location' => 8, 'accessToken' => 9, 'createdAt' => 10, 'updatedAt' => 11, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::GITHUB_ID => 1, UserPeer::GITHUB_PROFILE => 2, UserPeer::LOGIN => 3, UserPeer::COMPANY => 4, UserPeer::EMAIL => 5, UserPeer::AVATAR_URL => 6, UserPeer::NAME => 7, UserPeer::LOCATION => 8, UserPeer::ACCESS_TOKEN => 9, UserPeer::CREATED_AT => 10, UserPeer::UPDATED_AT => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'GITHUB_ID' => 1, 'GITHUB_PROFILE' => 2, 'LOGIN' => 3, 'COMPANY' => 4, 'EMAIL' => 5, 'AVATAR_URL' => 6, 'NAME' => 7, 'LOCATION' => 8, 'ACCESS_TOKEN' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'github_id' => 1, 'github_profile' => 2, 'login' => 3, 'company' => 4, 'email' => 5, 'avatar_url' => 6, 'name' => 7, 'location' => 8, 'access_token' => 9, 'created_at' => 10, 'updated_at' => 11, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Type' => 2, 'Params' => 3, 'Message' => 4, 'Status' => 5, 'CompletedAt' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'type' => 2, 'params' => 3, 'message' => 4, 'status' => 5, 'completedAt' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
+        BasePeer::TYPE_COLNAME => array (JobPeer::ID => 0, JobPeer::NAME => 1, JobPeer::TYPE => 2, JobPeer::PARAMS => 3, JobPeer::MESSAGE => 4, JobPeer::STATUS => 5, JobPeer::COMPLETED_AT => 6, JobPeer::CREATED_AT => 7, JobPeer::UPDATED_AT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'TYPE' => 2, 'PARAMS' => 3, 'MESSAGE' => 4, 'STATUS' => 5, 'COMPLETED_AT' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'type' => 2, 'params' => 3, 'message' => 4, 'status' => 5, 'completed_at' => 6, 'created_at' => 7, 'updated_at' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -134,10 +126,10 @@ abstract class BaseUserPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = UserPeer::getFieldNames($toType);
-        $key = isset(UserPeer::$fieldKeys[$fromType][$name]) ? UserPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = JobPeer::getFieldNames($toType);
+        $key = isset(JobPeer::$fieldKeys[$fromType][$name]) ? JobPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(UserPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(JobPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -154,11 +146,11 @@ abstract class BaseUserPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, UserPeer::$fieldNames)) {
+        if (!array_key_exists($type, JobPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return UserPeer::$fieldNames[$type];
+        return JobPeer::$fieldNames[$type];
     }
 
     /**
@@ -170,12 +162,12 @@ abstract class BaseUserPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. UserPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. JobPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(UserPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(JobPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -193,29 +185,23 @@ abstract class BaseUserPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UserPeer::ID);
-            $criteria->addSelectColumn(UserPeer::GITHUB_ID);
-            $criteria->addSelectColumn(UserPeer::GITHUB_PROFILE);
-            $criteria->addSelectColumn(UserPeer::LOGIN);
-            $criteria->addSelectColumn(UserPeer::COMPANY);
-            $criteria->addSelectColumn(UserPeer::EMAIL);
-            $criteria->addSelectColumn(UserPeer::AVATAR_URL);
-            $criteria->addSelectColumn(UserPeer::NAME);
-            $criteria->addSelectColumn(UserPeer::LOCATION);
-            $criteria->addSelectColumn(UserPeer::ACCESS_TOKEN);
-            $criteria->addSelectColumn(UserPeer::CREATED_AT);
-            $criteria->addSelectColumn(UserPeer::UPDATED_AT);
+            $criteria->addSelectColumn(JobPeer::ID);
+            $criteria->addSelectColumn(JobPeer::NAME);
+            $criteria->addSelectColumn(JobPeer::TYPE);
+            $criteria->addSelectColumn(JobPeer::PARAMS);
+            $criteria->addSelectColumn(JobPeer::MESSAGE);
+            $criteria->addSelectColumn(JobPeer::STATUS);
+            $criteria->addSelectColumn(JobPeer::COMPLETED_AT);
+            $criteria->addSelectColumn(JobPeer::CREATED_AT);
+            $criteria->addSelectColumn(JobPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.GITHUB_ID');
-            $criteria->addSelectColumn($alias . '.GITHUB_PROFILE');
-            $criteria->addSelectColumn($alias . '.LOGIN');
-            $criteria->addSelectColumn($alias . '.COMPANY');
-            $criteria->addSelectColumn($alias . '.EMAIL');
-            $criteria->addSelectColumn($alias . '.AVATAR_URL');
             $criteria->addSelectColumn($alias . '.NAME');
-            $criteria->addSelectColumn($alias . '.LOCATION');
-            $criteria->addSelectColumn($alias . '.ACCESS_TOKEN');
+            $criteria->addSelectColumn($alias . '.TYPE');
+            $criteria->addSelectColumn($alias . '.PARAMS');
+            $criteria->addSelectColumn($alias . '.MESSAGE');
+            $criteria->addSelectColumn($alias . '.STATUS');
+            $criteria->addSelectColumn($alias . '.COMPLETED_AT');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
         }
@@ -237,21 +223,21 @@ abstract class BaseUserPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(UserPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(JobPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            UserPeer::addSelectColumns($criteria);
+            JobPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(UserPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(JobPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -270,7 +256,7 @@ abstract class BaseUserPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return                 User
+     * @return                 Job
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -278,7 +264,7 @@ abstract class BaseUserPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = UserPeer::doSelect($critcopy, $con);
+        $objects = JobPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -296,7 +282,7 @@ abstract class BaseUserPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return UserPeer::populateObjects(UserPeer::doSelectStmt($criteria, $con));
+        return JobPeer::populateObjects(JobPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -314,16 +300,16 @@ abstract class BaseUserPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            UserPeer::addSelectColumns($criteria);
+            JobPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(UserPeer::DATABASE_NAME);
+        $criteria->setDbName(JobPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -337,7 +323,7 @@ abstract class BaseUserPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param      User $obj A User object.
+     * @param      Job $obj A Job object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -346,7 +332,7 @@ abstract class BaseUserPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            UserPeer::$instances[$key] = $obj;
+            JobPeer::$instances[$key] = $obj;
         }
     }
 
@@ -358,7 +344,7 @@ abstract class BaseUserPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A User object or a primary key value.
+     * @param      mixed $value A Job object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -366,17 +352,17 @@ abstract class BaseUserPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof User) {
+            if (is_object($value) && $value instanceof Job) {
                 $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or User object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Job object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(UserPeer::$instances[$key]);
+            unset(JobPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -387,14 +373,14 @@ abstract class BaseUserPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   User Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Job Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(UserPeer::$instances[$key])) {
-                return UserPeer::$instances[$key];
+            if (isset(JobPeer::$instances[$key])) {
+                return JobPeer::$instances[$key];
             }
         }
 
@@ -408,15 +394,18 @@ abstract class BaseUserPeer
      */
     public static function clearInstancePool()
     {
-        UserPeer::$instances = array();
+        JobPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to user
+     * Method to invalidate the instance pool of all tables related to job
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in JobLogPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        JobLogPeer::clearInstancePool();
     }
 
     /**
@@ -466,11 +455,11 @@ abstract class BaseUserPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = UserPeer::getOMClass();
+        $cls = JobPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = UserPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = UserPeer::getInstanceFromPool($key))) {
+            $key = JobPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = JobPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -479,7 +468,7 @@ abstract class BaseUserPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                UserPeer::addInstanceToPool($obj, $key);
+                JobPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -493,21 +482,21 @@ abstract class BaseUserPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (User object, last column rank)
+     * @return array (Job object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = UserPeer::getInstanceFromPool($key))) {
+        $key = JobPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = JobPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + UserPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + JobPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = UserPeer::OM_CLASS;
+            $cls = JobPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            UserPeer::addInstanceToPool($obj, $key);
+            JobPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -522,7 +511,7 @@ abstract class BaseUserPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(UserPeer::DATABASE_NAME)->getTable(UserPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(JobPeer::DATABASE_NAME)->getTable(JobPeer::TABLE_NAME);
     }
 
     /**
@@ -530,9 +519,9 @@ abstract class BaseUserPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseUserPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseUserPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new UserTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseJobPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseJobPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new JobTableMap());
       }
     }
 
@@ -544,13 +533,13 @@ abstract class BaseUserPeer
      */
     public static function getOMClass()
     {
-        return UserPeer::OM_CLASS;
+        return JobPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a User or Criteria object.
+     * Performs an INSERT on the database, given a Job or Criteria object.
      *
-     * @param      mixed $values Criteria or User object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Job object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -559,22 +548,22 @@ abstract class BaseUserPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from User object
+            $criteria = $values->buildCriteria(); // build Criteria from Job object
         }
 
-        if ($criteria->containsKey(UserPeer::ID) && $criteria->keyContainsValue(UserPeer::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UserPeer::ID.')');
+        if ($criteria->containsKey(JobPeer::ID) && $criteria->keyContainsValue(JobPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.JobPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(UserPeer::DATABASE_NAME);
+        $criteria->setDbName(JobPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -591,9 +580,9 @@ abstract class BaseUserPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a User or Criteria object.
+     * Performs an UPDATE on the database, given a Job or Criteria object.
      *
-     * @param      mixed $values Criteria or User object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Job object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -602,35 +591,35 @@ abstract class BaseUserPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(JobPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(UserPeer::ID);
-            $value = $criteria->remove(UserPeer::ID);
+            $comparison = $criteria->getComparison(JobPeer::ID);
+            $value = $criteria->remove(JobPeer::ID);
             if ($value) {
-                $selectCriteria->add(UserPeer::ID, $value, $comparison);
+                $selectCriteria->add(JobPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(UserPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(JobPeer::TABLE_NAME);
             }
 
-        } else { // $values is User object
+        } else { // $values is Job object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(UserPeer::DATABASE_NAME);
+        $criteria->setDbName(JobPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the user table.
+     * Deletes all rows from the job table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -639,19 +628,19 @@ abstract class BaseUserPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(UserPeer::TABLE_NAME, $con, UserPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(JobPeer::TABLE_NAME, $con, JobPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            UserPeer::clearInstancePool();
-            UserPeer::clearRelatedInstancePool();
+            JobPeer::clearInstancePool();
+            JobPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -662,9 +651,9 @@ abstract class BaseUserPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a User or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Job or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or User object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Job object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -675,32 +664,32 @@ abstract class BaseUserPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            UserPeer::clearInstancePool();
+            JobPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof User) { // it's a model object
+        } elseif ($values instanceof Job) { // it's a model object
             // invalidate the cache for this single object
-            UserPeer::removeInstanceFromPool($values);
+            JobPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(UserPeer::DATABASE_NAME);
-            $criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(JobPeer::DATABASE_NAME);
+            $criteria->add(JobPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                UserPeer::removeInstanceFromPool($singleval);
+                JobPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(UserPeer::DATABASE_NAME);
+        $criteria->setDbName(JobPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -710,7 +699,7 @@ abstract class BaseUserPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            UserPeer::clearRelatedInstancePool();
+            JobPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -721,13 +710,13 @@ abstract class BaseUserPeer
     }
 
     /**
-     * Validates all modified columns of given User object.
+     * Validates all modified columns of given Job object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param      User $obj The object to validate.
+     * @param      Job $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -737,8 +726,8 @@ abstract class BaseUserPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(UserPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(UserPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(JobPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(JobPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -754,7 +743,7 @@ abstract class BaseUserPeer
 
         }
 
-        return BasePeer::doValidate(UserPeer::DATABASE_NAME, UserPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(JobPeer::DATABASE_NAME, JobPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -762,23 +751,23 @@ abstract class BaseUserPeer
      *
      * @param      int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return User
+     * @return Job
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = UserPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = JobPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(UserPeer::DATABASE_NAME);
-        $criteria->add(UserPeer::ID, $pk);
+        $criteria = new Criteria(JobPeer::DATABASE_NAME);
+        $criteria->add(JobPeer::ID, $pk);
 
-        $v = UserPeer::doSelect($criteria, $con);
+        $v = JobPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -788,31 +777,31 @@ abstract class BaseUserPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return User[]
+     * @return Job[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(JobPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(UserPeer::DATABASE_NAME);
-            $criteria->add(UserPeer::ID, $pks, Criteria::IN);
-            $objs = UserPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(JobPeer::DATABASE_NAME);
+            $criteria->add(JobPeer::ID, $pks, Criteria::IN);
+            $objs = JobPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseUserPeer
+} // BaseJobPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseUserPeer::buildTableMap();
+BaseJobPeer::buildTableMap();
 
