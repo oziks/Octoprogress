@@ -53,25 +53,22 @@ class UpdateJobHandler extends AbstractJobHandler
             $repositories = $github->get('user/repos');
 
             foreach ($repositories as $repository) {
-                $milestones = $github->api('issue')->milestones()->all($user->getLogin(), $repository['name']);
-                if (count($milestones) > 0 && empty($milestones['message'])) {
-                    $project = ProjectQuery::create()
-                        ->filterByGithubId($repository['id'])
-                        ->findOne()
-                    ;
+                $project = ProjectQuery::create()
+                    ->filterByGithubId($repository['id'])
+                    ->findOne()
+                ;
 
-                    if (!$project) {
-                        $project = new Project();
-                    }
-
-                    $project
-                        ->setUserId($user->getId())
-                        ->setGithubId($repository['id'])
-                        ->setName($repository['name'])
-                        ->setDescription($repository['description'])
-                        ->save()
-                    ;
+                if (!$project) {
+                    $project = new Project();
                 }
+
+                $project
+                    ->setUserId($user->getId())
+                    ->setGithubId($repository['id'])
+                    ->setName($repository['name'])
+                    ->setDescription($repository['description'])
+                    ->save()
+                ;
             }
         }
         catch (\Exception $exception)

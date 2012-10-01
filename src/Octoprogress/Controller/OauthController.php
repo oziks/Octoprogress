@@ -74,7 +74,7 @@ class OauthController implements ControllerProviderInterface
             $app['session']->set('isAuthenticated', true);
             $app['session']->set('user', $user);
 
-            return $app->redirect($app['url_generator']->generate('account'));
+            return $app->redirect($app['url_generator']->generate('account_profile'));
         });
 
         $controllers->get('/logout', function () use ($app) {

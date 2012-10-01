@@ -27,6 +27,7 @@ use Octoprogress\Model\User;
  * @method ProjectQuery orderByGithubId($order = Criteria::ASC) Order by the github_id column
  * @method ProjectQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method ProjectQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method ProjectQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method ProjectQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method ProjectQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -35,6 +36,7 @@ use Octoprogress\Model\User;
  * @method ProjectQuery groupByGithubId() Group by the github_id column
  * @method ProjectQuery groupByName() Group by the name column
  * @method ProjectQuery groupByDescription() Group by the description column
+ * @method ProjectQuery groupByActive() Group by the active column
  * @method ProjectQuery groupByCreatedAt() Group by the created_at column
  * @method ProjectQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -53,6 +55,7 @@ use Octoprogress\Model\User;
  * @method Project findOneByGithubId(int $github_id) Return the first Project filtered by the github_id column
  * @method Project findOneByName(string $name) Return the first Project filtered by the name column
  * @method Project findOneByDescription(string $description) Return the first Project filtered by the description column
+ * @method Project findOneByActive(boolean $active) Return the first Project filtered by the active column
  * @method Project findOneByCreatedAt(string $created_at) Return the first Project filtered by the created_at column
  * @method Project findOneByUpdatedAt(string $updated_at) Return the first Project filtered by the updated_at column
  *
@@ -61,6 +64,7 @@ use Octoprogress\Model\User;
  * @method array findByGithubId(int $github_id) Return Project objects filtered by the github_id column
  * @method array findByName(string $name) Return Project objects filtered by the name column
  * @method array findByDescription(string $description) Return Project objects filtered by the description column
+ * @method array findByActive(boolean $active) Return Project objects filtered by the active column
  * @method array findByCreatedAt(string $created_at) Return Project objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return Project objects filtered by the updated_at column
  *
@@ -166,7 +170,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -422,6 +426,33 @@ abstract class BaseProjectQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProjectPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the active column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByActive(true); // WHERE active = true
+     * $query->filterByActive('yes'); // WHERE active = true
+     * </code>
+     *
+     * @param     boolean|string $active The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProjectQuery The current query, for fluid interface
+     */
+    public function filterByActive($active = null, $comparison = null)
+    {
+        if (is_string($active)) {
+            $active = in_array(strtolower($active), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ProjectPeer::ACTIVE, $active, $comparison);
     }
 
     /**

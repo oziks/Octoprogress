@@ -45,6 +45,7 @@
         <column name="github_id" type="integer" />
         <column name="name" type="varchar" />
         <column name="description" type="varchar" />
+        <column name="active" type="boolean" defaultValue="false" />
 
         <foreign-key foreignTable="user">
             <reference local="user_id" foreign="id"/>

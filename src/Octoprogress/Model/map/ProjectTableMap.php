@@ -47,6 +47,7 @@ class ProjectTableMap extends TableMap
         $this->addColumn('GITHUB_ID', 'GithubId', 'INTEGER', false, null, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
         $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
+        $this->addColumn('ACTIVE', 'Active', 'BOOLEAN', false, 1, false);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators

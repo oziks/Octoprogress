@@ -30,6 +30,8 @@ class AccountController implements ControllerProviderInterface
 
             $repositories = ProjectQuery::create()
                 ->filterByUserId($user->getId())
+                ->filterByActive(true)
+                ->orderByUpdatedAt(\Criteria::DESC)
                 ->find()
             ;
 
@@ -38,7 +40,7 @@ class AccountController implements ControllerProviderInterface
                 'repositories'  => $repositories,
             ));
         })
-        ->bind('account')
+        ->bind('account_profile')
         ;
 
         return $controllers;

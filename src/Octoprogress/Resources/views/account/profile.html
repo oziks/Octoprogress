@@ -13,22 +13,47 @@
             <li><i class="icon-group"></i> {{ user.company }}</li>
             <li><i class="icon-globe"></i>{{ user.location }}</li>
             <li><i class="icon-link"></i><a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
-            <li><i class="icon-refresh"></i><a href="{{ path('job_project_update') }}">refresh project</a></li>
+            <li><i class="icon-refresh"></i><a href="{{ path('job_project_update') }}">refresh project cache</a></li>
         </ul>
     </div>
     <div class="span9 repositories">
         <ul class="list">
-            {% for repository in repositories %}
             <li>
-                <h3><i class="icon-book"></i>{{ repository.name }}</h3>
-                {% if repository.description != "" %}
-                <blockquote>{{ repository.description }}</blockquote>
-                {% else %}
-                <blockquote>No description found</blockquote>
+                <h3>Active projects board
+                    <div class="pull-right"><a href="{{ path('board_active_form') }}" data-toggle="modal">add</a></div>
+                </h3>
+                {% if repositories %}
+                {% for repository in repositories %}
+                <blockquote><i class="icon-book"></i>
+                    <strong>{{ repository.name }}</strong>
+                    {% if repository.description %} - {{ repository.description }}{% endif %}
+                    (<i class="icon-trash"></i><a href="{{ path('board_remove', {'id': repository.id}) }}">remove board</a>)
+                </blockquote>
+                {% endfor %}
                 {% endif %}
             </li>
-            {% endfor %}
         </ul>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+$(document).ready(function () {
+    $('[data-toggle="modal"]').click(function(e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        if (href.indexOf('#') == 0) {
+            $(href).modal('open');
+        } else {
+            $.get(href,
+            function(data) {
+                $('<div class="modal" >' + data + '</div>').modal();
+            }).success(function() {
+                $('input:text:visible:first').focus();
+            });
+        }
+    });
+});
+</script>
 {% endblock %}

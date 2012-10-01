@@ -7,6 +7,9 @@ use Silex\Provider\ValidatorServiceProvider;
 use Octoprogress\Lib\Config;
 use Symfony\Component\Yaml\Yaml;
 use Propel\Silex\PropelServiceProvider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
 
 $app = new Application();
 
@@ -23,10 +26,11 @@ $app->register(new PropelServiceProvider(), array(
     'propel.model_path'  => $app['config']->get('root_dir').'/src',
 ));
 
-$app->register(new Silex\Provider\SessionServiceProvider());
-
-$app->register(new UrlGeneratorServiceProvider());
+$app->register(new FormServiceProvider());
+$app->register(new TranslationServiceProvider());
+$app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
+$app->register(new UrlGeneratorServiceProvider());
 $app->register(new TwigServiceProvider(), array(
     'twig.path'    => array(
         $app['config']->get('root_dir').'/app/Resources/views',
@@ -34,10 +38,5 @@ $app->register(new TwigServiceProvider(), array(
     ),
     'twig.options' => array('cache' => $app['config']->get('root_dir').'/app/cache'),
 ));
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-    // add custom globals, filters, tags, ...
-
-    return $twig;
-}));
 
 return $app;

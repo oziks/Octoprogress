@@ -33,7 +33,7 @@ class JobController implements ControllerProviderInterface
                 ->save()
             ;
 
-            return $app->redirect($app['url_generator']->generate('account'));
+            return $app->redirect($app['url_generator']->generate('account_profile'));
         })
         ->bind('job_project_update')
         ;

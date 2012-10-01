@@ -13,11 +13,14 @@ $app->error(function (\Exception $exception, $code) use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-     return $app['twig']->render('index.html', array());
+    return $app['twig']->render('index.html', array());
 })
 ->bind('homepage')
 ;
 
-$app->mount('/oauth', new \Octoprogress\Controller\OauthController());
 $app->mount('/job', new \Octoprogress\Controller\JobController());
+$app->mount('/oauth', new \Octoprogress\Controller\OauthController());
+$app->mount('/board', new \Octoprogress\Controller\BoardController());
+
 $app->mount('/account', new \Octoprogress\Controller\AccountController());
+$app->get('/account', function () use ($app) { return $app->redirect($app['url_generator']->generate('account_profile')); });

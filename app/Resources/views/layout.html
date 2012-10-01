@@ -33,7 +33,7 @@
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
                 {% if app.session.get('isAuthenticated') %}
-                    <li><a href="{{ path('account') }}"><img class="avatar" src="{{ app.session.get('user').avatarUrl }}"/>{{ app.session.get('user').login }}</a></li>
+                    <li><a href="{{ path('account_profile') }}"><img class="avatar" src="{{ app.session.get('user').avatarUrl }}"/>{{ app.session.get('user').login }}</a></li>
                     <li class="divider-vertical"></li>
                     <li><a href="{{ path('logout') }}"><i class="icon-signout"></i> Logout</a></li>
                 {% else %}
@@ -50,6 +50,8 @@
     {% block content %}{% endblock %}
 
 </div>
+<script src="{{ app.request.basepath }}/octoprogress/js/jquery.js"></script>
 <script src="{{ app.request.basepath }}/octoprogress/js/bootstrap.js"></script>
+{% block javascripts %}{% endblock %}
 </body>
 </html>
