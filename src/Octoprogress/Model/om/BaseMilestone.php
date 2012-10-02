@@ -10,38 +10,34 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
-use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
-use \PropelObjectCollection;
 use \PropelPDO;
 use Octoprogress\Model\Milestone;
+use Octoprogress\Model\MilestonePeer;
 use Octoprogress\Model\MilestoneQuery;
 use Octoprogress\Model\Project;
-use Octoprogress\Model\ProjectPeer;
 use Octoprogress\Model\ProjectQuery;
-use Octoprogress\Model\User;
-use Octoprogress\Model\UserQuery;
 
 /**
- * Base class that represents a row from the 'project' table.
+ * Base class that represents a row from the 'milestone' table.
  *
  *
  *
  * @package    propel.generator.Octoprogress.Model.om
  */
-abstract class BaseProject extends BaseObject implements Persistent
+abstract class BaseMilestone extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Octoprogress\\Model\\ProjectPeer';
+    const PEER = 'Octoprogress\\Model\\MilestonePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        ProjectPeer
+     * @var        MilestonePeer
      */
     protected static $peer;
 
@@ -58,10 +54,10 @@ abstract class BaseProject extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the user_id field.
+     * The value for the project_id field.
      * @var        int
      */
-    protected $user_id;
+    protected $project_id;
 
     /**
      * The value for the github_id field.
@@ -82,11 +78,22 @@ abstract class BaseProject extends BaseObject implements Persistent
     protected $description;
 
     /**
-     * The value for the active field.
-     * Note: this column has a database default value of: false
-     * @var        boolean
+     * The value for the state field.
+     * @var        string
      */
-    protected $active;
+    protected $state;
+
+    /**
+     * The value for the open_issues field.
+     * @var        int
+     */
+    protected $open_issues;
+
+    /**
+     * The value for the closed_issues field.
+     * @var        int
+     */
+    protected $closed_issues;
 
     /**
      * The value for the created_at field.
@@ -101,15 +108,9 @@ abstract class BaseProject extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
-     * @var        User
+     * @var        Project
      */
-    protected $aUser;
-
-    /**
-     * @var        PropelObjectCollection|Milestone[] Collection to store aggregation of Milestone objects.
-     */
-    protected $collMilestones;
-    protected $collMilestonesPartial;
+    protected $aProject;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -126,33 +127,6 @@ abstract class BaseProject extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $milestonesScheduledForDeletion = null;
-
-    /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see        __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->active = false;
-    }
-
-    /**
-     * Initializes internal state of BaseProject object.
-     * @see        applyDefaults()
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->applyDefaultValues();
-    }
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -163,13 +137,13 @@ abstract class BaseProject extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [user_id] column value.
+     * Get the [project_id] column value.
      *
      * @return int
      */
-    public function getUserId()
+    public function getProjectId()
     {
-        return $this->user_id;
+        return $this->project_id;
     }
 
     /**
@@ -203,13 +177,33 @@ abstract class BaseProject extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [active] column value.
+     * Get the [state] column value.
      *
-     * @return boolean
+     * @return string
      */
-    public function getActive()
+    public function getState()
     {
-        return $this->active;
+        return $this->state;
+    }
+
+    /**
+     * Get the [open_issues] column value.
+     *
+     * @return int
+     */
+    public function getOpenIssues()
+    {
+        return $this->open_issues;
+    }
+
+    /**
+     * Get the [closed_issues] column value.
+     *
+     * @return int
+     */
+    public function getClosedIssues()
+    {
+        return $this->closed_issues;
     }
 
     /**
@@ -290,7 +284,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -300,7 +294,7 @@ abstract class BaseProject extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = ProjectPeer::ID;
+            $this->modifiedColumns[] = MilestonePeer::ID;
         }
 
 
@@ -308,35 +302,35 @@ abstract class BaseProject extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [user_id] column.
+     * Set the value of [project_id] column.
      *
      * @param int $v new value
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
-    public function setUserId($v)
+    public function setProjectId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->user_id !== $v) {
-            $this->user_id = $v;
-            $this->modifiedColumns[] = ProjectPeer::USER_ID;
+        if ($this->project_id !== $v) {
+            $this->project_id = $v;
+            $this->modifiedColumns[] = MilestonePeer::PROJECT_ID;
         }
 
-        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-            $this->aUser = null;
+        if ($this->aProject !== null && $this->aProject->getId() !== $v) {
+            $this->aProject = null;
         }
 
 
         return $this;
-    } // setUserId()
+    } // setProjectId()
 
     /**
      * Set the value of [github_id] column.
      *
      * @param int $v new value
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
     public function setGithubId($v)
     {
@@ -346,7 +340,7 @@ abstract class BaseProject extends BaseObject implements Persistent
 
         if ($this->github_id !== $v) {
             $this->github_id = $v;
-            $this->modifiedColumns[] = ProjectPeer::GITHUB_ID;
+            $this->modifiedColumns[] = MilestonePeer::GITHUB_ID;
         }
 
 
@@ -357,7 +351,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      * Set the value of [name] column.
      *
      * @param string $v new value
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
     public function setName($v)
     {
@@ -367,7 +361,7 @@ abstract class BaseProject extends BaseObject implements Persistent
 
         if ($this->name !== $v) {
             $this->name = $v;
-            $this->modifiedColumns[] = ProjectPeer::NAME;
+            $this->modifiedColumns[] = MilestonePeer::NAME;
         }
 
 
@@ -378,7 +372,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      * Set the value of [description] column.
      *
      * @param string $v new value
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
     public function setDescription($v)
     {
@@ -388,7 +382,7 @@ abstract class BaseProject extends BaseObject implements Persistent
 
         if ($this->description !== $v) {
             $this->description = $v;
-            $this->modifiedColumns[] = ProjectPeer::DESCRIPTION;
+            $this->modifiedColumns[] = MilestonePeer::DESCRIPTION;
         }
 
 
@@ -396,40 +390,74 @@ abstract class BaseProject extends BaseObject implements Persistent
     } // setDescription()
 
     /**
-     * Sets the value of the [active] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * Set the value of [state] column.
      *
-     * @param boolean|integer|string $v The new value
-     * @return Project The current object (for fluent API support)
+     * @param string $v new value
+     * @return Milestone The current object (for fluent API support)
      */
-    public function setActive($v)
+    public function setState($v)
     {
         if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
+            $v = (string) $v;
         }
 
-        if ($this->active !== $v) {
-            $this->active = $v;
-            $this->modifiedColumns[] = ProjectPeer::ACTIVE;
+        if ($this->state !== $v) {
+            $this->state = $v;
+            $this->modifiedColumns[] = MilestonePeer::STATE;
         }
 
 
         return $this;
-    } // setActive()
+    } // setState()
+
+    /**
+     * Set the value of [open_issues] column.
+     *
+     * @param int $v new value
+     * @return Milestone The current object (for fluent API support)
+     */
+    public function setOpenIssues($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->open_issues !== $v) {
+            $this->open_issues = $v;
+            $this->modifiedColumns[] = MilestonePeer::OPEN_ISSUES;
+        }
+
+
+        return $this;
+    } // setOpenIssues()
+
+    /**
+     * Set the value of [closed_issues] column.
+     *
+     * @param int $v new value
+     * @return Milestone The current object (for fluent API support)
+     */
+    public function setClosedIssues($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->closed_issues !== $v) {
+            $this->closed_issues = $v;
+            $this->modifiedColumns[] = MilestonePeer::CLOSED_ISSUES;
+        }
+
+
+        return $this;
+    } // setClosedIssues()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -439,7 +467,7 @@ abstract class BaseProject extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = ProjectPeer::CREATED_AT;
+                $this->modifiedColumns[] = MilestonePeer::CREATED_AT;
             }
         } // if either are not null
 
@@ -452,7 +480,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return Project The current object (for fluent API support)
+     * @return Milestone The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -462,7 +490,7 @@ abstract class BaseProject extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = ProjectPeer::UPDATED_AT;
+                $this->modifiedColumns[] = MilestonePeer::UPDATED_AT;
             }
         } // if either are not null
 
@@ -480,10 +508,6 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->active !== false) {
-                return false;
-            }
-
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -507,13 +531,15 @@ abstract class BaseProject extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->project_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->github_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->active = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->state = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->open_issues = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->closed_issues = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -522,10 +548,10 @@ abstract class BaseProject extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = ProjectPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = MilestonePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Project object", $e);
+            throw new PropelException("Error populating Milestone object", $e);
         }
     }
 
@@ -545,8 +571,8 @@ abstract class BaseProject extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
-            $this->aUser = null;
+        if ($this->aProject !== null && $this->project_id !== $this->aProject->getId()) {
+            $this->aProject = null;
         }
     } // ensureConsistency
 
@@ -571,13 +597,13 @@ abstract class BaseProject extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProjectPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(MilestonePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = ProjectPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = MilestonePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -587,9 +613,7 @@ abstract class BaseProject extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aUser = null;
-            $this->collMilestones = null;
-
+            $this->aProject = null;
         } // if (deep)
     }
 
@@ -610,12 +634,12 @@ abstract class BaseProject extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProjectPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MilestonePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ProjectQuery::create()
+            $deleteQuery = MilestoneQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -653,7 +677,7 @@ abstract class BaseProject extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProjectPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(MilestonePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -663,16 +687,16 @@ abstract class BaseProject extends BaseObject implements Persistent
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(ProjectPeer::CREATED_AT)) {
+                if (!$this->isColumnModified(MilestonePeer::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(ProjectPeer::UPDATED_AT)) {
+                if (!$this->isColumnModified(MilestonePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(ProjectPeer::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(MilestonePeer::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -684,7 +708,7 @@ abstract class BaseProject extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ProjectPeer::addInstanceToPool($this);
+                MilestonePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -719,11 +743,11 @@ abstract class BaseProject extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aUser !== null) {
-                if ($this->aUser->isModified() || $this->aUser->isNew()) {
-                    $affectedRows += $this->aUser->save($con);
+            if ($this->aProject !== null) {
+                if ($this->aProject->isModified() || $this->aProject->isNew()) {
+                    $affectedRows += $this->aProject->save($con);
                 }
-                $this->setUser($this->aUser);
+                $this->setProject($this->aProject);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -735,24 +759,6 @@ abstract class BaseProject extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->milestonesScheduledForDeletion !== null) {
-                if (!$this->milestonesScheduledForDeletion->isEmpty()) {
-                    foreach ($this->milestonesScheduledForDeletion as $milestone) {
-                        // need to save related object because we set the relation to null
-                        $milestone->save($con);
-                    }
-                    $this->milestonesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collMilestones !== null) {
-                foreach ($this->collMilestones as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -775,39 +781,45 @@ abstract class BaseProject extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = ProjectPeer::ID;
+        $this->modifiedColumns[] = MilestonePeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProjectPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . MilestonePeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProjectPeer::ID)) {
+        if ($this->isColumnModified(MilestonePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(ProjectPeer::USER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`USER_ID`';
+        if ($this->isColumnModified(MilestonePeer::PROJECT_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`PROJECT_ID`';
         }
-        if ($this->isColumnModified(ProjectPeer::GITHUB_ID)) {
+        if ($this->isColumnModified(MilestonePeer::GITHUB_ID)) {
             $modifiedColumns[':p' . $index++]  = '`GITHUB_ID`';
         }
-        if ($this->isColumnModified(ProjectPeer::NAME)) {
+        if ($this->isColumnModified(MilestonePeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
-        if ($this->isColumnModified(ProjectPeer::DESCRIPTION)) {
+        if ($this->isColumnModified(MilestonePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
-        if ($this->isColumnModified(ProjectPeer::ACTIVE)) {
-            $modifiedColumns[':p' . $index++]  = '`ACTIVE`';
+        if ($this->isColumnModified(MilestonePeer::STATE)) {
+            $modifiedColumns[':p' . $index++]  = '`STATE`';
         }
-        if ($this->isColumnModified(ProjectPeer::CREATED_AT)) {
+        if ($this->isColumnModified(MilestonePeer::OPEN_ISSUES)) {
+            $modifiedColumns[':p' . $index++]  = '`OPEN_ISSUES`';
+        }
+        if ($this->isColumnModified(MilestonePeer::CLOSED_ISSUES)) {
+            $modifiedColumns[':p' . $index++]  = '`CLOSED_ISSUES`';
+        }
+        if ($this->isColumnModified(MilestonePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
         }
-        if ($this->isColumnModified(ProjectPeer::UPDATED_AT)) {
+        if ($this->isColumnModified(MilestonePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`UPDATED_AT`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `project` (%s) VALUES (%s)',
+            'INSERT INTO `milestone` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -819,8 +831,8 @@ abstract class BaseProject extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`USER_ID`':
-                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
+                    case '`PROJECT_ID`':
+                        $stmt->bindValue($identifier, $this->project_id, PDO::PARAM_INT);
                         break;
                     case '`GITHUB_ID`':
                         $stmt->bindValue($identifier, $this->github_id, PDO::PARAM_INT);
@@ -831,8 +843,14 @@ abstract class BaseProject extends BaseObject implements Persistent
                     case '`DESCRIPTION`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case '`ACTIVE`':
-                        $stmt->bindValue($identifier, (int) $this->active, PDO::PARAM_INT);
+                    case '`STATE`':
+                        $stmt->bindValue($identifier, $this->state, PDO::PARAM_STR);
+                        break;
+                    case '`OPEN_ISSUES`':
+                        $stmt->bindValue($identifier, $this->open_issues, PDO::PARAM_INT);
+                        break;
+                    case '`CLOSED_ISSUES`':
+                        $stmt->bindValue($identifier, $this->closed_issues, PDO::PARAM_INT);
                         break;
                     case '`CREATED_AT`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -939,25 +957,17 @@ abstract class BaseProject extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aUser !== null) {
-                if (!$this->aUser->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+            if ($this->aProject !== null) {
+                if (!$this->aProject->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProject->getValidationFailures());
                 }
             }
 
 
-            if (($retval = ProjectPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = MilestonePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collMilestones !== null) {
-                    foreach ($this->collMilestones as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
 
             $this->alreadyInValidation = false;
@@ -978,7 +988,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ProjectPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = MilestonePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -998,7 +1008,7 @@ abstract class BaseProject extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getUserId();
+                return $this->getProjectId();
                 break;
             case 2:
                 return $this->getGithubId();
@@ -1010,12 +1020,18 @@ abstract class BaseProject extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 5:
-                return $this->getActive();
+                return $this->getState();
                 break;
             case 6:
-                return $this->getCreatedAt();
+                return $this->getOpenIssues();
                 break;
             case 7:
+                return $this->getClosedIssues();
+                break;
+            case 8:
+                return $this->getCreatedAt();
+                break;
+            case 9:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1041,27 +1057,26 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Project'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Milestone'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Project'][$this->getPrimaryKey()] = true;
-        $keys = ProjectPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Milestone'][$this->getPrimaryKey()] = true;
+        $keys = MilestonePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getUserId(),
+            $keys[1] => $this->getProjectId(),
             $keys[2] => $this->getGithubId(),
             $keys[3] => $this->getName(),
             $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getActive(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedAt(),
+            $keys[5] => $this->getState(),
+            $keys[6] => $this->getOpenIssues(),
+            $keys[7] => $this->getClosedIssues(),
+            $keys[8] => $this->getCreatedAt(),
+            $keys[9] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->aUser) {
-                $result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collMilestones) {
-                $result['Milestones'] = $this->collMilestones->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aProject) {
+                $result['Project'] = $this->aProject->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1081,7 +1096,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ProjectPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = MilestonePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -1101,7 +1116,7 @@ abstract class BaseProject extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setUserId($value);
+                $this->setProjectId($value);
                 break;
             case 2:
                 $this->setGithubId($value);
@@ -1113,12 +1128,18 @@ abstract class BaseProject extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 5:
-                $this->setActive($value);
+                $this->setState($value);
                 break;
             case 6:
-                $this->setCreatedAt($value);
+                $this->setOpenIssues($value);
                 break;
             case 7:
+                $this->setClosedIssues($value);
+                break;
+            case 8:
+                $this->setCreatedAt($value);
+                break;
+            case 9:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1143,16 +1164,18 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = ProjectPeer::getFieldNames($keyType);
+        $keys = MilestonePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setUserId($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setProjectId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setGithubId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setActive($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[5], $arr)) $this->setState($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setOpenIssues($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setClosedIssues($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
     }
 
     /**
@@ -1162,16 +1185,18 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ProjectPeer::DATABASE_NAME);
+        $criteria = new Criteria(MilestonePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProjectPeer::ID)) $criteria->add(ProjectPeer::ID, $this->id);
-        if ($this->isColumnModified(ProjectPeer::USER_ID)) $criteria->add(ProjectPeer::USER_ID, $this->user_id);
-        if ($this->isColumnModified(ProjectPeer::GITHUB_ID)) $criteria->add(ProjectPeer::GITHUB_ID, $this->github_id);
-        if ($this->isColumnModified(ProjectPeer::NAME)) $criteria->add(ProjectPeer::NAME, $this->name);
-        if ($this->isColumnModified(ProjectPeer::DESCRIPTION)) $criteria->add(ProjectPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(ProjectPeer::ACTIVE)) $criteria->add(ProjectPeer::ACTIVE, $this->active);
-        if ($this->isColumnModified(ProjectPeer::CREATED_AT)) $criteria->add(ProjectPeer::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(ProjectPeer::UPDATED_AT)) $criteria->add(ProjectPeer::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(MilestonePeer::ID)) $criteria->add(MilestonePeer::ID, $this->id);
+        if ($this->isColumnModified(MilestonePeer::PROJECT_ID)) $criteria->add(MilestonePeer::PROJECT_ID, $this->project_id);
+        if ($this->isColumnModified(MilestonePeer::GITHUB_ID)) $criteria->add(MilestonePeer::GITHUB_ID, $this->github_id);
+        if ($this->isColumnModified(MilestonePeer::NAME)) $criteria->add(MilestonePeer::NAME, $this->name);
+        if ($this->isColumnModified(MilestonePeer::DESCRIPTION)) $criteria->add(MilestonePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(MilestonePeer::STATE)) $criteria->add(MilestonePeer::STATE, $this->state);
+        if ($this->isColumnModified(MilestonePeer::OPEN_ISSUES)) $criteria->add(MilestonePeer::OPEN_ISSUES, $this->open_issues);
+        if ($this->isColumnModified(MilestonePeer::CLOSED_ISSUES)) $criteria->add(MilestonePeer::CLOSED_ISSUES, $this->closed_issues);
+        if ($this->isColumnModified(MilestonePeer::CREATED_AT)) $criteria->add(MilestonePeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(MilestonePeer::UPDATED_AT)) $criteria->add(MilestonePeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1186,8 +1211,8 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ProjectPeer::DATABASE_NAME);
-        $criteria->add(ProjectPeer::ID, $this->id);
+        $criteria = new Criteria(MilestonePeer::DATABASE_NAME);
+        $criteria->add(MilestonePeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1228,18 +1253,20 @@ abstract class BaseProject extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Project (or compatible) type.
+     * @param object $copyObj An object of Milestone (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setUserId($this->getUserId());
+        $copyObj->setProjectId($this->getProjectId());
         $copyObj->setGithubId($this->getGithubId());
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setActive($this->getActive());
+        $copyObj->setState($this->getState());
+        $copyObj->setOpenIssues($this->getOpenIssues());
+        $copyObj->setClosedIssues($this->getClosedIssues());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1249,12 +1276,6 @@ abstract class BaseProject extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getMilestones() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addMilestone($relObj->copy($deepCopy));
-                }
-            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -1275,7 +1296,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Project Clone of current object.
+     * @return Milestone Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1295,38 +1316,38 @@ abstract class BaseProject extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return ProjectPeer
+     * @return MilestonePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new ProjectPeer();
+            self::$peer = new MilestonePeer();
         }
 
         return self::$peer;
     }
 
     /**
-     * Declares an association between this object and a User object.
+     * Declares an association between this object and a Project object.
      *
-     * @param             User $v
-     * @return Project The current object (for fluent API support)
+     * @param             Project $v
+     * @return Milestone The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setUser(User $v = null)
+    public function setProject(Project $v = null)
     {
         if ($v === null) {
-            $this->setUserId(NULL);
+            $this->setProjectId(NULL);
         } else {
-            $this->setUserId($v->getId());
+            $this->setProjectId($v->getId());
         }
 
-        $this->aUser = $v;
+        $this->aProject = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the User object, it will not be re-added.
+        // If this object has already been added to the Project object, it will not be re-added.
         if ($v !== null) {
-            $v->addProject($this);
+            $v->addMilestone($this);
         }
 
 
@@ -1335,249 +1356,26 @@ abstract class BaseProject extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated User object
+     * Get the associated Project object
      *
      * @param PropelPDO $con Optional Connection object.
-     * @return User The associated User object.
+     * @return Project The associated Project object.
      * @throws PropelException
      */
-    public function getUser(PropelPDO $con = null)
+    public function getProject(PropelPDO $con = null)
     {
-        if ($this->aUser === null && ($this->user_id !== null)) {
-            $this->aUser = UserQuery::create()->findPk($this->user_id, $con);
+        if ($this->aProject === null && ($this->project_id !== null)) {
+            $this->aProject = ProjectQuery::create()->findPk($this->project_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUser->addProjects($this);
+                $this->aProject->addMilestones($this);
              */
         }
 
-        return $this->aUser;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Milestone' == $relationName) {
-            $this->initMilestones();
-        }
-    }
-
-    /**
-     * Clears out the collMilestones collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addMilestones()
-     */
-    public function clearMilestones()
-    {
-        $this->collMilestones = null; // important to set this to null since that means it is uninitialized
-        $this->collMilestonesPartial = null;
-    }
-
-    /**
-     * reset is the collMilestones collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialMilestones($v = true)
-    {
-        $this->collMilestonesPartial = $v;
-    }
-
-    /**
-     * Initializes the collMilestones collection.
-     *
-     * By default this just sets the collMilestones collection to an empty array (like clearcollMilestones());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initMilestones($overrideExisting = true)
-    {
-        if (null !== $this->collMilestones && !$overrideExisting) {
-            return;
-        }
-        $this->collMilestones = new PropelObjectCollection();
-        $this->collMilestones->setModel('Milestone');
-    }
-
-    /**
-     * Gets an array of Milestone objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Project is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Milestone[] List of Milestone objects
-     * @throws PropelException
-     */
-    public function getMilestones($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collMilestonesPartial && !$this->isNew();
-        if (null === $this->collMilestones || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collMilestones) {
-                // return empty collection
-                $this->initMilestones();
-            } else {
-                $collMilestones = MilestoneQuery::create(null, $criteria)
-                    ->filterByProject($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collMilestonesPartial && count($collMilestones)) {
-                      $this->initMilestones(false);
-
-                      foreach($collMilestones as $obj) {
-                        if (false == $this->collMilestones->contains($obj)) {
-                          $this->collMilestones->append($obj);
-                        }
-                      }
-
-                      $this->collMilestonesPartial = true;
-                    }
-
-                    return $collMilestones;
-                }
-
-                if($partial && $this->collMilestones) {
-                    foreach($this->collMilestones as $obj) {
-                        if($obj->isNew()) {
-                            $collMilestones[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collMilestones = $collMilestones;
-                $this->collMilestonesPartial = false;
-            }
-        }
-
-        return $this->collMilestones;
-    }
-
-    /**
-     * Sets a collection of Milestone objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $milestones A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setMilestones(PropelCollection $milestones, PropelPDO $con = null)
-    {
-        $this->milestonesScheduledForDeletion = $this->getMilestones(new Criteria(), $con)->diff($milestones);
-
-        foreach ($this->milestonesScheduledForDeletion as $milestoneRemoved) {
-            $milestoneRemoved->setProject(null);
-        }
-
-        $this->collMilestones = null;
-        foreach ($milestones as $milestone) {
-            $this->addMilestone($milestone);
-        }
-
-        $this->collMilestones = $milestones;
-        $this->collMilestonesPartial = false;
-    }
-
-    /**
-     * Returns the number of related Milestone objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Milestone objects.
-     * @throws PropelException
-     */
-    public function countMilestones(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collMilestonesPartial && !$this->isNew();
-        if (null === $this->collMilestones || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collMilestones) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getMilestones());
-                }
-                $query = MilestoneQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByProject($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collMilestones);
-        }
-    }
-
-    /**
-     * Method called to associate a Milestone object to this object
-     * through the Milestone foreign key attribute.
-     *
-     * @param    Milestone $l Milestone
-     * @return Project The current object (for fluent API support)
-     */
-    public function addMilestone(Milestone $l)
-    {
-        if ($this->collMilestones === null) {
-            $this->initMilestones();
-            $this->collMilestonesPartial = true;
-        }
-        if (!in_array($l, $this->collMilestones->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddMilestone($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Milestone $milestone The milestone object to add.
-     */
-    protected function doAddMilestone($milestone)
-    {
-        $this->collMilestones[]= $milestone;
-        $milestone->setProject($this);
-    }
-
-    /**
-     * @param	Milestone $milestone The milestone object to remove.
-     */
-    public function removeMilestone($milestone)
-    {
-        if ($this->getMilestones()->contains($milestone)) {
-            $this->collMilestones->remove($this->collMilestones->search($milestone));
-            if (null === $this->milestonesScheduledForDeletion) {
-                $this->milestonesScheduledForDeletion = clone $this->collMilestones;
-                $this->milestonesScheduledForDeletion->clear();
-            }
-            $this->milestonesScheduledForDeletion[]= $milestone;
-            $milestone->setProject(null);
-        }
+        return $this->aProject;
     }
 
     /**
@@ -1586,17 +1384,18 @@ abstract class BaseProject extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->user_id = null;
+        $this->project_id = null;
         $this->github_id = null;
         $this->name = null;
         $this->description = null;
-        $this->active = null;
+        $this->state = null;
+        $this->open_issues = null;
+        $this->closed_issues = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1614,18 +1413,9 @@ abstract class BaseProject extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collMilestones) {
-                foreach ($this->collMilestones as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        if ($this->collMilestones instanceof PropelCollection) {
-            $this->collMilestones->clearIterator();
-        }
-        $this->collMilestones = null;
-        $this->aUser = null;
+        $this->aProject = null;
     }
 
     /**
@@ -1635,7 +1425,7 @@ abstract class BaseProject extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ProjectPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(MilestonePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
@@ -1653,11 +1443,11 @@ abstract class BaseProject extends BaseObject implements Persistent
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     Project The current object (for fluent API support)
+     * @return     Milestone The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[] = ProjectPeer::UPDATED_AT;
+        $this->modifiedColumns[] = MilestonePeer::UPDATED_AT;
 
         return $this;
     }

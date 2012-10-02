@@ -9,7 +9,8 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Octoprogress\Model\User,
-    Octoprogress\Model\ProjectQuery;
+    Octoprogress\Model\ProjectQuery,
+    Octoprogress\Model\Job;
 
 class BoardController implements ControllerProviderInterface
 {
@@ -57,6 +58,17 @@ class BoardController implements ControllerProviderInterface
                     ;
 
                     $project->setActive(true)->save();
+                    
+                    $job = new Job();
+                    $job
+                        ->setName('Milestone update')
+                        ->setType('Milestone_Update')
+                        ->setParams(serialize(array(
+                            'user_id'    => $user->getId(),
+                            'project_id' => $project->getId(),
+                        )))
+                        ->save()
+                    ;
 
                     return $app->redirect($app['url_generator']->generate('account_profile'));
                 }

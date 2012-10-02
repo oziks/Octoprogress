@@ -32,6 +32,16 @@
                 {% endfor %}
                 {% endif %}
             </li>
+            <li>
+                <h3>Resume board</h3>
+                {% if milestones %}
+                {% for milestone in milestones %}
+                <blockquote><i class="icon-book"></i>
+                    <strong>{{ milestone.name }}</strong>
+                </blockquote>
+                {% endfor %}
+                {% endif %}
+            </li>
         </ul>
     </div>
 </div>

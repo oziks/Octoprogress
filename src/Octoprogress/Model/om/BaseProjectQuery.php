@@ -12,6 +12,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Octoprogress\Model\Milestone;
 use Octoprogress\Model\Project;
 use Octoprogress\Model\ProjectPeer;
 use Octoprogress\Model\ProjectQuery;
@@ -47,6 +48,10 @@ use Octoprogress\Model\User;
  * @method ProjectQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
  * @method ProjectQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
  * @method ProjectQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ *
+ * @method ProjectQuery leftJoinMilestone($relationAlias = null) Adds a LEFT JOIN clause to the query using the Milestone relation
+ * @method ProjectQuery rightJoinMilestone($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Milestone relation
+ * @method ProjectQuery innerJoinMilestone($relationAlias = null) Adds a INNER JOIN clause to the query using the Milestone relation
  *
  * @method Project findOne(PropelPDO $con = null) Return the first Project matching the query
  * @method Project findOneOrCreate(PropelPDO $con = null) Return the first Project matching the query, or a new Project object populated from the query conditions when no match is found
@@ -615,6 +620,80 @@ abstract class BaseProjectQuery extends ModelCriteria
         return $this
             ->joinUser($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'User', '\Octoprogress\Model\UserQuery');
+    }
+
+    /**
+     * Filter the query by a related Milestone object
+     *
+     * @param   Milestone|PropelObjectCollection $milestone  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   ProjectQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByMilestone($milestone, $comparison = null)
+    {
+        if ($milestone instanceof Milestone) {
+            return $this
+                ->addUsingAlias(ProjectPeer::ID, $milestone->getProjectId(), $comparison);
+        } elseif ($milestone instanceof PropelObjectCollection) {
+            return $this
+                ->useMilestoneQuery()
+                ->filterByPrimaryKeys($milestone->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByMilestone() only accepts arguments of type Milestone or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Milestone relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProjectQuery The current query, for fluid interface
+     */
+    public function joinMilestone($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Milestone');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Milestone');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Milestone relation Milestone object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Octoprogress\Model\MilestoneQuery A secondary query class using the current class as primary query
+     */
+    public function useMilestoneQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinMilestone($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Milestone', '\Octoprogress\Model\MilestoneQuery');
     }
 
     /**

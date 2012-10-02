@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'project' table.
+ * This class defines the structure of the 'milestone' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.Octoprogress.Model.map
  */
-class ProjectTableMap extends TableMap
+class MilestoneTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Octoprogress.Model.map.ProjectTableMap';
+    const CLASS_NAME = 'Octoprogress.Model.map.MilestoneTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,18 +36,20 @@ class ProjectTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('project');
-        $this->setPhpName('Project');
-        $this->setClassname('Octoprogress\\Model\\Project');
+        $this->setName('milestone');
+        $this->setPhpName('Milestone');
+        $this->setClassname('Octoprogress\\Model\\Milestone');
         $this->setPackage('Octoprogress.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', false, null, null);
+        $this->addForeignKey('PROJECT_ID', 'ProjectId', 'INTEGER', 'project', 'ID', false, null, null);
         $this->addColumn('GITHUB_ID', 'GithubId', 'INTEGER', false, null, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
         $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
-        $this->addColumn('ACTIVE', 'Active', 'BOOLEAN', false, 1, false);
+        $this->addColumn('STATE', 'State', 'VARCHAR', false, 255, null);
+        $this->addColumn('OPEN_ISSUES', 'OpenIssues', 'INTEGER', false, null, null);
+        $this->addColumn('CLOSED_ISSUES', 'ClosedIssues', 'INTEGER', false, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -58,8 +60,7 @@ class ProjectTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('User', 'Octoprogress\\Model\\User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-        $this->addRelation('Milestone', 'Octoprogress\\Model\\Milestone', RelationMap::ONE_TO_MANY, array('id' => 'project_id', ), null, null, 'Milestones');
+        $this->addRelation('Project', 'Octoprogress\\Model\\Project', RelationMap::MANY_TO_ONE, array('project_id' => 'id', ), null, null);
     } // buildRelations()
 
     /**
@@ -75,4 +76,4 @@ class ProjectTableMap extends TableMap
         );
     } // getBehaviors()
 
-} // ProjectTableMap
+} // MilestoneTableMap

@@ -53,4 +53,21 @@
 
         <behavior name="timestampable" />
     </table>
+
+    <table name="milestone">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="project_id" type="integer" />
+        <column name="github_id" type="integer" />
+        <column name="name" type="varchar" />
+        <column name="description" type="varchar" />
+        <column name="state" type="varchar" />
+        <column name="open_issues" type="integer" />
+        <column name="closed_issues" type="integer" />
+
+        <foreign-key foreignTable="project">
+            <reference local="project_id" foreign="id"/>
+        </foreign-key>
+
+        <behavior name="timestampable" />
+    </table>
 </database>

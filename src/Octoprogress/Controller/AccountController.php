@@ -7,7 +7,8 @@ use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
 use Octoprogress\Model\User,
-    Octoprogress\Model\ProjectQuery;
+    Octoprogress\Model\ProjectQuery,
+    Octoprogress\Model\MilestoneQuery;
 
 use Github\Client as GithubClient,
     Github\HttpClient\HttpClient as GithubHttpClient;
@@ -35,9 +36,17 @@ class AccountController implements ControllerProviderInterface
                 ->find()
             ;
 
+            $milestones = MilestoneQuery::create()
+                ->useProjectQuery()
+                    ->orderByUpdatedAt(\Criteria::DESC)
+                ->endUse()
+                ->find()
+            ;
+
             return $app['twig']->render('account/profile.html', array(
                 'user'          => $user,
                 'repositories'  => $repositories,
+                'milestones'    => $milestones,
             ));
         })
         ->bind('account_profile')
