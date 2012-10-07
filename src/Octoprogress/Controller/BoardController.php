@@ -81,23 +81,24 @@ class BoardController implements ControllerProviderInterface
         ->bind('board_active_form')
         ;
 
-        $controllers->match('/{id}/remove', function (Request $request, $id) use ($app) {
+        $controllers->match('/status', function (Request $request) use ($app) {
             /** @var User $user */
             $user = $app['session']->get('user');
             if (!$user) {
                 return $app->redirect($app['url_generator']->generate('homepage'));
             }
 
-            $project = ProjectQuery::create()
-                ->filterById($id)
-                ->findOne()
+            $projects = ProjectQuery::create()
+                ->rightJoinWithMilestone()
+                ->find()
             ;
 
-            $project->setActive(false)->save();
-
-            return $app->redirect($app['url_generator']->generate('account_profile'));
+            return $app['twig']->render('board/view.html', array(
+                'user'  => $user,
+                'projects'  => $projects,
+            ));
         })
-        ->bind('board_remove')
+        ->bind('board')
         ;
 
         return $controllers;

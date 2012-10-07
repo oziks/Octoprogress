@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ user.login }} board
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for project in projects %}
+    <div class="project span6">
+        <h2>{{ project.name }}</h2>
+        <ul class="milestones">
+            {% for milestone in project.milestones %}
+            <li>
+                <h3>{{ milestone.name }}
+                    {% set total = milestone.openIssues + milestone.closedIssues %}
+                    {% set percentage = milestone.closedIssues / total * 100 %} 
+                    <div class="progress progress-striped progress-milestone" data-percentage="{{ percentage }}">
+                        <div class="bar bar-success"></div>
+                    </div>
+                </h3>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var maxHeight = 0;
+    $('.project').each(function() {
+        if ($(this).height() > maxHeight) {
+            maxHeight = $(this).height();
+        }
+
+        $('.progress-milestone', $(this)).each(function() {
+            percentage = $(this).data('percentage');
+            $(this).children('.bar').width(percentage + '%');
+        });
+
+
+    });
+
+    $('.project').height(maxHeight);
+});
+</script>
+{% endblock %}

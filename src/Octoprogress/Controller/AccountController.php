@@ -36,17 +36,9 @@ class AccountController implements ControllerProviderInterface
                 ->find()
             ;
 
-            $milestones = MilestoneQuery::create()
-                ->useProjectQuery()
-                    ->orderByUpdatedAt(\Criteria::DESC)
-                ->endUse()
-                ->find()
-            ;
-
             return $app['twig']->render('account/profile.html', array(
                 'user'          => $user,
                 'repositories'  => $repositories,
-                'milestones'    => $milestones,
             ));
         })
         ->bind('account_profile')
