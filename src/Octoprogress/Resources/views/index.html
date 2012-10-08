@@ -5,7 +5,7 @@ Welcome
 {% endblock %}
 
 {% block content %}
-<blockquote>
-    To begin see the progress of your github projects, please connect!
-</blockquote>
+<div class="masthead">
+	<a href="{{ path('oauth') }}" class="btn btn-success btn-large"><i class="icon-signin"></i> Connect with <strong>Github</strong></a>
+</div>
 {% endblock %}

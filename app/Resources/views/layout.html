@@ -33,8 +33,6 @@
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right">
                 {% if app.session.get('isAuthenticated') %}
-                    <li><a href="{{ path('account_profile') }}"><img class="avatar" src="{{ app.session.get('user').avatarUrl }}"/>{{ app.session.get('user').login }}</a></li>
-                    <li class="divider-vertical"></li>
                     <li><a href="{{ path('logout') }}"><i class="icon-signout"></i> Logout</a></li>
                 {% else %}
                     <li><a href="{{ path('oauth') }}"><i class="icon-signin"></i> Connect with <strong>Github</strong></a></li>

@@ -27,7 +27,6 @@
                 <blockquote><i class="icon-book"></i>
                     <a href="{{ path('board', {'id': repository.id})}}"><strong>{{ repository.name }}</strong></a>
                     {% if repository.description %} - {{ repository.description }}{% endif %}
-                    (<i class="icon-trash"></i><a href="{{ path('board_remove', {'id': repository.id}) }}">remove board</a>)
                 </blockquote>
                 {% endfor %}
                 {% endif %}

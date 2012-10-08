@@ -13,7 +13,12 @@ $app->error(function (\Exception $exception, $code) use ($app) {
 });
 
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html', array());
+    $user = $app['session']->get('user');
+    if (!$user) {
+        return $app['twig']->render('index.html', array());
+    }
+
+    return $app->redirect($app['url_generator']->generate('board'));
 })
 ->bind('homepage')
 ;
