@@ -3,4 +3,5 @@
 /app/logs/*
 /app/config/Propel/conf/
 /app/config/Propel/sql/
+/app/config/github.yml
 /vendor/
