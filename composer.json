@@ -20,7 +20,8 @@
         "symfony/yaml": "2.1.*",
         "symfony/validator": "2.1.*",
         "propel/propel-service-provider": "dev-master",
-        "knplabs/github-api": "dev-master"
+        "knplabs/github-api": "dev-master",
+        "darklow/ff-silex-less-provider": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
