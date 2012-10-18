@@ -27,5 +27,4 @@ $app->mount('/job', new \Octoprogress\Controller\JobController());
 $app->mount('/oauth', new \Octoprogress\Controller\OauthController());
 $app->mount('/board', new \Octoprogress\Controller\BoardController());
 
-$app->mount('/account', new \Octoprogress\Controller\AccountController());
-$app->get('/account', function () use ($app) { return $app->redirect($app['url_generator']->generate('account_profile')); });
+$app->mount('/projects', new \Octoprogress\Controller\ProjectsController());

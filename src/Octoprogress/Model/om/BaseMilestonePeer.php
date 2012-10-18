@@ -37,13 +37,13 @@ abstract class BaseMilestonePeer
     const TM_CLASS = 'MilestoneTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /** the column name for the ID field */
     const ID = 'milestone.ID';
@@ -68,6 +68,9 @@ abstract class BaseMilestonePeer
 
     /** the column name for the CLOSED_ISSUES field */
     const CLOSED_ISSUES = 'milestone.CLOSED_ISSUES';
+
+    /** the column name for the DUE_DATE field */
+    const DUE_DATE = 'milestone.DUE_DATE';
 
     /** the column name for the CREATED_AT field */
     const CREATED_AT = 'milestone.CREATED_AT';
@@ -94,12 +97,12 @@ abstract class BaseMilestonePeer
      * e.g. MilestonePeer::$fieldNames[MilestonePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'ProjectId', 'GithubId', 'Name', 'Description', 'State', 'OpenIssues', 'ClosedIssues', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'projectId', 'githubId', 'name', 'description', 'state', 'openIssues', 'closedIssues', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (MilestonePeer::ID, MilestonePeer::PROJECT_ID, MilestonePeer::GITHUB_ID, MilestonePeer::NAME, MilestonePeer::DESCRIPTION, MilestonePeer::STATE, MilestonePeer::OPEN_ISSUES, MilestonePeer::CLOSED_ISSUES, MilestonePeer::CREATED_AT, MilestonePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROJECT_ID', 'GITHUB_ID', 'NAME', 'DESCRIPTION', 'STATE', 'OPEN_ISSUES', 'CLOSED_ISSUES', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'project_id', 'github_id', 'name', 'description', 'state', 'open_issues', 'closed_issues', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'ProjectId', 'GithubId', 'Name', 'Description', 'State', 'OpenIssues', 'ClosedIssues', 'DueDate', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'projectId', 'githubId', 'name', 'description', 'state', 'openIssues', 'closedIssues', 'dueDate', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (MilestonePeer::ID, MilestonePeer::PROJECT_ID, MilestonePeer::GITHUB_ID, MilestonePeer::NAME, MilestonePeer::DESCRIPTION, MilestonePeer::STATE, MilestonePeer::OPEN_ISSUES, MilestonePeer::CLOSED_ISSUES, MilestonePeer::DUE_DATE, MilestonePeer::CREATED_AT, MilestonePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'PROJECT_ID', 'GITHUB_ID', 'NAME', 'DESCRIPTION', 'STATE', 'OPEN_ISSUES', 'CLOSED_ISSUES', 'DUE_DATE', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'project_id', 'github_id', 'name', 'description', 'state', 'open_issues', 'closed_issues', 'due_date', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -109,12 +112,12 @@ abstract class BaseMilestonePeer
      * e.g. MilestonePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ProjectId' => 1, 'GithubId' => 2, 'Name' => 3, 'Description' => 4, 'State' => 5, 'OpenIssues' => 6, 'ClosedIssues' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'projectId' => 1, 'githubId' => 2, 'name' => 3, 'description' => 4, 'state' => 5, 'openIssues' => 6, 'closedIssues' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
-        BasePeer::TYPE_COLNAME => array (MilestonePeer::ID => 0, MilestonePeer::PROJECT_ID => 1, MilestonePeer::GITHUB_ID => 2, MilestonePeer::NAME => 3, MilestonePeer::DESCRIPTION => 4, MilestonePeer::STATE => 5, MilestonePeer::OPEN_ISSUES => 6, MilestonePeer::CLOSED_ISSUES => 7, MilestonePeer::CREATED_AT => 8, MilestonePeer::UPDATED_AT => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROJECT_ID' => 1, 'GITHUB_ID' => 2, 'NAME' => 3, 'DESCRIPTION' => 4, 'STATE' => 5, 'OPEN_ISSUES' => 6, 'CLOSED_ISSUES' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'project_id' => 1, 'github_id' => 2, 'name' => 3, 'description' => 4, 'state' => 5, 'open_issues' => 6, 'closed_issues' => 7, 'created_at' => 8, 'updated_at' => 9, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ProjectId' => 1, 'GithubId' => 2, 'Name' => 3, 'Description' => 4, 'State' => 5, 'OpenIssues' => 6, 'ClosedIssues' => 7, 'DueDate' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'projectId' => 1, 'githubId' => 2, 'name' => 3, 'description' => 4, 'state' => 5, 'openIssues' => 6, 'closedIssues' => 7, 'dueDate' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
+        BasePeer::TYPE_COLNAME => array (MilestonePeer::ID => 0, MilestonePeer::PROJECT_ID => 1, MilestonePeer::GITHUB_ID => 2, MilestonePeer::NAME => 3, MilestonePeer::DESCRIPTION => 4, MilestonePeer::STATE => 5, MilestonePeer::OPEN_ISSUES => 6, MilestonePeer::CLOSED_ISSUES => 7, MilestonePeer::DUE_DATE => 8, MilestonePeer::CREATED_AT => 9, MilestonePeer::UPDATED_AT => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'PROJECT_ID' => 1, 'GITHUB_ID' => 2, 'NAME' => 3, 'DESCRIPTION' => 4, 'STATE' => 5, 'OPEN_ISSUES' => 6, 'CLOSED_ISSUES' => 7, 'DUE_DATE' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'project_id' => 1, 'github_id' => 2, 'name' => 3, 'description' => 4, 'state' => 5, 'open_issues' => 6, 'closed_issues' => 7, 'due_date' => 8, 'created_at' => 9, 'updated_at' => 10, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -196,6 +199,7 @@ abstract class BaseMilestonePeer
             $criteria->addSelectColumn(MilestonePeer::STATE);
             $criteria->addSelectColumn(MilestonePeer::OPEN_ISSUES);
             $criteria->addSelectColumn(MilestonePeer::CLOSED_ISSUES);
+            $criteria->addSelectColumn(MilestonePeer::DUE_DATE);
             $criteria->addSelectColumn(MilestonePeer::CREATED_AT);
             $criteria->addSelectColumn(MilestonePeer::UPDATED_AT);
         } else {
@@ -207,6 +211,7 @@ abstract class BaseMilestonePeer
             $criteria->addSelectColumn($alias . '.STATE');
             $criteria->addSelectColumn($alias . '.OPEN_ISSUES');
             $criteria->addSelectColumn($alias . '.CLOSED_ISSUES');
+            $criteria->addSelectColumn($alias . '.DUE_DATE');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
         }

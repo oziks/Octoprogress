@@ -96,6 +96,12 @@ abstract class BaseMilestone extends BaseObject implements Persistent
     protected $closed_issues;
 
     /**
+     * The value for the due_date field.
+     * @var        string
+     */
+    protected $due_date;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -204,6 +210,43 @@ abstract class BaseMilestone extends BaseObject implements Persistent
     public function getClosedIssues()
     {
         return $this->closed_issues;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [due_date] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getDueDate($format = 'Y-m-d H:i:s')
+    {
+        if ($this->due_date === null) {
+            return null;
+        }
+
+        if ($this->due_date === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->due_date);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->due_date, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
     }
 
     /**
@@ -453,6 +496,29 @@ abstract class BaseMilestone extends BaseObject implements Persistent
     } // setClosedIssues()
 
     /**
+     * Sets the value of [due_date] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Milestone The current object (for fluent API support)
+     */
+    public function setDueDate($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->due_date !== null || $dt !== null) {
+            $currentDateAsString = ($this->due_date !== null && $tmpDt = new DateTime($this->due_date)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->due_date = $newDateAsString;
+                $this->modifiedColumns[] = MilestonePeer::DUE_DATE;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setDueDate()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -538,8 +604,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
             $this->state = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->open_issues = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->closed_issues = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->due_date = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -548,7 +615,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = MilestonePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = MilestonePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Milestone object", $e);
@@ -811,6 +878,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         if ($this->isColumnModified(MilestonePeer::CLOSED_ISSUES)) {
             $modifiedColumns[':p' . $index++]  = '`CLOSED_ISSUES`';
         }
+        if ($this->isColumnModified(MilestonePeer::DUE_DATE)) {
+            $modifiedColumns[':p' . $index++]  = '`DUE_DATE`';
+        }
         if ($this->isColumnModified(MilestonePeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
         }
@@ -851,6 +921,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                         break;
                     case '`CLOSED_ISSUES`':
                         $stmt->bindValue($identifier, $this->closed_issues, PDO::PARAM_INT);
+                        break;
+                    case '`DUE_DATE`':
+                        $stmt->bindValue($identifier, $this->due_date, PDO::PARAM_STR);
                         break;
                     case '`CREATED_AT`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1029,9 +1102,12 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                 return $this->getClosedIssues();
                 break;
             case 8:
-                return $this->getCreatedAt();
+                return $this->getDueDate();
                 break;
             case 9:
+                return $this->getCreatedAt();
+                break;
+            case 10:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1071,8 +1147,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
             $keys[5] => $this->getState(),
             $keys[6] => $this->getOpenIssues(),
             $keys[7] => $this->getClosedIssues(),
-            $keys[8] => $this->getCreatedAt(),
-            $keys[9] => $this->getUpdatedAt(),
+            $keys[8] => $this->getDueDate(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aProject) {
@@ -1137,9 +1214,12 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                 $this->setClosedIssues($value);
                 break;
             case 8:
-                $this->setCreatedAt($value);
+                $this->setDueDate($value);
                 break;
             case 9:
+                $this->setCreatedAt($value);
+                break;
+            case 10:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1174,8 +1254,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setState($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setOpenIssues($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setClosedIssues($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[8], $arr)) $this->setDueDate($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
     }
 
     /**
@@ -1195,6 +1276,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         if ($this->isColumnModified(MilestonePeer::STATE)) $criteria->add(MilestonePeer::STATE, $this->state);
         if ($this->isColumnModified(MilestonePeer::OPEN_ISSUES)) $criteria->add(MilestonePeer::OPEN_ISSUES, $this->open_issues);
         if ($this->isColumnModified(MilestonePeer::CLOSED_ISSUES)) $criteria->add(MilestonePeer::CLOSED_ISSUES, $this->closed_issues);
+        if ($this->isColumnModified(MilestonePeer::DUE_DATE)) $criteria->add(MilestonePeer::DUE_DATE, $this->due_date);
         if ($this->isColumnModified(MilestonePeer::CREATED_AT)) $criteria->add(MilestonePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(MilestonePeer::UPDATED_AT)) $criteria->add(MilestonePeer::UPDATED_AT, $this->updated_at);
 
@@ -1267,6 +1349,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         $copyObj->setState($this->getState());
         $copyObj->setOpenIssues($this->getOpenIssues());
         $copyObj->setClosedIssues($this->getClosedIssues());
+        $copyObj->setDueDate($this->getDueDate());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1391,6 +1474,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         $this->state = null;
         $this->open_issues = null;
         $this->closed_issues = null;
+        $this->due_date = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;

@@ -43,6 +43,7 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="user_id" type="integer" />
         <column name="github_id" type="integer" />
+        <column name="github_user_name" type="varchar" />
         <column name="name" type="varchar" />
         <column name="description" type="varchar" />
         <column name="active" type="boolean" defaultValue="false" />
@@ -63,6 +64,7 @@
         <column name="state" type="varchar" />
         <column name="open_issues" type="integer" />
         <column name="closed_issues" type="integer" />
+        <column name="due_date" type="timestamp" />
 
         <foreign-key foreignTable="project">
             <reference local="project_id" foreign="id"/>

@@ -45,6 +45,7 @@ class ProjectTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', false, null, null);
         $this->addColumn('GITHUB_ID', 'GithubId', 'INTEGER', false, null, null);
+        $this->addColumn('GITHUB_USER_NAME', 'GithubUserName', 'VARCHAR', false, 255, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
         $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
         $this->addColumn('ACTIVE', 'Active', 'BOOLEAN', false, 1, false);

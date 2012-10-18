@@ -4,7 +4,6 @@ namespace Octoprogress\Model;
 
 use Octoprogress\Model\om\BaseProjectPeer;
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'project' table.
  *
@@ -18,4 +17,35 @@ use Octoprogress\Model\om\BaseProjectPeer;
  */
 class ProjectPeer extends BaseProjectPeer
 {
+    static public function updateFromGitHub($user, $client)
+    {
+        $projectsFromAPI   = $client->get('user/repos');
+        $toDeleteQuery  = ProjectQuery::create();
+
+        foreach ($projectsFromAPI as $projectFromAPI) {
+            $project = ProjectQuery::create()
+                ->filterByGithubId($projectFromAPI['id'])
+                ->findOne()
+            ;
+
+            if (!$project)
+            {
+                $project = new Project();
+                $project->setActive(false);
+            }
+
+            $project
+                ->setUserId($user->getId())
+                ->setGithubId($projectFromAPI['id'])
+                ->setGithubUserName($projectFromAPI['owner']['login'])
+                ->setName($projectFromAPI['name'])
+                ->setDescription($projectFromAPI['description'])
+                ->save()
+            ;
+
+            $toDeleteQuery->prune($project);
+        }
+
+        $toDeleteQuery->delete();
+    }
 }

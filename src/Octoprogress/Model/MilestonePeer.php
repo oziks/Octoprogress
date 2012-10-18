@@ -18,4 +18,51 @@ use Octoprogress\Model\om\BaseMilestonePeer;
  */
 class MilestonePeer extends BaseMilestonePeer
 {
+    static public function updateFromGitHub($user, $client)
+    {
+        $projects = ProjectQuery::create()
+            ->filterByUserId($user->getId())
+            ->filterByActive(true)
+            ->find()
+        ;
+
+        foreach ($projects as $project)
+        {
+            $milestonesFromAPI  = $client->get(sprintf('repos/%s/%s/milestones', $project->getGithubUserName(), $project->getName()));
+            $toDeleteQuery      = MilestoneQuery::create();
+
+            foreach ($milestonesFromAPI as $milestoneFromAPI)
+            {
+                $milestone = MilestoneQuery::create()
+                    ->filterByGithubId($milestoneFromAPI['id'])
+                    ->findOne()
+                ;
+
+                if (!$milestone)
+                {
+                    $milestone = new Milestone();
+                }
+
+                if (($timestamp = strtotime($milestoneFromAPI['due_on'])) !== false)
+                {
+                    $milestone->setDueDate(date('Y-m-d 00:00:00', $timestamp));
+                }
+
+                $milestone
+                    ->setProjectId($project->getId())
+                    ->setGithubId($milestoneFromAPI['id'])
+                    ->setName($milestoneFromAPI['title'])
+                    ->setDescription($milestoneFromAPI['description'])
+                    ->setState($milestoneFromAPI['state'])
+                    ->setOpenIssues($milestoneFromAPI['open_issues'])
+                    ->setClosedIssues($milestoneFromAPI['closed_issues'])
+                    ->save()
+                ;
+
+                $toDeleteQuery->prune($milestone);
+            }
+
+            $toDeleteQuery->delete();
+        }
+    }
 }

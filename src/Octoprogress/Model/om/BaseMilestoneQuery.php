@@ -30,6 +30,7 @@ use Octoprogress\Model\Project;
  * @method MilestoneQuery orderByState($order = Criteria::ASC) Order by the state column
  * @method MilestoneQuery orderByOpenIssues($order = Criteria::ASC) Order by the open_issues column
  * @method MilestoneQuery orderByClosedIssues($order = Criteria::ASC) Order by the closed_issues column
+ * @method MilestoneQuery orderByDueDate($order = Criteria::ASC) Order by the due_date column
  * @method MilestoneQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method MilestoneQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -41,6 +42,7 @@ use Octoprogress\Model\Project;
  * @method MilestoneQuery groupByState() Group by the state column
  * @method MilestoneQuery groupByOpenIssues() Group by the open_issues column
  * @method MilestoneQuery groupByClosedIssues() Group by the closed_issues column
+ * @method MilestoneQuery groupByDueDate() Group by the due_date column
  * @method MilestoneQuery groupByCreatedAt() Group by the created_at column
  * @method MilestoneQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -62,6 +64,7 @@ use Octoprogress\Model\Project;
  * @method Milestone findOneByState(string $state) Return the first Milestone filtered by the state column
  * @method Milestone findOneByOpenIssues(int $open_issues) Return the first Milestone filtered by the open_issues column
  * @method Milestone findOneByClosedIssues(int $closed_issues) Return the first Milestone filtered by the closed_issues column
+ * @method Milestone findOneByDueDate(string $due_date) Return the first Milestone filtered by the due_date column
  * @method Milestone findOneByCreatedAt(string $created_at) Return the first Milestone filtered by the created_at column
  * @method Milestone findOneByUpdatedAt(string $updated_at) Return the first Milestone filtered by the updated_at column
  *
@@ -73,6 +76,7 @@ use Octoprogress\Model\Project;
  * @method array findByState(string $state) Return Milestone objects filtered by the state column
  * @method array findByOpenIssues(int $open_issues) Return Milestone objects filtered by the open_issues column
  * @method array findByClosedIssues(int $closed_issues) Return Milestone objects filtered by the closed_issues column
+ * @method array findByDueDate(string $due_date) Return Milestone objects filtered by the due_date column
  * @method array findByCreatedAt(string $created_at) Return Milestone objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return Milestone objects filtered by the updated_at column
  *
@@ -178,7 +182,7 @@ abstract class BaseMilestoneQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `PROJECT_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `STATE`, `OPEN_ISSUES`, `CLOSED_ISSUES`, `CREATED_AT`, `UPDATED_AT` FROM `milestone` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `PROJECT_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `STATE`, `OPEN_ISSUES`, `CLOSED_ISSUES`, `DUE_DATE`, `CREATED_AT`, `UPDATED_AT` FROM `milestone` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -545,6 +549,49 @@ abstract class BaseMilestoneQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(MilestonePeer::CLOSED_ISSUES, $closedIssues, $comparison);
+    }
+
+    /**
+     * Filter the query on the due_date column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDueDate('2011-03-14'); // WHERE due_date = '2011-03-14'
+     * $query->filterByDueDate('now'); // WHERE due_date = '2011-03-14'
+     * $query->filterByDueDate(array('max' => 'yesterday')); // WHERE due_date > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $dueDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MilestoneQuery The current query, for fluid interface
+     */
+    public function filterByDueDate($dueDate = null, $comparison = null)
+    {
+        if (is_array($dueDate)) {
+            $useMinMax = false;
+            if (isset($dueDate['min'])) {
+                $this->addUsingAlias(MilestonePeer::DUE_DATE, $dueDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($dueDate['max'])) {
+                $this->addUsingAlias(MilestonePeer::DUE_DATE, $dueDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(MilestonePeer::DUE_DATE, $dueDate, $comparison);
     }
 
     /**

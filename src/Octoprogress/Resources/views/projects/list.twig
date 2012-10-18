@@ -1,0 +1,6 @@
+<h1>Repositories</h1>
+<a href="{{ path('projects_refresh') }}">Refresh</a>
+<form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <input class="btn btn-success" type="submit" value="Save"/>
+</form>

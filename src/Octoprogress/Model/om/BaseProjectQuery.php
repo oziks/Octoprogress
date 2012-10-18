@@ -26,6 +26,7 @@ use Octoprogress\Model\User;
  * @method ProjectQuery orderById($order = Criteria::ASC) Order by the id column
  * @method ProjectQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method ProjectQuery orderByGithubId($order = Criteria::ASC) Order by the github_id column
+ * @method ProjectQuery orderByGithubUserName($order = Criteria::ASC) Order by the github_user_name column
  * @method ProjectQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method ProjectQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method ProjectQuery orderByActive($order = Criteria::ASC) Order by the active column
@@ -35,6 +36,7 @@ use Octoprogress\Model\User;
  * @method ProjectQuery groupById() Group by the id column
  * @method ProjectQuery groupByUserId() Group by the user_id column
  * @method ProjectQuery groupByGithubId() Group by the github_id column
+ * @method ProjectQuery groupByGithubUserName() Group by the github_user_name column
  * @method ProjectQuery groupByName() Group by the name column
  * @method ProjectQuery groupByDescription() Group by the description column
  * @method ProjectQuery groupByActive() Group by the active column
@@ -58,6 +60,7 @@ use Octoprogress\Model\User;
  *
  * @method Project findOneByUserId(int $user_id) Return the first Project filtered by the user_id column
  * @method Project findOneByGithubId(int $github_id) Return the first Project filtered by the github_id column
+ * @method Project findOneByGithubUserName(string $github_user_name) Return the first Project filtered by the github_user_name column
  * @method Project findOneByName(string $name) Return the first Project filtered by the name column
  * @method Project findOneByDescription(string $description) Return the first Project filtered by the description column
  * @method Project findOneByActive(boolean $active) Return the first Project filtered by the active column
@@ -67,6 +70,7 @@ use Octoprogress\Model\User;
  * @method array findById(int $id) Return Project objects filtered by the id column
  * @method array findByUserId(int $user_id) Return Project objects filtered by the user_id column
  * @method array findByGithubId(int $github_id) Return Project objects filtered by the github_id column
+ * @method array findByGithubUserName(string $github_user_name) Return Project objects filtered by the github_user_name column
  * @method array findByName(string $name) Return Project objects filtered by the name column
  * @method array findByDescription(string $description) Return Project objects filtered by the description column
  * @method array findByActive(boolean $active) Return Project objects filtered by the active column
@@ -175,7 +179,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `GITHUB_USER_NAME`, `NAME`, `DESCRIPTION`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -373,6 +377,35 @@ abstract class BaseProjectQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProjectPeer::GITHUB_ID, $githubId, $comparison);
+    }
+
+    /**
+     * Filter the query on the github_user_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByGithubUserName('fooValue');   // WHERE github_user_name = 'fooValue'
+     * $query->filterByGithubUserName('%fooValue%'); // WHERE github_user_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $githubUserName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProjectQuery The current query, for fluid interface
+     */
+    public function filterByGithubUserName($githubUserName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($githubUserName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $githubUserName)) {
+                $githubUserName = str_replace('*', '%', $githubUserName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProjectPeer::GITHUB_USER_NAME, $githubUserName, $comparison);
     }
 
     /**

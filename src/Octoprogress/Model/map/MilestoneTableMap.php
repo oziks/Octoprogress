@@ -50,6 +50,7 @@ class MilestoneTableMap extends TableMap
         $this->addColumn('STATE', 'State', 'VARCHAR', false, 255, null);
         $this->addColumn('OPEN_ISSUES', 'OpenIssues', 'INTEGER', false, null, null);
         $this->addColumn('CLOSED_ISSUES', 'ClosedIssues', 'INTEGER', false, null, null);
+        $this->addColumn('DUE_DATE', 'DueDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
