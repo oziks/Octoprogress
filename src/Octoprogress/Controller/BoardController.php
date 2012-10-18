@@ -21,7 +21,7 @@ class BoardController implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers->match('/status', function (Request $request) use ($app) {
+        $controllers->match('/', function (Request $request) use ($app) {
             /** @var User $user */
             $user = $app['session']->get('user');
             if (!$user) {

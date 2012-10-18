@@ -23,8 +23,6 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
-$app->mount('/job', new \Octoprogress\Controller\JobController());
 $app->mount('/oauth', new \Octoprogress\Controller\OauthController());
 $app->mount('/board', new \Octoprogress\Controller\BoardController());
-
 $app->mount('/projects', new \Octoprogress\Controller\ProjectsController());
