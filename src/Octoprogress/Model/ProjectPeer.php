@@ -19,8 +19,19 @@ class ProjectPeer extends BaseProjectPeer
 {
     static public function updateFromGitHub($user, $client)
     {
-        $projectsFromAPI   = $client->get('user/repos');
         $toDeleteQuery  = ProjectQuery::create();
+
+        $projectsFromAPI      = $client->get('user/repos');
+        $organisationsFromAPI = $client->get('user/orgs');
+
+        foreach ($organisationsFromAPI as $organisationFromAPI)
+        {
+            $organisationProjectsFromAPI = $client->get(sprintf('orgs/%s/repos', $organisationFromAPI['login']));
+            foreach ($organisationProjectsFromAPI as $organisationProjectFromAPI)
+            {
+                $projectsFromAPI[] = $organisationProjectFromAPI;
+            }
+        }
 
         foreach ($projectsFromAPI as $projectFromAPI) {
             $project = ProjectQuery::create()

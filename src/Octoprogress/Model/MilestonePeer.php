@@ -26,10 +26,11 @@ class MilestonePeer extends BaseMilestonePeer
             ->find()
         ;
 
+        $toDeleteQuery = MilestoneQuery::create();
+
         foreach ($projects as $project)
         {
             $milestonesFromAPI  = $client->get(sprintf('repos/%s/%s/milestones', $project->getGithubUserName(), $project->getName()));
-            $toDeleteQuery      = MilestoneQuery::create();
 
             foreach ($milestonesFromAPI as $milestoneFromAPI)
             {
@@ -61,8 +62,8 @@ class MilestonePeer extends BaseMilestonePeer
 
                 $toDeleteQuery->prune($milestone);
             }
-
-            $toDeleteQuery->delete();
         }
+
+        $toDeleteQuery->delete();
     }
 }
