@@ -32,10 +32,7 @@ $app->register(new SessionServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new UrlGeneratorServiceProvider());
 $app->register(new TwigServiceProvider(), array(
-    'twig.path'    => array(
-        $app['config']->get('root_dir').'/app/Resources/views',
-        $app['config']->get('root_dir').'/src/Octoprogress/Resources/views'
-    ),
+    'twig.path'    => $app['config']->get('root_dir').'/src/Octoprogress/Resources/views',
     'twig.options' => array('cache' => $app['config']->get('root_dir').'/app/cache'),
 ));
 
