@@ -57,6 +57,9 @@ class ProjectPeer extends BaseProjectPeer
             $toDeleteQuery->prune($project);
         }
 
-        $toDeleteQuery->delete();
+        if ($toDeleteQuery->find()->count())
+        {
+            $toDeleteQuery->delete();
+        }
     }
 }

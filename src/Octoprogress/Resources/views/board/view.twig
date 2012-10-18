@@ -14,7 +14,7 @@
             <li>
                 <h3>{{ milestone.name }}
                     {% set total = milestone.openIssues + milestone.closedIssues %}
-                    {% set percentage = milestone.closedIssues / total * 100 %} 
+                    {% set percentage = milestone.closedIssues / total * 100 %}
                     <div class="progress progress-striped progress-milestone" data-percentage="{{ percentage }}">
                         <div class="bar bar-success"></div>
                     </div>
@@ -47,4 +47,6 @@ $(document).ready(function() {
     $('.project').height(maxHeight);
 });
 </script>
+<script type="text/javascript">var refreshUri = "{{ path('projects_refresh') }}"</script>
+<script type="text/javascript" src="{{ app.request.basepath }}/octoprogress/js/refresh.js"></script>
 {% endblock %}

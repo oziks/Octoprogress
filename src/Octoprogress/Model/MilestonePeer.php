@@ -64,6 +64,9 @@ class MilestonePeer extends BaseMilestonePeer
             }
         }
 
-        $toDeleteQuery->delete();
+        if ($toDeleteQuery->find()->count())
+        {
+            $toDeleteQuery->delete();
+        }
     }
 }
