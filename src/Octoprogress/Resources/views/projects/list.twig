@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>Repositories</h1>
+<h2>Repositories</h2>
 <a href="{{ path('projects_refresh') }}">Refresh</a>
 <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}

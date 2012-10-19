@@ -1,0 +1,256 @@
+@import "_tolebo.less";
+
+@backgroundColor: #333;
+@textColor: #b5b5bc;
+@linkColor: #b0b0ee;
+
+@fontFamily: Helvetica, arial, freesans, clean, sans-serif;
+@fontSize: 14px;
+@lineHeight: 25px;
+
+
+body {
+  background-color: @backgroundColor;
+  color: @textColor;
+  font-family: @fontFamily;
+
+  a {
+    color: @linkColor;
+    text-decoration: none;
+
+    &:hover {
+      color: @linkColor;
+      text-decoration: underline;
+    }
+  }
+
+  #header {
+    background-color: @backgroundColor - #10100A;
+    overflow: hidden;
+
+    .mega-icon {
+      color: @linkColor;
+      float: left;
+      font-size: 24px;
+      margin: 7px 0 0 10px;
+    }
+
+    a {
+      display: inline-block;
+      padding: 10px;
+    }
+
+    a#octoboard {
+      float: left;
+      font-weight: bold;
+      font-size: 20px;
+      padding-left: 5px;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    ul#menu {
+      float: right;
+      list-style: none;
+      margin: 0;
+      overflow: hidden;
+
+      li {
+        float: left;
+
+        &:hover {
+          background-color: @backgroundColor + #0A0A10;
+        }
+
+        a:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  #content {
+    margin: 30px auto;
+    opacity: 1;
+    overflow: hidden;
+    text-align: left;
+    width: 90%;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      clear: both;
+      font-family: @fontFamily;
+      font-size: @fontSize;
+      line-height: @lineHeight;
+      margin-bottom: 25px;
+    }
+
+    #login {
+      display: block;
+      margin: 0 auto;
+      width: 230px;
+    }
+
+    ul.projects {
+      list-style: none;
+      margin: 0 0 25px 0;
+
+       &>li {
+        background-color: @backgroundColor + #050509;
+        float: left;
+        font-size: @fontSize;
+        .radius(4px);
+        margin: 0 30px 30px 0;
+        width: 30%;
+        text-align: center;
+        .box-shadow(0, 0, 12px, 0.4);
+
+        div {
+          padding: 10px;
+
+          &.title {
+            background-color: @textColor;
+            color: @backgroundColor;
+            
+            a {
+              color: @backgroundColor;
+              text-decoration: none;
+            }
+
+            &.top {
+              .radius-top(4px);
+              text-transform: capitalize;
+
+              span.mini-icon {
+                margin-right: 5px;
+              }
+            }
+          }
+
+          &.info {
+            div {
+              &.total {
+                font-size: 30px;
+              }
+            }
+          }
+
+          &.yesterday {
+            padding-bottom: 15px;
+            .radius-bottom(4px);
+
+            span {
+              font-style: normal;
+              line-height: @lineHeight;
+              padding: 1px 3px;
+              .radius(4px);
+              white-space : nowrap;
+
+              &.positive {
+                background-color: @textColor - #222 + #0C0;
+                color: @backgroundColor;
+              }
+
+              &.negative {
+                background-color: @textColor - #444 + #C00;
+                color: @backgroundColor;
+              }
+            }
+          }
+        }
+
+        em {
+          background-color: #fff - @backgroundColor;
+          color: @backgroundColor;
+          font-style: normal;
+          line-height: @lineHeight;
+          padding: 1px 3px;
+          .radius(4px);
+        }
+
+        &.public {
+          .box-shadow(0, 0, 12px, 0.5, 255, 255, 0);
+          .total {
+            color: #ee0;
+          }
+        }
+
+        &:hover {
+          color: @textColor + #111;
+          background-color: @backgroundColor + #112;
+
+          .title {
+            color: @backgroundColor - #222;
+          }
+        }
+      }
+
+      &#emotions {
+        li {
+          width: 143px;
+
+          .language {
+            position: relative;
+
+            &.best {
+              border-bottom: 1px dashed @textColor - #555;
+            }
+
+            span {
+              position: absolute;
+              top: 10px;
+              left: 5px;
+            }
+          }
+        }
+      }
+    }
+
+    ul.milestones {
+      list-style: none;
+      margin: 0;
+
+      li {
+        div {
+          padding: 0;
+        }
+      }
+
+      legend {
+        border: 0;
+        font-size: @fontSize;
+        line-height: @lineHeight;
+        margin-bottom: 0;
+
+        a:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    form#languagesForm {
+      margin: 10px 0;
+
+      label {
+        color: @textColor;
+        display: inline-block;
+        margin: 0;
+      }
+
+      select {
+        margin: 0;
+        width: 80px;
+      }
+    }
+  }
+
+  #footer {
+    text-align: center;
+    margin-bottom: 15px;
+    opacity: 0.5;
+  }
+}

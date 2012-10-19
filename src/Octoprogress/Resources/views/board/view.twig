@@ -5,48 +5,45 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<ul class="projects">
     {% for project in projects %}
-    <div class="project span6">
-        <h2>{{ project.name }}</h2>
-        <ul class="milestones">
-            {% for milestone in project.milestones %}
-            <li>
-                <h3>{{ milestone.name }}
+    <li>
+        <div class="title top"><span class="mini-icon public-repo"></span><a href="http://github.com/{{ project.githubUserName }}/{{ project.name }}" title="View project on GitHub" target="_blank">{{ project.name }}</a></div>
+        <div class="yesterday">
+            <ul class="milestones">
+                {% for milestone in project.milestones %}
+                <li>
+                    <legend><a href="" title="View milestone on GitHub" target="_blank">{{ milestone.name }}</a></legend>
                     {% set total = milestone.openIssues + milestone.closedIssues %}
                     {% set percentage = milestone.closedIssues / total * 100 %}
                     <div class="progress progress-striped progress-milestone" data-percentage="{{ percentage }}">
                         <div class="bar bar-success"></div>
                     </div>
-                </h3>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </li>
     {% endfor %}
-</div>
-{% endblock %}
+</ul>
 
 {% block javascripts %}
 <script type="text/javascript">
 $(document).ready(function() {
     var maxHeight = 0;
-    $('.project').each(function() {
+    $('.projects').each(function() {
         if ($(this).height() > maxHeight) {
             maxHeight = $(this).height();
         }
-
         $('.progress-milestone', $(this)).each(function() {
             percentage = $(this).data('percentage');
             $(this).children('.bar').width(percentage + '%');
         });
-
-
     });
-
-    $('.project').height(maxHeight);
+    $('.projects').height(maxHeight);
 });
 </script>
 <script type="text/javascript">var refreshUri = "{{ path('projects_refresh') }}"</script>
 <script type="text/javascript" src="{{ app.request.basepath }}/octoprogress/js/refresh.js"></script>
+{% endblock %}
 {% endblock %}

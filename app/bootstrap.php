@@ -10,6 +10,7 @@ use Propel\Silex\PropelServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use FF\ServiceProvider\LessServiceProvider;
 
 $app = new Application();
 

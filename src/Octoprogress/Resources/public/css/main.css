@@ -1,114 +1,215 @@
 body {
-    background-color: #323334;
+  background-color: #333;
+  color: #b5b5bc;
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
 }
-
-.navbar .container {
-    width: 1170px;
+body a {
+  color: #b0b0ee;
+  text-decoration: none;
 }
-
-.navbar img.avatar {
-    width: 22px;
-    height: 22px;
-    border-radius: 3px;
-    border: 1px solid #181920;
-    margin-right: 6px;
+body a:hover {
+  color: #b0b0ee;
+  text-decoration: underline;
 }
-
-.masthead .btn {
-    padding: 14px 24px;
-    font-size: 24px;
-    font-weight: 200;
-    color: white;
-    border: 0;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25);
-    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25);
-    -webkit-transition: none;
-    -moz-transition: none;
-    transition: none;
-    margin: 170px auto 0;
-    display: block;
-    width: 280px;
+body #header {
+  background-color: #232329;
+  overflow: hidden;
 }
-
-.vcard img {
-    padding: 5px;
-    background: white;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-    width: 210px;
-    height: 210px;
-    border: 1px solid #DDD;
+body #header .mega-icon {
+  color: #b0b0ee;
+  float: left;
+  font-size: 24px;
+  margin: 7px 0 0 10px;
 }
-
-.vcard .details {
-    width: 210px;
-    list-style: none;
-    margin: 1em 0 0;
-    padding: 1em 5px;
-    border: 1px solid #DDD;
-    border-width: 1px 0;
+body #header a {
+  display: inline-block;
+  padding: 10px;
 }
-
-.vcard .details li {
-    margin: .3em 0 0;
+body #header a#octoboard {
+  float: left;
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 5px;
 }
-
-.vcard .details i {
-    color: #DDD;
-    margin: 0 5px 0 0;
+body #header a#octoboard:hover {
+  text-decoration: none;
 }
-
-.repositories .list {
-    list-style: none;
-    margin: 0;
-    padding: 0 5px;
-    border: 1px solid #EEE;
-    border-width: 0 0 1px;
+body #header ul#menu {
+  float: right;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
 }
-
-.repositories .list li {
-    border: 1px solid #EEE;
-    border-width: 1px 0 0;
+body #header ul#menu li {
+  float: left;
 }
-
-.repositories .list li blockquote {
-    color: #777;
+body #header ul#menu li:hover {
+  background-color: #3d3d43;
 }
-
-.project {
-    background-color: #282930;
-    border: 1px solid #222;
-    margin-left: 28px;
-    border-radius: 4px;
-    margin-bottom: 30px;
+body #header ul#menu li a:hover {
+  text-decoration: none;
 }
-
-.project h2 {
-    font: bold 17px/20px Arial;
-    padding: 12px 16px;
-    color: #f2f2f2;
-    margin: 0;
-    background-color: #181920;
-    border-bottom: 1px solid #202020;
+body #content {
+  margin: 30px auto;
+  opacity: 1;
+  overflow: hidden;
+  text-align: left;
+  width: 90%;
 }
-
-.project .milestones {
-    list-style: none;
-    font: bold 17px/20px Arial;
+body #content h2 {
+  margin-bottom: 20px;
 }
-
-.project .milestones li h3 {
-    margin: 0px;
-    color: #d3d4d5;
-    font: bold 15px/20px Arial;
-    padding: 10px 16px 10px 0;
+body #content p {
+  clear: both;
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 25px;
+  margin-bottom: 25px;
 }
-
-.project .progress {
-    float: right;
-    width: 140px;
-    margin-right: 0px;
+body #content #login {
+  display: block;
+  margin: 0 auto;
+  width: 230px;
+}
+body #content ul.projects {
+  list-style: none;
+  margin: 0 0 25px 0;
+}
+body #content ul.projects>li {
+  background-color: #38383c;
+  float: left;
+  font-size: 14px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  margin: 0 30px 30px 0;
+  width: 30%;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  -webkit-box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  -moz-box-shadow: 0 0 12px rgba(0,0,0,0.4);
+}
+body #content ul.projects>li div {
+  padding: 10px;
+}
+body #content ul.projects>li div.title {
+  background-color: #b5b5bc;
+  color: #333;
+}
+body #content ul.projects>li div.title a {
+  color: #333;
+  text-decoration: none;
+}
+body #content ul.projects>li div.title.top {
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-topleft: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  text-transform: capitalize;
+}
+body #content ul.projects>li div.title.top span.mini-icon {
+  margin-right: 5px;
+}
+body #content ul.projects>li div.info div.total {
+  font-size: 30px;
+}
+body #content ul.projects>li div.yesterday {
+  padding-bottom: 15px;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+body #content ul.projects>li div.yesterday span {
+  font-style: normal;
+  line-height: 25px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  white-space: nowrap;
+}
+body #content ul.projects>li div.yesterday span.positive {
+  background-color: #93ff9a;
+  color: #333;
+}
+body #content ul.projects>li div.yesterday span.negative {
+  background-color: #ff7178;
+  color: #333;
+}
+body #content ul.projects>li em {
+  background-color: #cccccc;
+  color: #333;
+  font-style: normal;
+  line-height: 25px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+body #content ul.projects>li.public {
+  box-shadow: 0 0 12px rgba(255,255,0,0.5);
+  -webkit-box-shadow: 0 0 12px rgba(255,255,0,0.5);
+  -moz-box-shadow: 0 0 12px rgba(255,255,0,0.5);
+}
+body #content ul.projects>li.public .total {
+  color: #ee0;
+}
+body #content ul.projects>li:hover {
+  color: #c6c6cd;
+  background-color: #444455;
+}
+body #content ul.projects>li:hover .title {
+  color: #111111;
+}
+body #content ul.projects#emotions li {
+  width: 143px;
+}
+body #content ul.projects#emotions li .language {
+  position: relative;
+}
+body #content ul.projects#emotions li .language.best {
+  border-bottom: 1px dashed #606067;
+}
+body #content ul.projects#emotions li .language span {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+}
+body #content ul.milestones {
+  list-style: none;
+  margin: 0;
+}
+body #content ul.milestones li div {
+  padding: 0;
+}
+body #content ul.milestones legend {
+  border: 0;
+  font-size: 14px;
+  line-height: 25px;
+  margin-bottom: 0;
+}
+body #content ul.milestones legend a:hover {
+  text-decoration: none;
+}
+body #content form#languagesForm {
+  margin: 10px 0;
+}
+body #content form#languagesForm label {
+  color: #b5b5bc;
+  display: inline-block;
+  margin: 0;
+}
+body #content form#languagesForm select {
+  margin: 0;
+  width: 80px;
+}
+body #footer {
+  text-align: center;
+  margin-bottom: 15px;
+  opacity: 0.5;
 }
