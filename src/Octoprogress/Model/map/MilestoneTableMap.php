@@ -47,6 +47,7 @@ class MilestoneTableMap extends TableMap
         $this->addColumn('GITHUB_ID', 'GithubId', 'INTEGER', false, null, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
         $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
+        $this->addColumn('NUMBER', 'Number', 'INTEGER', false, null, null);
         $this->addColumn('STATE', 'State', 'VARCHAR', false, 255, null);
         $this->addColumn('OPEN_ISSUES', 'OpenIssues', 'INTEGER', false, null, null);
         $this->addColumn('CLOSED_ISSUES', 'ClosedIssues', 'INTEGER', false, null, null);

@@ -78,6 +78,12 @@ abstract class BaseMilestone extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the number field.
+     * @var        int
+     */
+    protected $number;
+
+    /**
      * The value for the state field.
      * @var        string
      */
@@ -180,6 +186,16 @@ abstract class BaseMilestone extends BaseObject implements Persistent
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Get the [number] column value.
+     *
+     * @return int
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 
     /**
@@ -433,6 +449,27 @@ abstract class BaseMilestone extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [number] column.
+     *
+     * @param int $v new value
+     * @return Milestone The current object (for fluent API support)
+     */
+    public function setNumber($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->number !== $v) {
+            $this->number = $v;
+            $this->modifiedColumns[] = MilestonePeer::NUMBER;
+        }
+
+
+        return $this;
+    } // setNumber()
+
+    /**
      * Set the value of [state] column.
      *
      * @param string $v new value
@@ -601,12 +638,13 @@ abstract class BaseMilestone extends BaseObject implements Persistent
             $this->github_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->state = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->open_issues = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->closed_issues = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->due_date = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->number = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->state = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->open_issues = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->closed_issues = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->due_date = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -615,7 +653,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 11; // 11 = MilestonePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = MilestonePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Milestone object", $e);
@@ -869,6 +907,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         if ($this->isColumnModified(MilestonePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
+        if ($this->isColumnModified(MilestonePeer::NUMBER)) {
+            $modifiedColumns[':p' . $index++]  = '`NUMBER`';
+        }
         if ($this->isColumnModified(MilestonePeer::STATE)) {
             $modifiedColumns[':p' . $index++]  = '`STATE`';
         }
@@ -912,6 +953,9 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                         break;
                     case '`DESCRIPTION`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`NUMBER`':
+                        $stmt->bindValue($identifier, $this->number, PDO::PARAM_INT);
                         break;
                     case '`STATE`':
                         $stmt->bindValue($identifier, $this->state, PDO::PARAM_STR);
@@ -1093,21 +1137,24 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 5:
-                return $this->getState();
+                return $this->getNumber();
                 break;
             case 6:
-                return $this->getOpenIssues();
+                return $this->getState();
                 break;
             case 7:
-                return $this->getClosedIssues();
+                return $this->getOpenIssues();
                 break;
             case 8:
-                return $this->getDueDate();
+                return $this->getClosedIssues();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getDueDate();
                 break;
             case 10:
+                return $this->getCreatedAt();
+                break;
+            case 11:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1144,12 +1191,13 @@ abstract class BaseMilestone extends BaseObject implements Persistent
             $keys[2] => $this->getGithubId(),
             $keys[3] => $this->getName(),
             $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getState(),
-            $keys[6] => $this->getOpenIssues(),
-            $keys[7] => $this->getClosedIssues(),
-            $keys[8] => $this->getDueDate(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
+            $keys[5] => $this->getNumber(),
+            $keys[6] => $this->getState(),
+            $keys[7] => $this->getOpenIssues(),
+            $keys[8] => $this->getClosedIssues(),
+            $keys[9] => $this->getDueDate(),
+            $keys[10] => $this->getCreatedAt(),
+            $keys[11] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aProject) {
@@ -1205,21 +1253,24 @@ abstract class BaseMilestone extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 5:
-                $this->setState($value);
+                $this->setNumber($value);
                 break;
             case 6:
-                $this->setOpenIssues($value);
+                $this->setState($value);
                 break;
             case 7:
-                $this->setClosedIssues($value);
+                $this->setOpenIssues($value);
                 break;
             case 8:
-                $this->setDueDate($value);
+                $this->setClosedIssues($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setDueDate($value);
                 break;
             case 10:
+                $this->setCreatedAt($value);
+                break;
+            case 11:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1251,12 +1302,13 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setGithubId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setState($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setOpenIssues($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setClosedIssues($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setDueDate($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[5], $arr)) $this->setNumber($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setState($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setOpenIssues($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setClosedIssues($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setDueDate($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
     }
 
     /**
@@ -1273,6 +1325,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         if ($this->isColumnModified(MilestonePeer::GITHUB_ID)) $criteria->add(MilestonePeer::GITHUB_ID, $this->github_id);
         if ($this->isColumnModified(MilestonePeer::NAME)) $criteria->add(MilestonePeer::NAME, $this->name);
         if ($this->isColumnModified(MilestonePeer::DESCRIPTION)) $criteria->add(MilestonePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(MilestonePeer::NUMBER)) $criteria->add(MilestonePeer::NUMBER, $this->number);
         if ($this->isColumnModified(MilestonePeer::STATE)) $criteria->add(MilestonePeer::STATE, $this->state);
         if ($this->isColumnModified(MilestonePeer::OPEN_ISSUES)) $criteria->add(MilestonePeer::OPEN_ISSUES, $this->open_issues);
         if ($this->isColumnModified(MilestonePeer::CLOSED_ISSUES)) $criteria->add(MilestonePeer::CLOSED_ISSUES, $this->closed_issues);
@@ -1346,6 +1399,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         $copyObj->setGithubId($this->getGithubId());
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setNumber($this->getNumber());
         $copyObj->setState($this->getState());
         $copyObj->setOpenIssues($this->getOpenIssues());
         $copyObj->setClosedIssues($this->getClosedIssues());
@@ -1471,6 +1525,7 @@ abstract class BaseMilestone extends BaseObject implements Persistent
         $this->github_id = null;
         $this->name = null;
         $this->description = null;
+        $this->number = null;
         $this->state = null;
         $this->open_issues = null;
         $this->closed_issues = null;

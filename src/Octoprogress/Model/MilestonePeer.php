@@ -54,6 +54,7 @@ class MilestonePeer extends BaseMilestonePeer
                     ->setGithubId($milestoneFromAPI['id'])
                     ->setName($milestoneFromAPI['title'])
                     ->setDescription($milestoneFromAPI['description'])
+                    ->setNumber($milestoneFromAPI['number'])
                     ->setState($milestoneFromAPI['state'])
                     ->setOpenIssues($milestoneFromAPI['open_issues'])
                     ->setClosedIssues($milestoneFromAPI['closed_issues'])

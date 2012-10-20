@@ -37,13 +37,13 @@ abstract class BaseProjectPeer
     const TM_CLASS = 'ProjectTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the ID field */
     const ID = 'project.ID';
@@ -62,6 +62,9 @@ abstract class BaseProjectPeer
 
     /** the column name for the DESCRIPTION field */
     const DESCRIPTION = 'project.DESCRIPTION';
+
+    /** the column name for the URL field */
+    const URL = 'project.URL';
 
     /** the column name for the ACTIVE field */
     const ACTIVE = 'project.ACTIVE';
@@ -91,12 +94,12 @@ abstract class BaseProjectPeer
      * e.g. ProjectPeer::$fieldNames[ProjectPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'GithubId', 'GithubUserName', 'Name', 'Description', 'Active', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'githubId', 'githubUserName', 'name', 'description', 'active', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (ProjectPeer::ID, ProjectPeer::USER_ID, ProjectPeer::GITHUB_ID, ProjectPeer::GITHUB_USER_NAME, ProjectPeer::NAME, ProjectPeer::DESCRIPTION, ProjectPeer::ACTIVE, ProjectPeer::CREATED_AT, ProjectPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'GITHUB_ID', 'GITHUB_USER_NAME', 'NAME', 'DESCRIPTION', 'ACTIVE', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'github_id', 'github_user_name', 'name', 'description', 'active', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'GithubId', 'GithubUserName', 'Name', 'Description', 'Url', 'Active', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'githubId', 'githubUserName', 'name', 'description', 'url', 'active', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (ProjectPeer::ID, ProjectPeer::USER_ID, ProjectPeer::GITHUB_ID, ProjectPeer::GITHUB_USER_NAME, ProjectPeer::NAME, ProjectPeer::DESCRIPTION, ProjectPeer::URL, ProjectPeer::ACTIVE, ProjectPeer::CREATED_AT, ProjectPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'GITHUB_ID', 'GITHUB_USER_NAME', 'NAME', 'DESCRIPTION', 'URL', 'ACTIVE', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'github_id', 'github_user_name', 'name', 'description', 'url', 'active', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -106,12 +109,12 @@ abstract class BaseProjectPeer
      * e.g. ProjectPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'GithubId' => 2, 'GithubUserName' => 3, 'Name' => 4, 'Description' => 5, 'Active' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'githubId' => 2, 'githubUserName' => 3, 'name' => 4, 'description' => 5, 'active' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (ProjectPeer::ID => 0, ProjectPeer::USER_ID => 1, ProjectPeer::GITHUB_ID => 2, ProjectPeer::GITHUB_USER_NAME => 3, ProjectPeer::NAME => 4, ProjectPeer::DESCRIPTION => 5, ProjectPeer::ACTIVE => 6, ProjectPeer::CREATED_AT => 7, ProjectPeer::UPDATED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'GITHUB_ID' => 2, 'GITHUB_USER_NAME' => 3, 'NAME' => 4, 'DESCRIPTION' => 5, 'ACTIVE' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'github_id' => 2, 'github_user_name' => 3, 'name' => 4, 'description' => 5, 'active' => 6, 'created_at' => 7, 'updated_at' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'GithubId' => 2, 'GithubUserName' => 3, 'Name' => 4, 'Description' => 5, 'Url' => 6, 'Active' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'githubId' => 2, 'githubUserName' => 3, 'name' => 4, 'description' => 5, 'url' => 6, 'active' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
+        BasePeer::TYPE_COLNAME => array (ProjectPeer::ID => 0, ProjectPeer::USER_ID => 1, ProjectPeer::GITHUB_ID => 2, ProjectPeer::GITHUB_USER_NAME => 3, ProjectPeer::NAME => 4, ProjectPeer::DESCRIPTION => 5, ProjectPeer::URL => 6, ProjectPeer::ACTIVE => 7, ProjectPeer::CREATED_AT => 8, ProjectPeer::UPDATED_AT => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'GITHUB_ID' => 2, 'GITHUB_USER_NAME' => 3, 'NAME' => 4, 'DESCRIPTION' => 5, 'URL' => 6, 'ACTIVE' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'github_id' => 2, 'github_user_name' => 3, 'name' => 4, 'description' => 5, 'url' => 6, 'active' => 7, 'created_at' => 8, 'updated_at' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -191,6 +194,7 @@ abstract class BaseProjectPeer
             $criteria->addSelectColumn(ProjectPeer::GITHUB_USER_NAME);
             $criteria->addSelectColumn(ProjectPeer::NAME);
             $criteria->addSelectColumn(ProjectPeer::DESCRIPTION);
+            $criteria->addSelectColumn(ProjectPeer::URL);
             $criteria->addSelectColumn(ProjectPeer::ACTIVE);
             $criteria->addSelectColumn(ProjectPeer::CREATED_AT);
             $criteria->addSelectColumn(ProjectPeer::UPDATED_AT);
@@ -201,6 +205,7 @@ abstract class BaseProjectPeer
             $criteria->addSelectColumn($alias . '.GITHUB_USER_NAME');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.DESCRIPTION');
+            $criteria->addSelectColumn($alias . '.URL');
             $criteria->addSelectColumn($alias . '.ACTIVE');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');

@@ -46,6 +46,7 @@
         <column name="github_user_name" type="varchar" />
         <column name="name" type="varchar" />
         <column name="description" type="varchar" />
+        <column name="url" type="varchar" />
         <column name="active" type="boolean" defaultValue="false" />
 
         <foreign-key foreignTable="user">
@@ -61,6 +62,7 @@
         <column name="github_id" type="integer" />
         <column name="name" type="varchar" />
         <column name="description" type="varchar" />
+        <column name="number" type="integer" />
         <column name="state" type="varchar" />
         <column name="open_issues" type="integer" />
         <column name="closed_issues" type="integer" />

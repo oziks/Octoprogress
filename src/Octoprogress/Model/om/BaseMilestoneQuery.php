@@ -27,6 +27,7 @@ use Octoprogress\Model\Project;
  * @method MilestoneQuery orderByGithubId($order = Criteria::ASC) Order by the github_id column
  * @method MilestoneQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method MilestoneQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method MilestoneQuery orderByNumber($order = Criteria::ASC) Order by the number column
  * @method MilestoneQuery orderByState($order = Criteria::ASC) Order by the state column
  * @method MilestoneQuery orderByOpenIssues($order = Criteria::ASC) Order by the open_issues column
  * @method MilestoneQuery orderByClosedIssues($order = Criteria::ASC) Order by the closed_issues column
@@ -39,6 +40,7 @@ use Octoprogress\Model\Project;
  * @method MilestoneQuery groupByGithubId() Group by the github_id column
  * @method MilestoneQuery groupByName() Group by the name column
  * @method MilestoneQuery groupByDescription() Group by the description column
+ * @method MilestoneQuery groupByNumber() Group by the number column
  * @method MilestoneQuery groupByState() Group by the state column
  * @method MilestoneQuery groupByOpenIssues() Group by the open_issues column
  * @method MilestoneQuery groupByClosedIssues() Group by the closed_issues column
@@ -61,6 +63,7 @@ use Octoprogress\Model\Project;
  * @method Milestone findOneByGithubId(int $github_id) Return the first Milestone filtered by the github_id column
  * @method Milestone findOneByName(string $name) Return the first Milestone filtered by the name column
  * @method Milestone findOneByDescription(string $description) Return the first Milestone filtered by the description column
+ * @method Milestone findOneByNumber(int $number) Return the first Milestone filtered by the number column
  * @method Milestone findOneByState(string $state) Return the first Milestone filtered by the state column
  * @method Milestone findOneByOpenIssues(int $open_issues) Return the first Milestone filtered by the open_issues column
  * @method Milestone findOneByClosedIssues(int $closed_issues) Return the first Milestone filtered by the closed_issues column
@@ -73,6 +76,7 @@ use Octoprogress\Model\Project;
  * @method array findByGithubId(int $github_id) Return Milestone objects filtered by the github_id column
  * @method array findByName(string $name) Return Milestone objects filtered by the name column
  * @method array findByDescription(string $description) Return Milestone objects filtered by the description column
+ * @method array findByNumber(int $number) Return Milestone objects filtered by the number column
  * @method array findByState(string $state) Return Milestone objects filtered by the state column
  * @method array findByOpenIssues(int $open_issues) Return Milestone objects filtered by the open_issues column
  * @method array findByClosedIssues(int $closed_issues) Return Milestone objects filtered by the closed_issues column
@@ -182,7 +186,7 @@ abstract class BaseMilestoneQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `PROJECT_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `STATE`, `OPEN_ISSUES`, `CLOSED_ISSUES`, `DUE_DATE`, `CREATED_AT`, `UPDATED_AT` FROM `milestone` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `PROJECT_ID`, `GITHUB_ID`, `NAME`, `DESCRIPTION`, `NUMBER`, `STATE`, `OPEN_ISSUES`, `CLOSED_ISSUES`, `DUE_DATE`, `CREATED_AT`, `UPDATED_AT` FROM `milestone` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -438,6 +442,47 @@ abstract class BaseMilestoneQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(MilestonePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the number column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNumber(1234); // WHERE number = 1234
+     * $query->filterByNumber(array(12, 34)); // WHERE number IN (12, 34)
+     * $query->filterByNumber(array('min' => 12)); // WHERE number > 12
+     * </code>
+     *
+     * @param     mixed $number The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return MilestoneQuery The current query, for fluid interface
+     */
+    public function filterByNumber($number = null, $comparison = null)
+    {
+        if (is_array($number)) {
+            $useMinMax = false;
+            if (isset($number['min'])) {
+                $this->addUsingAlias(MilestonePeer::NUMBER, $number['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($number['max'])) {
+                $this->addUsingAlias(MilestonePeer::NUMBER, $number['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(MilestonePeer::NUMBER, $number, $comparison);
     }
 
     /**

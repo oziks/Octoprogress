@@ -88,6 +88,12 @@ abstract class BaseProject extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the url field.
+     * @var        string
+     */
+    protected $url;
+
+    /**
      * The value for the active field.
      * Note: this column has a database default value of: false
      * @var        boolean
@@ -216,6 +222,16 @@ abstract class BaseProject extends BaseObject implements Persistent
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Get the [url] column value.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**
@@ -433,6 +449,27 @@ abstract class BaseProject extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Set the value of [url] column.
+     *
+     * @param string $v new value
+     * @return Project The current object (for fluent API support)
+     */
+    public function setUrl($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->url !== $v) {
+            $this->url = $v;
+            $this->modifiedColumns[] = ProjectPeer::URL;
+        }
+
+
+        return $this;
+    } // setUrl()
+
+    /**
      * Sets the value of the [active] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -549,9 +586,10 @@ abstract class BaseProject extends BaseObject implements Persistent
             $this->github_user_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->active = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->url = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->active = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -560,7 +598,7 @@ abstract class BaseProject extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = ProjectPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = ProjectPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Project object", $e);
@@ -837,6 +875,9 @@ abstract class BaseProject extends BaseObject implements Persistent
         if ($this->isColumnModified(ProjectPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
+        if ($this->isColumnModified(ProjectPeer::URL)) {
+            $modifiedColumns[':p' . $index++]  = '`URL`';
+        }
         if ($this->isColumnModified(ProjectPeer::ACTIVE)) {
             $modifiedColumns[':p' . $index++]  = '`ACTIVE`';
         }
@@ -874,6 +915,9 @@ abstract class BaseProject extends BaseObject implements Persistent
                         break;
                     case '`DESCRIPTION`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`URL`':
+                        $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
                     case '`ACTIVE`':
                         $stmt->bindValue($identifier, (int) $this->active, PDO::PARAM_INT);
@@ -1057,12 +1101,15 @@ abstract class BaseProject extends BaseObject implements Persistent
                 return $this->getDescription();
                 break;
             case 6:
-                return $this->getActive();
+                return $this->getUrl();
                 break;
             case 7:
-                return $this->getCreatedAt();
+                return $this->getActive();
                 break;
             case 8:
+                return $this->getCreatedAt();
+                break;
+            case 9:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1100,9 +1147,10 @@ abstract class BaseProject extends BaseObject implements Persistent
             $keys[3] => $this->getGithubUserName(),
             $keys[4] => $this->getName(),
             $keys[5] => $this->getDescription(),
-            $keys[6] => $this->getActive(),
-            $keys[7] => $this->getCreatedAt(),
-            $keys[8] => $this->getUpdatedAt(),
+            $keys[6] => $this->getUrl(),
+            $keys[7] => $this->getActive(),
+            $keys[8] => $this->getCreatedAt(),
+            $keys[9] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -1164,12 +1212,15 @@ abstract class BaseProject extends BaseObject implements Persistent
                 $this->setDescription($value);
                 break;
             case 6:
-                $this->setActive($value);
+                $this->setUrl($value);
                 break;
             case 7:
-                $this->setCreatedAt($value);
+                $this->setActive($value);
                 break;
             case 8:
+                $this->setCreatedAt($value);
+                break;
+            case 9:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1202,9 +1253,10 @@ abstract class BaseProject extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setGithubUserName($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setName($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setActive($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUrl($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setActive($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
     }
 
     /**
@@ -1222,6 +1274,7 @@ abstract class BaseProject extends BaseObject implements Persistent
         if ($this->isColumnModified(ProjectPeer::GITHUB_USER_NAME)) $criteria->add(ProjectPeer::GITHUB_USER_NAME, $this->github_user_name);
         if ($this->isColumnModified(ProjectPeer::NAME)) $criteria->add(ProjectPeer::NAME, $this->name);
         if ($this->isColumnModified(ProjectPeer::DESCRIPTION)) $criteria->add(ProjectPeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(ProjectPeer::URL)) $criteria->add(ProjectPeer::URL, $this->url);
         if ($this->isColumnModified(ProjectPeer::ACTIVE)) $criteria->add(ProjectPeer::ACTIVE, $this->active);
         if ($this->isColumnModified(ProjectPeer::CREATED_AT)) $criteria->add(ProjectPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(ProjectPeer::UPDATED_AT)) $criteria->add(ProjectPeer::UPDATED_AT, $this->updated_at);
@@ -1293,6 +1346,7 @@ abstract class BaseProject extends BaseObject implements Persistent
         $copyObj->setGithubUserName($this->getGithubUserName());
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setUrl($this->getUrl());
         $copyObj->setActive($this->getActive());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1645,6 +1699,7 @@ abstract class BaseProject extends BaseObject implements Persistent
         $this->github_user_name = null;
         $this->name = null;
         $this->description = null;
+        $this->url = null;
         $this->active = null;
         $this->created_at = null;
         $this->updated_at = null;

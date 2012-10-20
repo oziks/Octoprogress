@@ -51,6 +51,7 @@ class ProjectPeer extends BaseProjectPeer
                 ->setGithubUserName($projectFromAPI['owner']['login'])
                 ->setName($projectFromAPI['name'])
                 ->setDescription($projectFromAPI['description'])
+                ->setUrl($projectFromAPI['html_url'])
                 ->save()
             ;
 

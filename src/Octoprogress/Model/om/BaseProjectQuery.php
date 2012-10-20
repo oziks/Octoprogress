@@ -29,6 +29,7 @@ use Octoprogress\Model\User;
  * @method ProjectQuery orderByGithubUserName($order = Criteria::ASC) Order by the github_user_name column
  * @method ProjectQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method ProjectQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method ProjectQuery orderByUrl($order = Criteria::ASC) Order by the url column
  * @method ProjectQuery orderByActive($order = Criteria::ASC) Order by the active column
  * @method ProjectQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method ProjectQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -39,6 +40,7 @@ use Octoprogress\Model\User;
  * @method ProjectQuery groupByGithubUserName() Group by the github_user_name column
  * @method ProjectQuery groupByName() Group by the name column
  * @method ProjectQuery groupByDescription() Group by the description column
+ * @method ProjectQuery groupByUrl() Group by the url column
  * @method ProjectQuery groupByActive() Group by the active column
  * @method ProjectQuery groupByCreatedAt() Group by the created_at column
  * @method ProjectQuery groupByUpdatedAt() Group by the updated_at column
@@ -63,6 +65,7 @@ use Octoprogress\Model\User;
  * @method Project findOneByGithubUserName(string $github_user_name) Return the first Project filtered by the github_user_name column
  * @method Project findOneByName(string $name) Return the first Project filtered by the name column
  * @method Project findOneByDescription(string $description) Return the first Project filtered by the description column
+ * @method Project findOneByUrl(string $url) Return the first Project filtered by the url column
  * @method Project findOneByActive(boolean $active) Return the first Project filtered by the active column
  * @method Project findOneByCreatedAt(string $created_at) Return the first Project filtered by the created_at column
  * @method Project findOneByUpdatedAt(string $updated_at) Return the first Project filtered by the updated_at column
@@ -73,6 +76,7 @@ use Octoprogress\Model\User;
  * @method array findByGithubUserName(string $github_user_name) Return Project objects filtered by the github_user_name column
  * @method array findByName(string $name) Return Project objects filtered by the name column
  * @method array findByDescription(string $description) Return Project objects filtered by the description column
+ * @method array findByUrl(string $url) Return Project objects filtered by the url column
  * @method array findByActive(boolean $active) Return Project objects filtered by the active column
  * @method array findByCreatedAt(string $created_at) Return Project objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return Project objects filtered by the updated_at column
@@ -179,7 +183,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `GITHUB_USER_NAME`, `NAME`, `DESCRIPTION`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USER_ID`, `GITHUB_ID`, `GITHUB_USER_NAME`, `NAME`, `DESCRIPTION`, `URL`, `ACTIVE`, `CREATED_AT`, `UPDATED_AT` FROM `project` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -464,6 +468,35 @@ abstract class BaseProjectQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProjectPeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the url column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
+     * $query->filterByUrl('%fooValue%'); // WHERE url LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $url The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProjectQuery The current query, for fluid interface
+     */
+    public function filterByUrl($url = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($url)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $url)) {
+                $url = str_replace('*', '%', $url);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProjectPeer::URL, $url, $comparison);
     }
 
     /**
