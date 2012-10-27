@@ -123,7 +123,7 @@ body {
           &.title {
             background-color: @textColor;
             color: @backgroundColor;
-            
+
             a {
               color: @backgroundColor;
               text-decoration: none;
@@ -260,5 +260,29 @@ body {
     text-align: center;
     margin-bottom: 15px;
     opacity: 0.5;
+  }
+}
+
+#form_projects {
+  clear: both;
+  width: 100%;
+  overflow: auto;
+  margin-bottom: 20px;
+
+  .field {
+    float: left;
+    width: 30%;
+    margin-bottom: 10px;
+
+    .toggle-button {
+      margin-right: 10px;
+    }
+
+    label {
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      line-height: 26px;
+    }
   }
 }

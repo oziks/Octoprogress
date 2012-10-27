@@ -1,14 +1,33 @@
 {% extends "layout.twig" %}
 
 {% block title %}
-{{ user.login }} repositories
+{{ user.login }} projects
 {% endblock %}
 
 {% block content %}
-<h2>Repositories</h2>
-<a href="{{ path('projects_refresh') }}">Refresh</a>
-<form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <input class="btn btn-success" type="submit" value="Save"/>
-</form>
+    <h2>Projects list (<a href="{{ path('projects_refresh') }}">refresh</a>)</h2>
+    <blockquote>Select the projects you want to appear in <a href="{{ path('board')}}">your dashboard</a>.</blockquote>
+    <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form.projects) }}
+        {{ form_rest(form) }}
+        <input class="btn btn-success" type="submit" value="Save"/>
+    </form>
+{% endblock %}
+
+{% block javascripts %} {{ parent() }}
+<script src="{{ app.request.basepath }}/octoprogress/js/jquery.toggle.buttons.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.toggle-button').toggleButtons({
+            width: 130,
+            style: {
+                enabled: "success",
+            },
+            label: {
+                enabled: "Enable",
+                disabled: "Disable"
+            }
+        });
+    });
+</script>
 {% endblock %}
