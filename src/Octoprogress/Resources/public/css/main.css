@@ -66,9 +66,15 @@ body #content p {
   line-height: 25px;
   margin-bottom: 25px;
 }
-body #content #login {
+body #content #home {
+  text-align: center;
+}
+body #content #home h1 {
+  margin-bottom: 5px;
+}
+body #content #home #login {
   display: block;
-  margin: 0 auto;
+  margin: 40px auto 0;
   width: 230px;
 }
 body #content ul.projects {
