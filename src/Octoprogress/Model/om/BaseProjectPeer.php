@@ -9,6 +9,7 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
+use Octoprogress\Model\MilestonePeer;
 use Octoprogress\Model\Project;
 use Octoprogress\Model\ProjectPeer;
 use Octoprogress\Model\UserPeer;
@@ -408,6 +409,9 @@ abstract class BaseProjectPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in MilestonePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        MilestonePeer::clearInstancePool();
     }
 
     /**

@@ -61,7 +61,7 @@ class ProjectTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('User', 'Octoprogress\\Model\\User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-        $this->addRelation('Milestone', 'Octoprogress\\Model\\Milestone', RelationMap::ONE_TO_MANY, array('id' => 'project_id', ), null, null, 'Milestones');
+        $this->addRelation('Milestone', 'Octoprogress\\Model\\Milestone', RelationMap::ONE_TO_MANY, array('id' => 'project_id', ), 'CASCADE', null, 'Milestones');
     } // buildRelations()
 
     /**

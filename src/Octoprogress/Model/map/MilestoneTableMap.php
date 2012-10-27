@@ -62,7 +62,7 @@ class MilestoneTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Project', 'Octoprogress\\Model\\Project', RelationMap::MANY_TO_ONE, array('project_id' => 'id', ), null, null);
+        $this->addRelation('Project', 'Octoprogress\\Model\\Project', RelationMap::MANY_TO_ONE, array('project_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
