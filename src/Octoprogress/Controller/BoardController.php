@@ -30,6 +30,7 @@ class BoardController implements ControllerProviderInterface
 
             $projects = ProjectQuery::create()
                 ->rightJoinWithMilestone()
+                ->filterByUserId($user->getId())
                 ->find()
             ;
 
