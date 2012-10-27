@@ -5,45 +5,22 @@
 {% endblock %}
 
 {% block content %}
-<ul class="projects">
-    {% for project in projects %}
-    <li>
-        <div class="title top"><span class="mini-icon public-repo"></span><a href="{{ project.url }}" title="View project on GitHub" target="_blank">{{ project.name }}</a></div>
-        <div class="yesterday">
-            <ul class="milestones">
-                {% for milestone in project.milestones %}
-                <li>
-                    <legend><a href="{{ project.url }}/issues?milestone={{ milestone.number }}" title="View milestone on GitHub" target="_blank">{{ milestone.name }}</a></legend>
-                    {% set total = milestone.openIssues + milestone.closedIssues %}
-                    {% set percentage = milestone.closedIssues / total * 100 %}
-                    <div class="progress progress-striped progress-milestone" data-percentage="{{ percentage }}">
-                        <div class="bar bar-success"></div>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </li>
-    {% endfor %}
-</ul>
+<div id="loader"></div>
 {% endblock %}
 
 {% block javascripts %} {{ parent() }}
 <script type="text/javascript">
-$(document).ready(function() {
-    var maxHeight = 0;
-    $('.projects').each(function() {
-        if ($(this).height() > maxHeight) {
-            maxHeight = $(this).height();
-        }
-        $('.progress-milestone', $(this)).each(function() {
-            percentage = $(this).data('percentage');
-            $(this).children('.bar').width(percentage + '%');
-        });
-    });
-    $('.projects').height(maxHeight);
-});
+var opts = {
+  radius: 24,
+  color: '#FFF',
+};
+
+var target = document.getElementById('loader');
+var spinner = new Spinner(opts).spin(target);
+
+var refreshUri = "{{ path('board_refresh') }}";
 </script>
-<script type="text/javascript">var refreshUri = "{{ path('projects_refresh') }}"</script>
-<script type="text/javascript" src="{{ app.request.basepath }}/octoprogress/js/refresh.js"></script>
+
+<script src="{{ app.request.basepath }}/octoprogress/js/refresh.js"></script>
+
 {% endblock %}

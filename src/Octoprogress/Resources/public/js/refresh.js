@@ -1,7 +1,5 @@
 $(document).ready(function() {
-    $.get(refreshUri, function() {
-         setTimeout(function () {
-            location.reload();
-          }, 60 * 3 * 1000);
+    $.post(refreshUri, function(html) {
+        $('#content').html(html);
     });
 });

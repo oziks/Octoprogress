@@ -240,3 +240,14 @@ body #footer {
   color: white;
   line-height: 26px;
 }
+#loader {
+  width: 350px;
+  height: 150px;
+  margin: auto;
+  position: relative;
+}
+#loader::after {
+  position: absolute;
+  bottom: 0;
+  content: "Generating data for the first time. Hang tight for a moment...";
+}

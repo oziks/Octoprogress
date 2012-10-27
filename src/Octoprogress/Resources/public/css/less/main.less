@@ -287,3 +287,16 @@ body {
     }
   }
 }
+
+#loader {
+  width: 350px;
+  height: 150px;
+  margin: auto;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    content: "Generating data for the first time. Hang tight for a moment...";
+  }
+}
