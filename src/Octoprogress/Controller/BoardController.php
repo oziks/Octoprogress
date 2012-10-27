@@ -34,6 +34,7 @@ class BoardController implements ControllerProviderInterface
             ;
 
             return $app['twig']->render('board/view.twig', array(
+                'selected_menu' => 'board',
                 'user'  => $user,
                 'projects'  => $projects,
             ));
