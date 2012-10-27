@@ -35,5 +35,8 @@
         <script src="{{ app.request.basepath }}/octoprogress/js/jquery.js"></script>
         <script src="{{ app.request.basepath }}/octoprogress/js/bootstrap.js"></script>
         {% block javascripts %}{% endblock %}
+        {% if app.debug == 0 %}
+        <link href="{{ app.request.basepath }}/octoprogress/js/analytics.js" rel="stylesheet">
+        {% endif %}
     </body>
 </html>
