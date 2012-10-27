@@ -23,8 +23,8 @@
             <a href="{{ path('homepage') }}" id="octoboard" title="Octoprogress">Octoprogress</a>
             <ul id="menu">
                 {% if app.session.get('isAuthenticated') %}
-                    <li><a href="{{ path('board') }}">Board</a></li>
-                    <li><a href="{{ path('projects') }}">Projects</a></li>
+                    <li {% if selected_menu == 'board' %}class="selected"{% endif %}><a href="{{ path('board') }}">Board</a></li>
+                    <li {% if selected_menu == 'projects' %}class="selected"{% endif %}><a href="{{ path('projects') }}">Projects</a></li>
                     <li><a href="{{ path('logout') }}">Logout</a></li>
                 {% endif %}
             </ul>
@@ -36,5 +36,8 @@
         <script src="{{ app.request.basepath }}/octoprogress/js/jquery.js"></script>
         <script src="{{ app.request.basepath }}/octoprogress/js/bootstrap.js"></script>
         {% block javascripts %}{% endblock %}
+        {% if app.debug == 0 %}
+        <link href="{{ app.request.basepath }}/octoprogress/js/analytics.js" rel="stylesheet">
+        {% endif %}
     </body>
 </html>

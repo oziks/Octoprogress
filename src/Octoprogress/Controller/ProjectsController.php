@@ -69,8 +69,9 @@ class ProjectsController implements ControllerProviderInterface
             }
 
             return $app['twig']->render('projects/list.twig', array(
-                'user'     => $user,
-                'form'     => $form->createView(),
+                'selected_menu' => 'projects',
+                'user'          => $user,
+                'form'          => $form->createView(),
             ));
         })->bind('projects');
 
