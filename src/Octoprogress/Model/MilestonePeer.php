@@ -34,6 +34,11 @@ class MilestonePeer extends BaseMilestonePeer
 
             foreach ($milestonesFromAPI as $milestoneFromAPI)
             {
+                if (!is_array($milestoneFromAPI))
+                {
+                    continue;
+                }
+
                 $milestone = MilestoneQuery::create()
                     ->filterByGithubId($milestoneFromAPI['id'])
                     ->findOne()
