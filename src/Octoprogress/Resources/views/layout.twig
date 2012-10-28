@@ -1,3 +1,4 @@
+{% set _route = app.request.get('_route') %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,21 +19,31 @@
     </head>
 
     <body>
-        <div id="header">
-            <span class="mega-icon blacktocat"></span>
-            <a href="{{ path('homepage') }}" id="octoboard" title="Octoprogress">Octoprogress</a>
-            <ul id="menu">
-                {% if app.session.get('isAuthenticated') %}
-                    <li {% if selected_menu == 'board' %}class="selected"{% endif %}><a href="{{ path('board') }}">Board</a></li>
-                    <li {% if selected_menu == 'projects' %}class="selected"{% endif %}><a href="{{ path('projects') }}">Projects</a></li>
-                    <li><a href="{{ path('logout') }}">Logout</a></li>
-                {% endif %}
-            </ul>
+        <div class="navbar navbar-static-top">
+            <div class="navbar-inner">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="../"><span class="mini-icon blacktocat"></span> Octoprogress</a>
+                <div class="nav-collapse" id="main-menu">
+                    <ul class="nav pull-right" id="main-menu-left">
+                    {% if app.session.get('isAuthenticated') %}
+                        <li {% if _route == 'board' %}class="active"{% endif %}><a href="{{ path('board') }}">Board</a></li>
+                        <li {% if _route == 'projects' %}class="active"{% endif %}><a href="{{ path('projects') }}">Projects</a></li>
+                        <li><a href="{{ path('logout') }}">Logout</a></li>
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
         </div>
         <div id="content">
             {% block content %}{% endblock %}
         </div>
-        <div id="footer">by <a title="GitHub account" href="https://github.com/oziks">Morgan Brunot</a> and <a title="GitHub account" href="https://github.com/KuiKui">Denis Roussel</a>.</div>
+        <div id="footer">
+            by <a title="GitHub account" href="https://github.com/oziks">Morgan Brunot</a> and <a title="GitHub account" href="https://github.com/KuiKui">Denis Roussel</a>.
+        </div>
         <script src="{{ app.request.basepath }}/octoprogress/js/jquery.js"></script>
         <script src="{{ app.request.basepath }}/octoprogress/js/bootstrap.js"></script>
         <script src="{{ app.request.basepath }}/octoprogress/js/spin.min.js"></script>

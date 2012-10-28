@@ -1,291 +1,105 @@
-@import "_tolebo.less";
+@import '_tolebo.less';
 
-@backgroundColor: #333;
-@textColor: #b5b5bc;
-@linkColor: #b0b0ee;
-
-@fontFamily: Helvetica, arial, freesans, clean, sans-serif;
-@fontSize: 14px;
-@lineHeight: 25px;
-
-
-body {
-  background-color: @backgroundColor;
-  color: @textColor;
-  font-family: @fontFamily;
-
-  a {
-    color: @linkColor;
-    text-decoration: none;
-
-    &:hover {
-      color: @linkColor;
-      text-decoration: underline;
-    }
-  }
-
-  #header {
-    background-color: @backgroundColor - #10100A;
-    overflow: hidden;
-
-    .mega-icon {
-      color: @linkColor;
-      float: left;
-      font-size: 24px;
-      margin: 7px 0 0 10px;
-    }
-
-    a {
-      display: inline-block;
-      padding: 10px;
-    }
-
-    a#octoboard {
-      float: left;
-      font-weight: bold;
-      font-size: 20px;
-      padding-left: 5px;
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
-    ul#menu {
-      float: right;
-      list-style: none;
-      margin: 0;
-      overflow: hidden;
-
-      li {
-        float: left;
-
-        &.selected,
-        &:hover {
-          background-color: @backgroundColor + #0A0A10;
-        }
-
-        a:hover {
-          text-decoration: none;
-        }
-      }
-    }
-  }
-
-  #content {
-    margin: 30px auto;
-    opacity: 1;
-    overflow: hidden;
-    text-align: left;
-    width: 90%;
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    p {
-      clear: both;
-      font-family: @fontFamily;
-      font-size: @fontSize;
-      line-height: @lineHeight;
-      margin-bottom: 25px;
-    }
+#content {
+    padding-bottom: 35px;
+    margin: 16px 30px 0;
+    overflow: auto;
 
     #home {
-      text-align: center;
-
-      h1 {
-        margin-bottom: 5px;
-      }
-
-      #login {
-        display: block;
-        margin: 40px auto 0;
-        width: 230px;
-      }
-    }
-
-    ul.projects {
-      list-style: none;
-      margin: 0 0 25px 0;
-
-       &>li {
-        background-color: @backgroundColor + #050509;
-        float: left;
-        font-size: @fontSize;
-        .radius(4px);
-        margin: 0 30px 30px 0;
-        width: 30%;
         text-align: center;
-        .box-shadow(0, 0, 12px, 0.4);
-
-        div {
-          padding: 10px;
-
-          &.title {
-            background-color: @textColor;
-            color: @backgroundColor;
-
-            a {
-              color: @backgroundColor;
-              text-decoration: none;
-            }
-
-            &.top {
-              .radius-top(4px);
-              text-transform: capitalize;
-
-              span.mini-icon {
-                margin-right: 5px;
-              }
-            }
-          }
-
-          &.info {
-            div {
-              &.total {
-                font-size: 30px;
-              }
-            }
-          }
-
-          &.yesterday {
-            padding-bottom: 15px;
-            .radius-bottom(4px);
-
-            span {
-              font-style: normal;
-              line-height: @lineHeight;
-              padding: 1px 3px;
-              .radius(4px);
-              white-space : nowrap;
-
-              &.positive {
-                background-color: @textColor - #222 + #0C0;
-                color: @backgroundColor;
-              }
-
-              &.negative {
-                background-color: @textColor - #444 + #C00;
-                color: @backgroundColor;
-              }
-            }
-          }
+        h1 {
+          margin-bottom: 16px;
         }
 
-        em {
-          background-color: #fff - @backgroundColor;
-          color: @backgroundColor;
-          font-style: normal;
-          line-height: @lineHeight;
-          padding: 1px 3px;
-          .radius(4px);
+        .container {
+            width: 720px;
         }
 
-        &.public {
-          .box-shadow(0, 0, 12px, 0.5, 255, 255, 0);
-          .total {
-            color: #ee0;
-          }
+        #login {
+            margin: 16px 0 30px;
         }
-
-        &:hover {
-          color: @textColor + #111;
-          background-color: @backgroundColor + #112;
-
-          .title {
-            color: @backgroundColor - #222;
-          }
-        }
-      }
-
-      &#emotions {
-        li {
-          width: 143px;
-
-          .language {
-            position: relative;
-
-            &.best {
-              border-bottom: 1px dashed @textColor - #555;
-            }
-
-            span {
-              position: absolute;
-              top: 10px;
-              left: 5px;
-            }
-          }
-        }
-      }
     }
 
-    ul.milestones {
-      list-style: none;
-      margin: 0;
+    #projects {
+        overflow: auto;
+        .project {
+            overflow: auto;
+            list-style: none;
+            text-align: center;
+            width: 30%;
+            margin: 0 3% 3% 0;
+            float: left;
+            overflow: hidden;
+            .radius(3px);
+            background-color: #38383C;
+            box-shadow: 0 0 12px rgba(0,0,0,0.4);
+            -webkit-box-shadow: 0 0 12px rgba(0,0,0,0.4);
+            -moz-box-shadow: 0 0 12px rgba(0,0,0,0.4);
 
-      li {
-        div {
-          padding: 0;
+            &:hover {
+                background-color: #444455;
+                .milestones a {
+                  color: white;
+                }
+            }
+
+            .title {
+                padding: 6px 14px;
+                background-color: #B5B5BC;
+                a {
+                    text-transform: capitalize;
+                    font-size: 14px;
+                    color: #333;
+                }
+            }
+
+            .milestones {
+                list-style: none;
+                margin: 10px;
+
+                a {
+                    text-decoration: none;
+                    color: #B0B0EE;
+                    font-size: 14px;
+                    padding: 6px;
+                    display: block;
+                }
+            }
         }
-      }
-
-      legend {
-        border: 0;
-        font-size: @fontSize;
-        line-height: @lineHeight;
-        margin-bottom: 0;
-
-        a:hover {
-          text-decoration: none;
-        }
-      }
     }
 
-    form#languagesForm {
-      margin: 10px 0;
 
-      label {
-        color: @textColor;
-        display: inline-block;
-        margin: 0;
-      }
 
-      select {
-        margin: 0;
-        width: 80px;
-      }
+    #form_projects {
+        clear: both;
+        width: 100%;
+        overflow: auto;
+        margin-bottom: 20px;
+
+        .field {
+            float: left;
+            width: 30%;
+            margin-bottom: 10px;
+
+            .toggle-button {
+               margin-right: 10px;
+            }
+
+            label {
+                font-weight: bold;
+                cursor: pointer;
+                color: white;
+                line-height: 26px;
+            }
+        }
     }
-  }
-
-  #footer {
-    text-align: center;
-    margin-bottom: 15px;
-    opacity: 0.5;
-  }
 }
 
-#form_projects {
-  clear: both;
-  width: 100%;
-  overflow: auto;
-  margin-bottom: 20px;
-
-  .field {
-    float: left;
-    width: 30%;
-    margin-bottom: 10px;
-
-    .toggle-button {
-      margin-right: 10px;
-    }
-
-    label {
-      font-weight: bold;
-      cursor: pointer;
-      color: white;
-      line-height: 26px;
-    }
-  }
+#footer {
+    clear: both;
+    margin: 16px 30px;
+    text-align: center;
+    height: 35px;
 }
 
 #loader {

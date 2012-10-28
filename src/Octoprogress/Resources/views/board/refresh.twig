@@ -1,24 +1,22 @@
-<ul class="projects">
+<ul id="projects">
     {% for project in projects %}
-    <li>
+    <li class="project">
         <div class="title top">
             <span class="mini-icon public-repo"></span>
             <a href="{{ project.url }}" title="View project on GitHub" target="_blank">{{ project.name }}</a>
         </div>
-        <div class="yesterday">
-            <ul class="milestones">
-                {% for milestone in project.milestones %}
-                <li>
-                    <legend><a href="{{ project.url }}/issues?milestone={{ milestone.number }}" title="View milestone on GitHub" target="_blank">{{ milestone.name }}</a></legend>
-                    {% set total = milestone.openIssues + milestone.closedIssues %}
-                    {% set percentage = milestone.closedIssues / total * 100 %}
-                    <div class="progress progress-striped progress-milestone">
-                        <div class="bar bar-success" style="width:{{ percentage }}%"></div>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+        <ul class="milestones">
+            {% for milestone in project.milestones %}
+            <li>
+                <a href="{{ project.url }}/issues?milestone={{ milestone.number }}" title="View milestone on GitHub" target="_blank">{{ milestone.name }}</a>
+                {% set total = milestone.openIssues + milestone.closedIssues %}
+                {% set percentage = milestone.closedIssues / total * 100 %}
+                <div class="progress progress-striped progress-milestone">
+                    <div class="bar bar-success" style="width:{{ percentage }}%"></div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </li>
     {% endfor %}
 </ul>
