@@ -48,16 +48,24 @@ class ProjectSelectorType extends AbstractType
                 );
             }
 
-            $formOptions[$project->getGithubUserName()]['choices'][$project->getId()] = $project->getName();
+            $formOptions[$project->getGithubUserName()]['name'] = $project->getGithubUserName();
+            $formOptions[$project->getGithubUserName()]['choices'][$project->getId()] = sprintf("%s / %s", $project->getGithubUserName(), $project->getName());
+
             if ($project->getActive())
             {
                 $formOptions[$project->getGithubUserName()]['actives'][] = $project->getId();
             }
         }
 
-        foreach ($formOptions as $name => $options)
+        if (isset($formOptions[$user->getLogin()]))
         {
-            $builder->add($name, 'choice', array(
+            array_unshift($formOptions, $formOptions[$user->getLogin()]);
+            unset($formOptions[$user->getLogin()]);
+        }
+
+        foreach ($formOptions as $options)
+        {
+            $builder->add($options['name'], 'choice', array(
                 'choices' => $options['choices'],
                 'data' => $options['actives'],
                 'expanded' => true,

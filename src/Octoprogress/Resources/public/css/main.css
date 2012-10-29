@@ -60,15 +60,27 @@
   padding: 6px;
   display: block;
 }
-#content .form_projects .field {
+#content #ProjectSelector > div > label {
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  padding-bottom: 10px;
+}
+#content #ProjectSelector .form_projects {
+  overflow: auto;
+  border-bottom: 1px solid #1C1E22;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+}
+#content #ProjectSelector .form_projects .field {
   float: left;
-  width: 30%;
+  width: 50%;
   margin-bottom: 10px;
 }
-#content .form_projects .field .toggle-button {
+#content #ProjectSelector .form_projects .field .toggle-button {
   margin-right: 10px;
 }
-#content .form_projects .field label {
+#content #ProjectSelector .form_projects .field label {
   font-weight: bold;
   cursor: pointer;
   color: white;
@@ -90,4 +102,9 @@
   position: absolute;
   bottom: 0;
   content: "Generating data for the first time. Hang tight for a moment...";
+}
+fieldset legend {
+  border: none;
+  margin-bottom: 16px;
+  overflow: auto;
 }

@@ -35,9 +35,18 @@ class ProjectsController implements ControllerProviderInterface
             if ($request->getMethod() === 'POST') {
                 $form->bindRequest($request);
                 if ($form->isValid()) {
-                    foreach ($projects as $project)
+                    ProjectQuery::create()
+                        ->filterByUserId($user->getId())
+                        ->update(array('Active' => false))
+                    ;
+
+                    foreach ($form->getData() as $type => $projects)
                     {
-                        $project->setActive(in_array($project->getId(), $form['projects']->getData()))->save();
+                        ProjectQuery::create()
+                            ->filterByUserId($user->getId())
+                            ->filterById($projects)
+                            ->update(array('Active' => true))
+                        ;
                     }
 
                     return $app->redirect($app['url_generator']->generate('projects'));

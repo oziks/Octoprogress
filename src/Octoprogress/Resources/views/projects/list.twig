@@ -7,12 +7,14 @@
 {% block content %}
     <h2>Projects list (<a href="{{ path('projects_refresh') }}">refresh</a>)</h2>
 
-    <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }} class="well">
     <fieldset>
         <legend><blockquote>Select the projects you want to appear in <a href="{{ path('board')}}">your dashboard</a>.</blockquote></legend>
         {{ form_widget(form) }}
         {{ form_rest(form) }}
-        <input class="btn btn-success" type="submit" value="Save"/>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
    </fieldset>
     </form>
 {% endblock %}
@@ -22,9 +24,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.toggle-button').toggleButtons({
-            width: 85,
+            width: 60,
             style: {
                 enabled: "success",
+            },
+            label: {
+                enabled: "✔",
+                disabled: "⨯"
             }
         });
     });

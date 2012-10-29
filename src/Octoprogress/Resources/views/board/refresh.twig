@@ -1,4 +1,5 @@
 <ul id="projects">
+    {% if projects | length > 0  %}
     {% for project in projects %}
     <li class="project">
         <div class="title top">
@@ -19,4 +20,12 @@
         </ul>
     </li>
     {% endfor %}
+    {% else %}
+    <div id="home">
+        <h1>No Milestone Found.</h1>
+        <div class="container">
+            <p>Phrase qui explique la marche à suivre. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis neque ac velit porttitor auctor. Duis vel orci leo, non suscipit ligula. Integer tincidunt nulla a turpis volutpat vehicula. Mauris euismod sem nec nisi porttitor facilisis. Integer quis felis quam, ut fermentum orci. Nam dignissim cursus tincidunt. Vestibulum malesuada ultrices auctor. Proin lobortis pharetra est, ac ultrices ipsum ullamcorper eget. Nam at bibendum ipsum. Phasellus purus ligula, tempor at hendrerit non, fringilla id nisi. Mauris dignissim purus nec mi ornare pretium. Integer luctus placerat ultricies. Praesent iaculis vestibulum lorem ac tempor. Duis erat nisl, lacinia eget gravida id, aliquam ornare nibh. Nunc condimentum condimentum libero et laoreet. Nullam augue turpis, mattis sed egestas quis, rhoncus sed nunc.</p>
+        </div>
+    </div>
+    {% endif %}
 </ul>
