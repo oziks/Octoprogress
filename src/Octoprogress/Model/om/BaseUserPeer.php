@@ -36,13 +36,13 @@ abstract class BaseUserPeer
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the ID field */
     const ID = 'user.ID';
@@ -74,6 +74,9 @@ abstract class BaseUserPeer
     /** the column name for the ACCESS_TOKEN field */
     const ACCESS_TOKEN = 'user.ACCESS_TOKEN';
 
+    /** the column name for the PRIVATE_ACCESS field */
+    const PRIVATE_ACCESS = 'user.PRIVATE_ACCESS';
+
     /** the column name for the CREATED_AT field */
     const CREATED_AT = 'user.CREATED_AT';
 
@@ -99,12 +102,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'GithubId', 'GithubProfile', 'Login', 'Company', 'Email', 'AvatarUrl', 'Name', 'Location', 'AccessToken', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'githubId', 'githubProfile', 'login', 'company', 'email', 'avatarUrl', 'name', 'location', 'accessToken', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::GITHUB_ID, UserPeer::GITHUB_PROFILE, UserPeer::LOGIN, UserPeer::COMPANY, UserPeer::EMAIL, UserPeer::AVATAR_URL, UserPeer::NAME, UserPeer::LOCATION, UserPeer::ACCESS_TOKEN, UserPeer::CREATED_AT, UserPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'GITHUB_ID', 'GITHUB_PROFILE', 'LOGIN', 'COMPANY', 'EMAIL', 'AVATAR_URL', 'NAME', 'LOCATION', 'ACCESS_TOKEN', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'github_id', 'github_profile', 'login', 'company', 'email', 'avatar_url', 'name', 'location', 'access_token', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'GithubId', 'GithubProfile', 'Login', 'Company', 'Email', 'AvatarUrl', 'Name', 'Location', 'AccessToken', 'PrivateAccess', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'githubId', 'githubProfile', 'login', 'company', 'email', 'avatarUrl', 'name', 'location', 'accessToken', 'privateAccess', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::GITHUB_ID, UserPeer::GITHUB_PROFILE, UserPeer::LOGIN, UserPeer::COMPANY, UserPeer::EMAIL, UserPeer::AVATAR_URL, UserPeer::NAME, UserPeer::LOCATION, UserPeer::ACCESS_TOKEN, UserPeer::PRIVATE_ACCESS, UserPeer::CREATED_AT, UserPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'GITHUB_ID', 'GITHUB_PROFILE', 'LOGIN', 'COMPANY', 'EMAIL', 'AVATAR_URL', 'NAME', 'LOCATION', 'ACCESS_TOKEN', 'PRIVATE_ACCESS', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'github_id', 'github_profile', 'login', 'company', 'email', 'avatar_url', 'name', 'location', 'access_token', 'private_access', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -114,12 +117,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'GithubId' => 1, 'GithubProfile' => 2, 'Login' => 3, 'Company' => 4, 'Email' => 5, 'AvatarUrl' => 6, 'Name' => 7, 'Location' => 8, 'AccessToken' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'githubId' => 1, 'githubProfile' => 2, 'login' => 3, 'company' => 4, 'email' => 5, 'avatarUrl' => 6, 'name' => 7, 'location' => 8, 'accessToken' => 9, 'createdAt' => 10, 'updatedAt' => 11, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::GITHUB_ID => 1, UserPeer::GITHUB_PROFILE => 2, UserPeer::LOGIN => 3, UserPeer::COMPANY => 4, UserPeer::EMAIL => 5, UserPeer::AVATAR_URL => 6, UserPeer::NAME => 7, UserPeer::LOCATION => 8, UserPeer::ACCESS_TOKEN => 9, UserPeer::CREATED_AT => 10, UserPeer::UPDATED_AT => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'GITHUB_ID' => 1, 'GITHUB_PROFILE' => 2, 'LOGIN' => 3, 'COMPANY' => 4, 'EMAIL' => 5, 'AVATAR_URL' => 6, 'NAME' => 7, 'LOCATION' => 8, 'ACCESS_TOKEN' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'github_id' => 1, 'github_profile' => 2, 'login' => 3, 'company' => 4, 'email' => 5, 'avatar_url' => 6, 'name' => 7, 'location' => 8, 'access_token' => 9, 'created_at' => 10, 'updated_at' => 11, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'GithubId' => 1, 'GithubProfile' => 2, 'Login' => 3, 'Company' => 4, 'Email' => 5, 'AvatarUrl' => 6, 'Name' => 7, 'Location' => 8, 'AccessToken' => 9, 'PrivateAccess' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'githubId' => 1, 'githubProfile' => 2, 'login' => 3, 'company' => 4, 'email' => 5, 'avatarUrl' => 6, 'name' => 7, 'location' => 8, 'accessToken' => 9, 'privateAccess' => 10, 'createdAt' => 11, 'updatedAt' => 12, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::GITHUB_ID => 1, UserPeer::GITHUB_PROFILE => 2, UserPeer::LOGIN => 3, UserPeer::COMPANY => 4, UserPeer::EMAIL => 5, UserPeer::AVATAR_URL => 6, UserPeer::NAME => 7, UserPeer::LOCATION => 8, UserPeer::ACCESS_TOKEN => 9, UserPeer::PRIVATE_ACCESS => 10, UserPeer::CREATED_AT => 11, UserPeer::UPDATED_AT => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'GITHUB_ID' => 1, 'GITHUB_PROFILE' => 2, 'LOGIN' => 3, 'COMPANY' => 4, 'EMAIL' => 5, 'AVATAR_URL' => 6, 'NAME' => 7, 'LOCATION' => 8, 'ACCESS_TOKEN' => 9, 'PRIVATE_ACCESS' => 10, 'CREATED_AT' => 11, 'UPDATED_AT' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'github_id' => 1, 'github_profile' => 2, 'login' => 3, 'company' => 4, 'email' => 5, 'avatar_url' => 6, 'name' => 7, 'location' => 8, 'access_token' => 9, 'private_access' => 10, 'created_at' => 11, 'updated_at' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -203,6 +206,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::NAME);
             $criteria->addSelectColumn(UserPeer::LOCATION);
             $criteria->addSelectColumn(UserPeer::ACCESS_TOKEN);
+            $criteria->addSelectColumn(UserPeer::PRIVATE_ACCESS);
             $criteria->addSelectColumn(UserPeer::CREATED_AT);
             $criteria->addSelectColumn(UserPeer::UPDATED_AT);
         } else {
@@ -216,6 +220,7 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.LOCATION');
             $criteria->addSelectColumn($alias . '.ACCESS_TOKEN');
+            $criteria->addSelectColumn($alias . '.PRIVATE_ACCESS');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
         }
