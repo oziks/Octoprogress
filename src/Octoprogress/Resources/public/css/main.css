@@ -12,8 +12,11 @@
 #content #home .container {
   width: 720px;
 }
-#content #home #login {
-  margin: 16px 0 30px;
+#content #home #login,
+#content #home #login-private {
+  display: block;
+  margin: 16px auto 30px;
+  width: 300px;
 }
 #content #projects {
   overflow: auto;
