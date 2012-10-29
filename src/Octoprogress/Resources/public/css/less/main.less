@@ -1,24 +1,37 @@
 @import '_tolebo.less';
 
 #content {
-    padding-bottom: 35px;
+    font-size: 14px;
     margin: 16px 30px 0;
     overflow: auto;
+    padding-bottom: 35px;
+    text-align: center;
+
+    h1 {
+      margin: 20px 0 35px;
+    }
 
     #home {
-        text-align: center;
-        h1 {
-          margin-bottom: 16px;
-        }
-
         .container {
             width: 720px;
+            p strong {
+                color: #959CA2;
+            }
         }
 
         #login, #login-private {
             display: block;
+            font-weight: normal;
             margin: 16px auto 30px;
-            width: 300px;
+            width: 290px;
+
+            span {
+                padding-right: 5px;
+            }
+        }
+
+        #login-private {
+            margin-bottom: 45px;
         }
     }
 
@@ -33,13 +46,13 @@
             float: left;
             overflow: hidden;
             .radius(3px);
-            background-color: #38383C;
+            background-color: #383838;
             box-shadow: 0 0 12px rgba(0,0,0,0.4);
             -webkit-box-shadow: 0 0 12px rgba(0,0,0,0.4);
             -moz-box-shadow: 0 0 12px rgba(0,0,0,0.4);
 
             &:hover {
-                background-color: #444455;
+                background-color: #444444;
                 .milestones a {
                   color: white;
                 }
@@ -47,11 +60,14 @@
 
             .title {
                 padding: 6px 14px;
-                background-color: #B5B5BC;
+                background-color: #B5B5B5;
                 a {
-                    text-transform: capitalize;
-                    font-size: 14px;
                     color: #333;
+                    font-size: 14px;
+                    text-transform: capitalize;
+                    &:hover {
+                        text-decoration: none;
+                    }
                 }
             }
 
@@ -60,11 +76,10 @@
                 margin: 10px;
 
                 a {
-                    text-decoration: none;
-                    color: #B0B0EE;
-                    font-size: 14px;
-                    padding: 6px;
+                    color: #EEE;
                     display: block;
+                    padding: 6px;
+                    text-decoration: none;
                 }
             }
         }
@@ -102,17 +117,23 @@
             }
         }
     }
+
+    #projectsForm {
+        margin-top: 40px;
+        text-align: left;
+    }
 }
 
 #footer {
     clear: both;
-    margin: 16px 30px;
-    text-align: center;
     height: 35px;
+    margin: 16px 30px;
+    opacity: 0.5;
+    text-align: center;
 }
 
 #loader {
-  width: 350px;
+  width: 300px;
   height: 150px;
   margin: auto;
   position: relative;
@@ -120,7 +141,7 @@
   &::after {
     position: absolute;
     bottom: 0;
-    content: "Generating data for the first time. Hang tight for a moment...";
+    content: "Generating data. Hang tight for a moment...";
   }
 }
 

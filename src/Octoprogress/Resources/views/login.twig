@@ -6,11 +6,13 @@ Welcome
 
 {% block content %}
 <div id="home">
-  <h1>See your GitHub projects progress at a glance.</h1>
+  <h1>See your GitHub projects progress in a glance.</h1>
   <div class="container">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis neque ac velit porttitor auctor. Duis vel orci leo, non suscipit ligula. Integer tincidunt nulla a turpis volutpat vehicula. Mauris euismod sem nec nisi porttitor facilisis. Integer quis felis quam, ut fermentum orci. Nam dignissim cursus tincidunt. Vestibulum malesuada ultrices auctor. Proin lobortis pharetra est, ac ultrices ipsum ullamcorper eget. Nam at bibendum ipsum. Phasellus purus ligula, tempor at hendrerit non, fringilla id nisi. Mauris dignissim purus nec mi ornare pretium. Integer luctus placerat ultricies. Praesent iaculis vestibulum lorem ac tempor. Duis erat nisl, lacinia eget gravida id, aliquam ornare nibh. Nunc condimentum condimentum libero et laoreet. Nullam augue turpis, mattis sed egestas quis, rhoncus sed nunc.</p>
+    <a href="{{ path('oauth') }}" id="login" class="btn btn-success btn-large"><span class="mini-icon octocat"></span> Login with your <strong>public</strong> Github account</a>
+    <a href="{{ path('oauth_private') }}" id="login-private" class="btn btn-info btn-large"><span class="mini-icon octocat"></span> Login with your <strong>private</strong> Github account</a>
+    <p>This app needs read/write access to your repositories, issues and milestones.<br />
+      This is <strong>only</strong> used to display progress bar : Octoprogress does <strong>not</strong> write any informations.
+    </p>
   </div>
-  <a href="{{ path('oauth') }}" id="login" class="btn btn-success btn-large"><span class="mini-icon octocat"></span> Login with your public <strong>Github</strong> account</a>
-  <a href="{{ path('oauth_private') }}" id="login-private" class="btn btn-info btn-large"><span class="mini-icon octocat"></span> Login with your private <strong>Github</strong> account</a>
 </div>
 {% endblock %}
