@@ -110,6 +110,13 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $access_token;
 
     /**
+     * The value for the private_access field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $private_access;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -146,6 +153,27 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $projectsScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->private_access = false;
+    }
+
+    /**
+     * Initializes internal state of BaseUser object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [id] column value.
@@ -245,6 +273,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getAccessToken()
     {
         return $this->access_token;
+    }
+
+    /**
+     * Get the [private_access] column value.
+     *
+     * @return boolean
+     */
+    public function getPrivateAccess()
+    {
+        return $this->private_access;
     }
 
     /**
@@ -532,6 +570,35 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setAccessToken()
 
     /**
+     * Sets the value of the [private_access] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setPrivateAccess($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->private_access !== $v) {
+            $this->private_access = $v;
+            $this->modifiedColumns[] = UserPeer::PRIVATE_ACCESS;
+        }
+
+
+        return $this;
+    } // setPrivateAccess()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -587,6 +654,10 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->private_access !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -619,8 +690,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->location = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->access_token = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->private_access = ($row[$startcol + 10] !== null) ? (boolean) $row[$startcol + 10] : null;
+            $this->created_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->updated_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -629,7 +701,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 12; // 12 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -902,6 +974,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::ACCESS_TOKEN)) {
             $modifiedColumns[':p' . $index++]  = '`ACCESS_TOKEN`';
         }
+        if ($this->isColumnModified(UserPeer::PRIVATE_ACCESS)) {
+            $modifiedColumns[':p' . $index++]  = '`PRIVATE_ACCESS`';
+        }
         if ($this->isColumnModified(UserPeer::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
         }
@@ -948,6 +1023,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`ACCESS_TOKEN`':
                         $stmt->bindValue($identifier, $this->access_token, PDO::PARAM_STR);
+                        break;
+                    case '`PRIVATE_ACCESS`':
+                        $stmt->bindValue($identifier, (int) $this->private_access, PDO::PARAM_INT);
                         break;
                     case '`CREATED_AT`':
                         $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
@@ -1128,9 +1206,12 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getAccessToken();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getPrivateAccess();
                 break;
             case 11:
+                return $this->getCreatedAt();
+                break;
+            case 12:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1172,8 +1253,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[7] => $this->getName(),
             $keys[8] => $this->getLocation(),
             $keys[9] => $this->getAccessToken(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
+            $keys[10] => $this->getPrivateAccess(),
+            $keys[11] => $this->getCreatedAt(),
+            $keys[12] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collProjects) {
@@ -1244,9 +1326,12 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setAccessToken($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setPrivateAccess($value);
                 break;
             case 11:
+                $this->setCreatedAt($value);
+                break;
+            case 12:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1283,8 +1368,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setName($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setLocation($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setAccessToken($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPrivateAccess($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
     }
 
     /**
@@ -1306,6 +1392,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
         if ($this->isColumnModified(UserPeer::LOCATION)) $criteria->add(UserPeer::LOCATION, $this->location);
         if ($this->isColumnModified(UserPeer::ACCESS_TOKEN)) $criteria->add(UserPeer::ACCESS_TOKEN, $this->access_token);
+        if ($this->isColumnModified(UserPeer::PRIVATE_ACCESS)) $criteria->add(UserPeer::PRIVATE_ACCESS, $this->private_access);
         if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(UserPeer::UPDATED_AT)) $criteria->add(UserPeer::UPDATED_AT, $this->updated_at);
 
@@ -1380,6 +1467,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setName($this->getName());
         $copyObj->setLocation($this->getLocation());
         $copyObj->setAccessToken($this->getAccessToken());
+        $copyObj->setPrivateAccess($this->getPrivateAccess());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1684,11 +1772,13 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->name = null;
         $this->location = null;
         $this->access_token = null;
+        $this->private_access = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

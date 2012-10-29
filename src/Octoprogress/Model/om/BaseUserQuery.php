@@ -32,6 +32,7 @@ use Octoprogress\Model\UserQuery;
  * @method UserQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method UserQuery orderByLocation($order = Criteria::ASC) Order by the location column
  * @method UserQuery orderByAccessToken($order = Criteria::ASC) Order by the access_token column
+ * @method UserQuery orderByPrivateAccess($order = Criteria::ASC) Order by the private_access column
  * @method UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method UserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -45,6 +46,7 @@ use Octoprogress\Model\UserQuery;
  * @method UserQuery groupByName() Group by the name column
  * @method UserQuery groupByLocation() Group by the location column
  * @method UserQuery groupByAccessToken() Group by the access_token column
+ * @method UserQuery groupByPrivateAccess() Group by the private_access column
  * @method UserQuery groupByCreatedAt() Group by the created_at column
  * @method UserQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -68,6 +70,7 @@ use Octoprogress\Model\UserQuery;
  * @method User findOneByName(string $name) Return the first User filtered by the name column
  * @method User findOneByLocation(string $location) Return the first User filtered by the location column
  * @method User findOneByAccessToken(string $access_token) Return the first User filtered by the access_token column
+ * @method User findOneByPrivateAccess(boolean $private_access) Return the first User filtered by the private_access column
  * @method User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
  * @method User findOneByUpdatedAt(string $updated_at) Return the first User filtered by the updated_at column
  *
@@ -81,6 +84,7 @@ use Octoprogress\Model\UserQuery;
  * @method array findByName(string $name) Return User objects filtered by the name column
  * @method array findByLocation(string $location) Return User objects filtered by the location column
  * @method array findByAccessToken(string $access_token) Return User objects filtered by the access_token column
+ * @method array findByPrivateAccess(boolean $private_access) Return User objects filtered by the private_access column
  * @method array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return User objects filtered by the updated_at column
  *
@@ -186,7 +190,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `GITHUB_ID`, `GITHUB_PROFILE`, `LOGIN`, `COMPANY`, `EMAIL`, `AVATAR_URL`, `NAME`, `LOCATION`, `ACCESS_TOKEN`, `CREATED_AT`, `UPDATED_AT` FROM `user` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `GITHUB_ID`, `GITHUB_PROFILE`, `LOGIN`, `COMPANY`, `EMAIL`, `AVATAR_URL`, `NAME`, `LOCATION`, `ACCESS_TOKEN`, `PRIVATE_ACCESS`, `CREATED_AT`, `UPDATED_AT` FROM `user` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -561,6 +565,33 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::ACCESS_TOKEN, $accessToken, $comparison);
+    }
+
+    /**
+     * Filter the query on the private_access column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPrivateAccess(true); // WHERE private_access = true
+     * $query->filterByPrivateAccess('yes'); // WHERE private_access = true
+     * </code>
+     *
+     * @param     boolean|string $privateAccess The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByPrivateAccess($privateAccess = null, $comparison = null)
+    {
+        if (is_string($privateAccess)) {
+            $private_access = in_array(strtolower($privateAccess), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::PRIVATE_ACCESS, $privateAccess, $comparison);
     }
 
     /**
