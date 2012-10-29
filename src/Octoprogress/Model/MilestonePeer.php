@@ -26,7 +26,8 @@ class MilestonePeer extends BaseMilestonePeer
             ->find()
         ;
 
-        $toDeleteQuery = MilestoneQuery::create();
+        $toDeleteCounter = 0;
+        $toDeleteQuery   = MilestoneQuery::create();
 
         foreach ($projects as $project)
         {
@@ -66,11 +67,12 @@ class MilestonePeer extends BaseMilestonePeer
                     ->save()
                 ;
 
+                $toDeleteCounter++;
                 $toDeleteQuery->prune($milestone);
             }
         }
 
-        if ($toDeleteQuery->find()->count())
+        if ($toDeleteCounter)
         {
             $toDeleteQuery->delete();
         }
