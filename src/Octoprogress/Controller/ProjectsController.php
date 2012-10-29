@@ -13,7 +13,8 @@ use Github\Client as GithubClient,
 use Octoprogress\Model\Project,
     Octoprogress\Model\ProjectPeer,
     Octoprogress\Model\ProjectQuery,
-    Octoprogress\Model\MilestonePeer;
+    Octoprogress\Model\MilestonePeer,
+    Octoprogress\Form\Type\ProjectSelectorType;
 
 class ProjectsController implements ControllerProviderInterface
 {
@@ -28,33 +29,8 @@ class ProjectsController implements ControllerProviderInterface
                 return $app->redirect($app['url_generator']->generate('homepage'));
             }
 
-            $projects = ProjectQuery::create()
-                ->filterByUserId($user->getId())
-                ->find()
-            ;
 
-            $choices = array();
-            foreach ($projects as $project) {
-                $choices[$project->getId()] = $project->getName();
-            }
-
-            $active = array();
-            foreach ($projects as $project) {
-                if ($project->getActive())
-                {
-                   $active[] = $project->getId();
-                }
-            }
-
-            $form = $app['form.factory']->createBuilder('form')
-                ->add('projects', 'choice', array(
-                    'choices'   => $choices,
-                    'multiple'  => true,
-                    'expanded'  => true,
-                    'data'      => $active,
-                ))
-                ->getForm()
-            ;
+            $form = $app['form.factory']->create(new ProjectSelectorType($app));
 
             if ($request->getMethod() === 'POST') {
                 $form->bindRequest($request);
@@ -69,9 +45,8 @@ class ProjectsController implements ControllerProviderInterface
             }
 
             return $app['twig']->render('projects/list.twig', array(
-                'selected_menu' => 'projects',
-                'user'          => $user,
                 'form'          => $form->createView(),
+                'user'          => $user,
             ));
         })->bind('projects');
 

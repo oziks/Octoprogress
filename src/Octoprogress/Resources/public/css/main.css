@@ -60,21 +60,15 @@
   padding: 6px;
   display: block;
 }
-#content #form_projects {
-  clear: both;
-  width: 100%;
-  overflow: auto;
-  margin-bottom: 20px;
-}
-#content #form_projects .field {
+#content .form_projects .field {
   float: left;
   width: 30%;
   margin-bottom: 10px;
 }
-#content #form_projects .field .toggle-button {
+#content .form_projects .field .toggle-button {
   margin-right: 10px;
 }
-#content #form_projects .field label {
+#content .form_projects .field label {
   font-weight: bold;
   cursor: pointer;
   color: white;

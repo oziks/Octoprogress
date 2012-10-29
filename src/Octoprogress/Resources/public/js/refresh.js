@@ -20,5 +20,5 @@ $(document).ready(function() {
 
     refresh();
 
-    var timer = setInterval(refresh, 300000);
+    var timer = setInterval(refresh, 300000 );
 });

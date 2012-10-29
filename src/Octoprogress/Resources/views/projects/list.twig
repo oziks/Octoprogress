@@ -6,11 +6,14 @@
 
 {% block content %}
     <h2>Projects list (<a href="{{ path('projects_refresh') }}">refresh</a>)</h2>
-    <blockquote>Select the projects you want to appear in <a href="{{ path('board')}}">your dashboard</a>.</blockquote>
+
     <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form.projects) }}
+    <fieldset>
+        <legend><blockquote>Select the projects you want to appear in <a href="{{ path('board')}}">your dashboard</a>.</blockquote></legend>
+        {{ form_widget(form) }}
         {{ form_rest(form) }}
-        <input class="btn btn-primary" type="submit" value="Save"/>
+        <input class="btn btn-success" type="submit" value="Save"/>
+   </fieldset>
     </form>
 {% endblock %}
 
