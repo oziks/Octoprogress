@@ -52,12 +52,10 @@
     #projects {
         overflow: auto;
         .project {
-            overflow: auto;
+            overflow: visible;
+            margin-bottom: 20px;
             list-style: none;
             text-align: center;
-            width: 30%;
-            margin: 0 3% 3% 0;
-            float: left;
             overflow: hidden;
             .radius(3px);
             background-color: #3a3f44;
@@ -165,5 +163,11 @@ fieldset {
         border: none;
         margin-bottom: 16px;
         overflow: auto;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .project.span5 {
+        width: 90%;
     }
 }

@@ -1,7 +1,7 @@
-<ul id="projects">
+<ul id="projects" class="row">
     {% if projects | length > 0  %}
     {% for project in projects %}
-    <li class="project">
+    <li class="project span5">
         <div class="title top">
             <span class="mini-icon public-repo"></span>
             <a href="{{ project.url }}" title="View project on GitHub" target="_blank">{{ project.name }}</a>
