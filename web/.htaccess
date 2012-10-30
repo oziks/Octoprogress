@@ -5,6 +5,9 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  RewriteCond %{HTTP_HOST} !^octoprogress\.com [NC]
+  RewriteRule (.*) http://octoprogress.com/$1 [QSA,R=301,L]
+
   RewriteCond %{REQUEST_URI} \..+$
   RewriteCond %{REQUEST_URI} !\.html$
   RewriteRule .* - [L]
