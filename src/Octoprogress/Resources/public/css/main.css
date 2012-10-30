@@ -85,7 +85,6 @@
 #content #ProjectSelector > div > label {
   font-weight: bold;
   font-size: 16px;
-  color: white;
   padding-bottom: 10px;
 }
 #content #ProjectSelector .form_projects {
@@ -103,11 +102,12 @@
   margin-right: 10px;
 }
 #content #ProjectSelector .form_projects .field label {
-  font-weight: lighter;
   cursor: pointer;
-  color: white;
+  font-size: 14px;
+  font-weight: lighter;
   line-height: 26px;
   margin-left: 23px;
+  letter-spacing: 1px;
 }
 #content #projectsForm {
   margin-top: 40px;
