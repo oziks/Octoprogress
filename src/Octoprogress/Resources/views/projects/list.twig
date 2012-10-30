@@ -8,30 +8,10 @@ Projects - {{ user.login }} - Octoprogress
     <h1>Projects.</h1>
     <div class="container">
         <p><a href="{{ path('projects_refresh') }}">Refresh</a> to select the projects you want to see on your <a href="{{ path('board') }}">board</a>.</p>
-        <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }} id="projectsForm" class="well">
+        <form action="{{ path('projects') }}" method="post" {{ form_enctype(form) }} id="projectsForm">
             {{ form_widget(form) }}
             {{ form_rest(form) }}
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
         </form>
     </div>
-{% endblock %}
-
-{% block javascripts %} {{ parent() }}
-<script src="{{ app.request.basepath }}/octoprogress/js/jquery.toggle.buttons.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.toggle-button').toggleButtons({
-            width: 60,
-            style: {
-                enabled: "success",
-            },
-            label: {
-                enabled: "✔",
-                disabled: "⨯"
-            }
-        });
-    });
-</script>
 {% endblock %}

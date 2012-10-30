@@ -103,10 +103,11 @@
   margin-right: 10px;
 }
 #content #ProjectSelector .form_projects .field label {
-  font-weight: bold;
+  font-weight: lighter;
   cursor: pointer;
   color: white;
   line-height: 26px;
+  margin-left: 23px;
 }
 #content #projectsForm {
   margin-top: 40px;
@@ -140,9 +141,12 @@ fieldset legend {
   .project.span5 {
     width: 90%;
   }
-  #content #ProjectSelector .form_projects .field {
+  #projectsForm #ProjectSelector .form_projects .field {
     float: none;
     display: block;
+    width: 100%;
+  }
+  #projectsForm button {
     width: 100%;
   }
   #content #home .container,
