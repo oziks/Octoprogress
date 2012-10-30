@@ -150,10 +150,11 @@
 }
 
 #loader {
-  width: 300px;
+  width: 100%;
   height: 150px;
   margin: auto;
   position: relative;
+  padding-bottom: 40px;
 
   &::after {
     position: absolute;
@@ -173,5 +174,20 @@ fieldset {
 @media screen and (max-width: 640px) {
     .project.span5 {
         width: 90%;
+    }
+
+    #content #ProjectSelector .form_projects .field {
+        float: none;
+        display: block;
+        width: 100%;
+    }
+
+    #content #home .container,  .container {
+        width: auto;
+
+        #login, #login-private {
+            width: 160px;
+            line-height: 23px;
+        }
     }
 }

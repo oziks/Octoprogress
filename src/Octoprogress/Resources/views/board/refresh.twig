@@ -1,5 +1,5 @@
+{% if projects | length > 0  %}
 <ul id="projects" class="row">
-    {% if projects | length > 0  %}
     {% for project in projects %}
     <li class="project span5">
         <div class="title top">
@@ -20,12 +20,12 @@
         </ul>
     </li>
     {% endfor %}
-    {% else %}
-    <div id="home">
-        <h1>No Milestone Found.</h1>
-        <div class="container">
-            <p>There's no milestone to display. Perhaps you can <a href="{{ path('projects') }}">select some active projects</a> of your own.</p>
-        </div>
-    </div>
-    {% endif %}
 </ul>
+{% else %}
+<div id="home">
+    <h1>No Milestone Found.</h1>
+    <div class="container">
+        <p>There's no milestone to display. Perhaps you can <a href="{{ path('projects') }}">select some active projects</a> of your own.</p>
+    </div>
+</div>
+{% endif %}
