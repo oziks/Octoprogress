@@ -17,6 +17,9 @@
 #content #home .container {
   width: 720px;
 }
+#content #home .container p {
+  margin-bottom: 15px;
+}
 #content #home .container p strong {
   color: #959CA2;
 }
