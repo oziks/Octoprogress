@@ -134,11 +134,6 @@
   position: relative;
   padding-bottom: 40px;
 }
-#loader::after {
-  position: absolute;
-  bottom: 0;
-  content: "Generating data. Hang tight for a moment...";
-}
 fieldset legend {
   border: none;
   margin-bottom: 16px;
