@@ -22,15 +22,21 @@ class MilestonePeer extends BaseMilestonePeer
     {
         $projects = ProjectQuery::create()
             ->filterByUserId($user->getId())
-            ->filterByActive(true)
             ->find()
         ;
 
+        $toDeleteQuery = MilestoneQuery::create()
+            ->filterByProjectId($projects)
+        ;
         $toDeleteCounter = 0;
-        $toDeleteQuery   = MilestoneQuery::create();
 
         foreach ($projects as $project)
         {
+            if (!$project->getActive())
+            {
+                continue;
+            }
+
             $milestonesFromAPI  = $client->get(sprintf('repos/%s/%s/milestones', $project->getGithubUserName(), $project->getName()));
 
             foreach ($milestonesFromAPI as $milestoneFromAPI)
