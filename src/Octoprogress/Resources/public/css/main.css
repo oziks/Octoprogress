@@ -23,6 +23,10 @@
 #content #home .container p strong {
   color: #959CA2;
 }
+#content #home .container p.disclaimer {
+  font-size: 11px;
+  opacity: 0.5;
+}
 #content #home #login,
 #content #home #login-private {
   display: block;
@@ -34,8 +38,11 @@
 #content #home #login-private span {
   padding-right: 5px;
 }
+#content #home #login {
+  margin-top: 45px;
+}
 #content #home #login-private {
-  margin-bottom: 45px;
+  margin-bottom: 15px;
 }
 #content #projects {
   overflow: auto;

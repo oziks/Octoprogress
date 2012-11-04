@@ -1,16 +1,20 @@
 {% extends "layout.twig" %}
 
 {% block title %}
-Octoprogress
+Octoprogress - See your GitHub projects progress in a glance.
 {% endblock %}
 
 {% block content %}
 <div id="home">
   <h1>See your GitHub projects progress in a glance.</h1>
   <div class="container">
+    <p>Octoprogress uses your issues and milestones to generate progress bars on a crafty global board.<br />
+      In order to keep an eye on your projects progresses at all times, your board is refreshed every 5 minutes.<br />
+      You simply have to login and select your active projects.
+    </p>
     <a href="{{ path('oauth') }}" id="login" class="btn btn-success btn-large" title="Login with your public Github account"><span class="mini-icon octocat"></span> Login with your <strong>public</strong> Github account</a>
     <a href="{{ path('oauth_private') }}" id="login-private" class="btn btn-info btn-large" title="Login with your private Github account"><span class="mini-icon octocat"></span> Login with your <strong>private</strong> Github account</a>
-    <p>This app needs read/write access to your repositories.<br />
+    <p class="disclaimer">This app needs read/write access to your repositories.<br />
       This is <strong>only</strong> used to display progress bar : Octoprogress does <strong>not</strong> write any informations.<br />
       We have no choice. The GitHub OAuth scopes doesn't provide a read only access.
     </p>
