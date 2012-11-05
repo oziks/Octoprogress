@@ -38,6 +38,7 @@ class ProjectPeer extends BaseProjectPeer
         foreach ($projectsFromAPI as $projectFromAPI) {
             $project = ProjectQuery::create()
                 ->filterByGithubId($projectFromAPI['id'])
+                ->filterByUserId($user->getId())
                 ->findOne()
             ;
 
