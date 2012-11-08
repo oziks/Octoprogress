@@ -48,6 +48,7 @@ class MilestonePeer extends BaseMilestonePeer
 
                 $milestone = MilestoneQuery::create()
                     ->filterByGithubId($milestoneFromAPI['id'])
+                    ->filterByProjectId($project->getId())
                     ->findOne()
                 ;
 
